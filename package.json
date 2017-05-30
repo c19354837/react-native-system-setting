@@ -1,0 +1,18 @@
+{
+    "name": "react-native-system-setting",
+    "version": "1.0.0",
+    "description": "provide some system setting APIs",
+    "main": "SystemSetting.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "react-native",
+        "system",
+        "setting",
+        "sound",
+        "brightness"
+    ],
+    "author": "ninty",
+    "license": "ISC"
+}
