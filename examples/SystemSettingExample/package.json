@@ -9,7 +9,7 @@
   "dependencies": {
     "react": "16.0.0-alpha.6",
     "react-native": "0.44.2",
-    "react-native-system-setting": "file:///Users/ninty/Program/node/react-native-system-setting"
+    "react-native-system-setting": "^1.0.0"
   },
   "devDependencies": {
     "babel-jest": "20.0.3",
