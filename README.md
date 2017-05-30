@@ -12,6 +12,10 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ## Look like
 
+I really want to show the .gif, while it has no diffrence with .jpg. 
+
+I strongly recommend you to run the example in real device to see how it works.
+
 <img src="https://raw.githubusercontent.com/c19354837/react-native-system-setting/master/screenshot/ios.png" width = "40%"/>&nbsp;&nbsp;&nbsp;
 <img src="https://raw.githubusercontent.com/c19354837/react-native-system-setting/master/screenshot/android.jpg" width = "40%" />
 
