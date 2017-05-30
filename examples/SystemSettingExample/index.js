@@ -13,24 +13,31 @@ export default class SystemSettingExample extends Component {
         }
     }
 
-    componentDidMount(){
-        this._update()
+    async componentDidMount(){
+        this.setState({
+            volume: await SystemSetting.getVolume(),
+            brightness: await SystemSetting.getBrightness()
+        })
+        // just init slider value directly
+        this.sliderVol.setNativeProps({
+            value: this.state.volume
+        })
+        this.sliderBri.setNativeProps({
+            value: this.state.brightness
+        })
     }
 
     _changeVol(value){
         SystemSetting.setVolume(value)
-        this._update()
+        this.setState({
+            volume: value
+        })
     }
 
     _changeBrightness(value){
         SystemSetting.setBrightnessForce(value)
-        this._update()
-    }
-
-    async _update(){
         this.setState({
-            volume: await SystemSetting.getVolume(),
-            brightness: await SystemSetting.getBrightness()
+            brightness: value
         })
     }
 
@@ -44,14 +51,20 @@ export default class SystemSettingExample extends Component {
                         <Text style={styles.title}>Volume</Text>
                         <Text style={styles.value}>{this.state.volume}</Text>
                     </View>
-                    <Slider style={styles.slider} value={this.state.volume} onSlidingComplete={this._changeVol.bind(this)} />
+                    <Slider
+                        ref={(sliderVol)=>this.sliderVol = sliderVol}
+                        style={styles.slider}
+                        onValueChange={this._changeVol.bind(this)} />
                 </View>
                 <View style={styles.card}>
                     <View style={styles.row}>
                         <Text style={styles.title}>Brightness</Text>
                         <Text style={styles.value}>{this.state.brightness}</Text>
                     </View>
-                    <Slider style={styles.slider} value={this.state.brightness} onSlidingComplete={this._changeBrightness.bind(this)} />
+                    <Slider
+                        ref={(sliderBri)=>this.sliderBri = sliderBri}
+                        style={styles.slider}
+                        onValueChange={this._changeBrightness.bind(this)} />
                 </View>
             </View>
         );
