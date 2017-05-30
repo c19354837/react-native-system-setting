@@ -12,6 +12,9 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ## Look like
 
+<img src="https://raw.githubusercontent.com/c19354837/react-native-system-setting/master/screenshot/ios.png" width = "40%"/>&nbsp;&nbsp;&nbsp;
+<img src="https://raw.githubusercontent.com/c19354837/react-native-system-setting/master/screenshot/android.jpg" width = "40%" />
+
 ## Install
 Run `npm i -S react-native-system-setting`
 
