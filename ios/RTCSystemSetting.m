@@ -22,14 +22,6 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
     resolve([NSNumber numberWithDouble:[UIScreen mainScreen].brightness]);
 }
 
-RCT_EXPORT_METHOD(setScreenMode:(float)val){
-    //do nothing
-}
-
-RCT_EXPORT_METHOD(getScreenMode:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-    resolve([NSNumber numberWithDouble:0]);
-}
-
 RCT_EXPORT_METHOD(setVolume:(float)val){
     [[MPMusicPlayerController applicationMusicPlayer] setVolume:val];
 }
