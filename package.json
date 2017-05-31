@@ -1,8 +1,12 @@
 {
     "name": "react-native-system-setting",
     "version": "1.0.0",
-    "description": "provide some system setting APIs",
+    "description": "provide some system setting APIs, Volume, brightness...",
     "main": "SystemSetting.js",
+    "homepage": "https://github.com/c19354837/react-native-system-setting",
+    "bugs": {
+        "url": "https://github.com/c19354837/react-native-system-setting/issues"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
@@ -10,9 +14,13 @@
         "react-native",
         "system",
         "setting",
-        "sound",
+        "volume",
         "brightness"
     ],
-    "author": "ninty",
+    "author": {
+        "name": "Ninty",
+        "email": "c19354837@hotmail.com",
+        "url": "https://github.com/c19354837"
+    },
     "license": "ISC"
 }
