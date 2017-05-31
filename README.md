@@ -93,13 +93,8 @@ SystemSetting.setVolume(0.5);
 //get the current brightness
 const currentBrightness = SystemSetting.getBrightness();
 
-// note:In Android, if the screen mode is auto, SystemSetting.setBrightness() will not work.
-// You should call SystemSetting.switchScreenModeToManual() before change the system brightness.
-
-SystemSetting.switchScreenModeToManual();// Android need call it before setBrightness
-
 //change the brightness
-SystemSetting.setBrightness(0.5);
+SystemSetting.setBrightnessForce(0.5);
 ```
 
 ## API
@@ -121,6 +116,21 @@ Get the system brightness.
 `setBrightness(float)`
 
 Set the system brightness by specified value, from 0 to 1. 0 for brightless, and 1 is max.
+
+`setBrightnessForce(float)`
+
+In Android, if the screen mode is auto, SystemSetting.setBrightness() will not work.
+You can call this to change the screen mode to MANUAL first.
+
+`getScreeenMode()`
+
+(Only for Android, iOS allways get -1). Get the screen mode, 0 is manual, while 1 is automatic.
+
+`setScreeenMode(int)`
+
+(Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.
+
+
 
 ## In the end
 
