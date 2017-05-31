@@ -1,5 +1,7 @@
 import {NativeModules, Platform} from 'react-native'
 
+import Utils from './Utils'
+
 const SystemSettingNative = NativeModules.SystemSetting
 
 const SCREEN_BRIGHTNESS_MODE_MANUAL = 0
@@ -15,18 +17,23 @@ export default class SystemSetting {
     }
 
     static setBrightnessForce(val) {
-        if(Platform.OS === 'android'){
+        if(Utils.isAndroid){
             SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
         }
         SystemSettingNative.setBrightness(val)
     }
 
     static async getScreenMode(){
-        return await SystemSettingNative.getBrightness()
+        if(Utils.isAndroid){
+            return await SystemSettingNative.getScreenMode()
+        }
+        return -1 // cannot get iOS screen mode
     }
 
     static setScreenMode(val){
-        SystemSettingNative.setScreenMode(val)
+        if(Utils.isAndroid){
+            SystemSettingNative.setScreenMode(val)
+        }
     }
 
     static async getVolume() {
@@ -36,4 +43,6 @@ export default class SystemSetting {
     static setVolume(val) {
         SystemSettingNative.setVolume(val)
     }
+
+
 }
