@@ -2,10 +2,12 @@
 It provides some system setting APIs for you. Support iOS and Android both.
 
 ### Support
+
 * Volume
 * Brightness
 
 ### In the future
+
 * All the system setting
 
 **Example only work in the real device**
@@ -124,7 +126,7 @@ You can call this to change the screen mode to MANUAL first.
 
 `getScreeenMode()`
 
-(Only for Android, iOS allways get -1). Get the screen mode, 0 is manual, while 1 is automatic.
+(Only for Android, iOS will return -1). Get the screen mode, 0 is manual, while 1 is automatic.
 
 `setScreeenMode(int)`
 
