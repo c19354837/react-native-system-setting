@@ -5,6 +5,8 @@ import SystemSetting from 'react-native-system-setting'
 
 export default class SystemSettingExample extends Component {
 
+    volumeListener = null;
+
     constructor(props){
         super(props)
         this.state = {
@@ -19,12 +21,26 @@ export default class SystemSettingExample extends Component {
             brightness: await SystemSetting.getBrightness()
         })
         // just init slider value directly
-        this.sliderVol.setNativeProps({
-            value: this.state.volume
+        this._changeSliderNativeVol(this.sliderVol, this.state.volume)
+        this._changeSliderNativeVol(this.sliderBri, this.state.brightness)
+
+        this.volumeListener = SystemSetting.addVolumeListener((data) => {
+            const volume = data.value
+            this._changeSliderNativeVol(this.sliderVol, volume)
+            this.setState({
+                volume: volume
+            })
         })
-        this.sliderBri.setNativeProps({
-            value: this.state.brightness
+    }
+
+    _changeSliderNativeVol(slider, value){
+        slider.setNativeProps({
+            value: value
         })
+    }
+
+    componentWillUnmount(){
+        SystemSetting.removeVolumeListener(volumeListener)
     }
 
     _changeVol(value){

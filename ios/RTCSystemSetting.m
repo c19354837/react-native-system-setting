@@ -10,7 +10,9 @@
 @import UIKit;
 @import MediaPlayer;
 
-@implementation RCTSystemSetting
+@implementation RCTSystemSetting{
+    bool hasListeners;
+}
 
 RCT_EXPORT_MODULE();
 
@@ -28,6 +30,37 @@ RCT_EXPORT_METHOD(setVolume:(float)val){
 
 RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithDouble:[MPMusicPlayerController applicationMusicPlayer].volume]);
+}
+
+-(void)startObserving {
+    hasListeners = YES;
+}
+
+-(void)stopObserving {
+    hasListeners = NO;
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[@"EventVolume"];
+}
+
+-(instancetype)init{
+    self = [super init];
+    if(self){
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(volumeChanged:)
+                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                                   object:nil];
+    }
+    return self;
+}
+
+-(void)volumeChanged:(NSNotification *)notification{
+    if(hasListeners){
+        float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+        [self sendEventWithName:@"EventVolume" body:@{@"value": [NSNumber numberWithFloat:volume]}];
+    }
 }
 
 @end
