@@ -3,18 +3,19 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ### Support
 
-* Volume
+* Volume ( with listener)
 * Brightness
 
-### In the future
+### Next
 
-* All the system setting
+* Add more settings
+* Support mobx
 
 **Example only work in the real device**
 
 ## Look like
 
-I really want to show the .gif, while it has no diffrence with .jpg. 
+I really want to show the .gif, while it has no diffrence with .jpg for some system limit.
 
 I strongly recommend you to run the example in real device to see how it works.
 
@@ -32,7 +33,7 @@ Run `react-native link` to link this library.
 
 That's all.
 
-If link does not work, or you just want to do it manually, you can follow this way:
+If link does not work, you can do it manually. Just follow this way:
 
 **android/settings.gradle**
 
@@ -87,6 +88,15 @@ const currentVol = SystemSetting.getVolume();
 
 // change the volume
 SystemSetting.setVolume(0.5);
+
+// listen the volume changing if you need
+const volumeListener = SystemSetting.addVolumeListener((data) => {
+    const volume = data.value;
+    console.log(volume);
+});
+
+//remove listener when you don't need no more
+SystemSetting.removeVolumeListener(volumeListener)       
 ```
 
 **brightness**
@@ -101,7 +111,7 @@ SystemSetting.setBrightnessForce(0.5);
 
 ## API
 
-All are static method
+**All are static method**
 
 `getVolume()`
 
@@ -110,6 +120,14 @@ Get the system volume.
 `setVolume(float)`
 
 Set the system volume by specified value, from 0 to 1. 0 for mute, and 1 is max volume.
+
+`addVolumeListener(callback)`
+
+Listen the volume changing, and it will return the listener. More info see [the example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/index.js#L28)
+
+`removeVolumeListener(listener)`
+
+Remove listener when it no longer needed.
 
 `getBrightness()`
 
@@ -131,8 +149,6 @@ You can call this to change the screen mode to MANUAL first.
 `setScreeenMode(int)`
 
 (Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.
-
-
 
 ## In the end
 
