@@ -150,6 +150,14 @@ You can call this to change the screen mode to MANUAL first.
 
 (Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.
 
+`saveBrightness()`
+
+It will save current brightness and screen mode.
+
+`restoreBrightness()`
+
+Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. You should call this before setBrightness() or setBrightnessForce()
+
 ## In the end
 
 Feel free to open issue or pull request
