@@ -156,7 +156,7 @@ It will save current brightness and screen mode.
 
 `restoreBrightness()`
 
-Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. You should call this before setBrightness() or setBrightnessForce()
+Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. You should call this before setBrightness() or setBrightnessForce(). It will return the saved brightness.
 
 ## In the end
 
