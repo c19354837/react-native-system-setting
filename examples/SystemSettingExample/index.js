@@ -148,8 +148,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#ccc',
     },
     btn:{
-        fontSize: 18,
+        fontSize: 16,
         padding: 8,
+        paddingVertical: 8,
         color: '#405EFF'
     }
 });
