@@ -4,12 +4,16 @@ import Utils from './Utils'
 
 const SystemSettingNative = NativeModules.SystemSetting
 
+const SCREEN_BRIGHTNESS_MODE_UNKNOW = -1
 const SCREEN_BRIGHTNESS_MODE_MANUAL = 0
 const SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1
 
 const volumeEmitter = new NativeEventEmitter(SystemSettingNative);
 
 export default class SystemSetting {
+    static saveBrightnessVal = -1;
+    static saveScreenModeVal = SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+
     static async getBrightness() {
         return await SystemSettingNative.getBrightness()
     }
@@ -22,7 +26,7 @@ export default class SystemSetting {
         if (Utils.isAndroid) {
             SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
         }
-        SystemSettingNative.setBrightness(val)
+        SystemSetting.setBrightness(val)
     }
 
     static async getScreenMode() {
@@ -36,6 +40,21 @@ export default class SystemSetting {
         if (Utils.isAndroid) {
             SystemSettingNative.setScreenMode(val)
         }
+    }
+
+    static async saveBrightness(){
+        SystemSetting.saveBrightnessVal = await SystemSetting.getBrightness()
+        SystemSetting.saveScreenModeVal = await SystemSetting.getScreenMode()
+    }
+
+    static restoreBrightness(){
+        if(SystemSetting.saveBrightnessVal == -1){
+            console.warn('you should call saveBrightness() at least once');
+        }else{
+            SystemSetting.setBrightness(SystemSetting.saveBrightnessVal)
+            SystemSetting.setScreenMode(SystemSetting.saveScreenModeVal)
+        }
+        return SystemSetting.saveBrightnessVal
     }
 
     static async getVolume() {
