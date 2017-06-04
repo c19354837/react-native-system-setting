@@ -22,5 +22,9 @@
         "email": "c19354837@hotmail.com",
         "url": "https://github.com/c19354837"
     },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/c19354837/react-native-system-setting.git"
+    },
     "license": "ISC"
 }
