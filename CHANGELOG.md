@@ -1,4 +1,5 @@
-# now
+# V1.0.2
+**2017-05-30**
 
 Add listener for volume
 
@@ -8,7 +9,6 @@ Add listener for volume
 Add screen mode (Android only)
 
 # V1.0.0
-
 **2017-05-30**
 
 Support volume and brightness
