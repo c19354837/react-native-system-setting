@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Slider} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio} from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -57,6 +57,17 @@ export default class SystemSettingExample extends Component {
         })
     }
 
+    _restoreBrightness(){
+        const saveBrightnessVal = SystemSetting.restoreBrightness()
+        if(saveBrightnessVal > -1){
+            // success
+            this.setState({
+                brightness: saveBrightnessVal
+            })
+            this._changeSliderNativeVol(this.sliderBri, saveBrightnessVal)
+        }
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -81,6 +92,22 @@ export default class SystemSettingExample extends Component {
                         ref={(sliderBri)=>this.sliderBri = sliderBri}
                         style={styles.slider}
                         onValueChange={this._changeBrightness.bind(this)} />
+                </View>
+                <View style={styles.card}>
+                    <View style={styles.row}>
+                        <Text style={styles.title}>Brightness save & restore
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <TouchableOpacity onPress={SystemSetting.saveBrightness}>
+                            <Text style={styles.btn}>Save
+                            </Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity onPress={this._restoreBrightness.bind(this)}>
+                            <Text style={styles.btn}>Restore
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         );
@@ -115,6 +142,16 @@ const styles = StyleSheet.create({
         textAlign:'right',
         color: '#904ED9'
     },
+    split:{
+        marginVertical: 16,
+        height: 1,
+        backgroundColor: '#ccc',
+    },
+    btn:{
+        fontSize: 18,
+        padding: 8,
+        color: '#405EFF'
+    }
 });
 
 AppRegistry.registerComponent('SystemSettingExample', () => SystemSettingExample);
