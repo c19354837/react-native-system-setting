@@ -73,4 +73,12 @@ export default class SystemSetting {
         listener && listener.remove()
     }
 
+    static async isWifiEnabled(){
+        return await SystemSettingNative.isWifiEnabled() > 0
+    }
+
+    static openWifi(){
+        SystemSettingNative.openWifi()
+    }
+
 }

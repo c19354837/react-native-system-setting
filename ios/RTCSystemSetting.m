@@ -7,6 +7,10 @@
 //
 
 #import "RTCSystemSetting.h"
+#import <SystemConfiguration/CaptiveNetwork.h>
+#import <ifaddrs.h>
+#import <net/if.h>
+
 @import UIKit;
 @import MediaPlayer;
 
@@ -32,17 +36,26 @@ RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
     resolve([NSNumber numberWithDouble:[MPMusicPlayerController applicationMusicPlayer].volume]);
 }
 
--(void)startObserving {
-    hasListeners = YES;
+RCT_EXPORT_METHOD(openWifi){
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=WIFI"] options:[NSDictionary new] completionHandler:nil];
 }
 
--(void)stopObserving {
-    hasListeners = NO;
+RCT_EXPORT_METHOD(isWiFiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    resolve([NSNumber numberWithBool:[self isWifiEnabled]]);
 }
 
-- (NSArray<NSString *> *)supportedEvents
-{
-    return @[@"EventVolume"];
+-(BOOL)isWifiEnabled{
+    NSCountedSet * cset = [NSCountedSet new];
+    struct ifaddrs *interfaces;
+    if( ! getifaddrs(&interfaces) ) {
+        for( struct ifaddrs *interface = interfaces; interface; interface = interface->ifa_next)
+        {
+            if ( (interface->ifa_flags & IFF_UP) == IFF_UP ) {
+                [cset addObject:[NSString stringWithUTF8String:interface->ifa_name]];
+            }
+        }
+    }
+    return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
 }
 
 -(instancetype)init{
@@ -54,6 +67,19 @@ RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
                                                    object:nil];
     }
     return self;
+}
+
+- (NSArray<NSString *> *)supportedEvents
+{
+    return @[@"EventVolume", @"EventWifi"];
+}
+
+-(void)startObserving {
+    hasListeners = YES;
+}
+
+-(void)stopObserving {
+    hasListeners = NO;
 }
 
 -(void)volumeChanged:(NSNotification *)notification{
