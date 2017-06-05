@@ -107,6 +107,11 @@ const currentBrightness = SystemSetting.getBrightness();
 
 //change the brightness
 SystemSetting.setBrightnessForce(0.5);
+
+// save the value of  brightness and screen mode. 
+SystemSetting.saveBrightness();
+// restore the brightness and screen mode. you can get the old brightness value.
+const brightnessVal = SystemSetting.restoreBrightness()
 ```
 
 ## API
