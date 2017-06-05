@@ -53,7 +53,7 @@ public class SystemSetting extends ReactContextBaseJavaModule {
 
     @Override
     public String getName() {
-        return "SystemSetting";
+        return SystemSetting.class.getSimpleName();
     }
 
     @ReactMethod
