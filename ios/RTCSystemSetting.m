@@ -40,7 +40,7 @@ RCT_EXPORT_METHOD(openWifi){
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=WIFI"] options:[NSDictionary new] completionHandler:nil];
 }
 
-RCT_EXPORT_METHOD(isWiFiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithBool:[self isWifiEnabled]]);
 }
 

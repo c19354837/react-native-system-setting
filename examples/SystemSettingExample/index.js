@@ -11,14 +11,16 @@ export default class SystemSettingExample extends Component {
         super(props)
         this.state = {
             volume: 0,
-            brightness: 0
+            brightness: 0,
+            wifiEnable: false
         }
     }
 
     async componentDidMount(){
         this.setState({
             volume: await SystemSetting.getVolume(),
-            brightness: await SystemSetting.getBrightness()
+            brightness: await SystemSetting.getBrightness(),
+            wifiEnable: await SystemSetting.isWifiEnabled()
         })
         // just init slider value directly
         this._changeSliderNativeVol(this.sliderVol, this.state.volume)
@@ -99,12 +101,26 @@ export default class SystemSettingExample extends Component {
                         </Text>
                     </View>
                     <View style={styles.row}>
-                        <TouchableOpacity onPress={SystemSetting.saveBrightness}>
+                        <TouchableOpacity style={{marginRight:32}} onPress={SystemSetting.saveBrightness}>
                             <Text style={styles.btn}>Save
                             </Text>
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this._restoreBrightness.bind(this)}>
                             <Text style={styles.btn}>Restore
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+                <View style={styles.card}>
+                    <View style={styles.row}>
+                        <Text style={styles.title}>Wifi
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text>Current wifi is {this.state.wifiEnable ? 'On' : 'Off'}
+                        </Text>
+                        <TouchableOpacity style={{flex:1}} onPress={SystemSetting.openWifi}>
+                            <Text style={[styles.btn, {textAlign:'right'}]}>Open Setting
                             </Text>
                         </TouchableOpacity>
                     </View>

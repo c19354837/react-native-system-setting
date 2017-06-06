@@ -74,7 +74,7 @@ export default class SystemSetting {
     }
 
     static async isWifiEnabled(){
-        return await SystemSettingNative.isWifiEnabled() > 0
+        return (await SystemSettingNative.isWifiEnabled()) > 0
     }
 
     static openWifi(){
