@@ -45,7 +45,8 @@ RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 }
 
 -(void)openWifiNative{
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=WIFI"] options:[NSDictionary new] completionHandler:nil];
+    NSString *url = [UIDevice currentDevice].systemVersion.doubleValue >= 10.0 ? @"App-Prefs:root=WIFI" : @"prefs:root=WIFI";
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:[NSDictionary new] completionHandler:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWakeUp:)
                                                  name:UIApplicationWillEnterForegroundNotification
