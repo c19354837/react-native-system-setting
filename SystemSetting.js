@@ -8,7 +8,7 @@ const SCREEN_BRIGHTNESS_MODE_UNKNOW = -1
 const SCREEN_BRIGHTNESS_MODE_MANUAL = 0
 const SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1
 
-const volumeEmitter = new NativeEventEmitter(SystemSettingNative);
+const eventEmitter = new NativeEventEmitter(SystemSettingNative);
 
 export default class SystemSetting {
     static saveBrightnessVal = -1;
@@ -66,7 +66,7 @@ export default class SystemSetting {
     }
 
     static addVolumeListener(callback) {
-        return volumeEmitter.addListener('EventVolume', callback)
+        return eventEmitter.addListener('EventVolume', callback)
     }
 
     static removeVolumeListener(listener){
@@ -77,8 +77,12 @@ export default class SystemSetting {
         return (await SystemSettingNative.isWifiEnabled()) > 0
     }
 
-    static openWifi(){
+    static openWifi(whenBack){
         SystemSettingNative.openWifi()
+        const listener = eventEmitter.addListener('EventEnterForeground', () => {
+            listener.remove()
+            whenBack()
+        })
     }
 
 }

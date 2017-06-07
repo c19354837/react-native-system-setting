@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch} from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -70,6 +70,14 @@ export default class SystemSettingExample extends Component {
         }
     }
 
+    _openWifi(){
+        SystemSetting.openWifi(async () => {
+            this.setState({
+                wifiEnable: await SystemSetting.isWifiEnabled()
+            })
+        })
+    }
+
     render() {
         return (
             <View style={styles.container}>
@@ -119,10 +127,11 @@ export default class SystemSettingExample extends Component {
                     <View style={styles.row}>
                         <Text>Current wifi is {this.state.wifiEnable ? 'On' : 'Off'}
                         </Text>
-                        <TouchableOpacity style={{flex:1}} onPress={SystemSetting.openWifi}>
-                            <Text style={[styles.btn, {textAlign:'right'}]}>Open Setting
-                            </Text>
-                        </TouchableOpacity>
+                        <View style={{flex:1, alignItems:'flex-end'}}>
+                            <Switch
+                                  onValueChange={(value) => this._openWifi()}
+                                  value={this.state.wifiEnable} />
+                        </View>
                     </View>
                 </View>
             </View>

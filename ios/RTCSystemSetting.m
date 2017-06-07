@@ -37,11 +37,19 @@ RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 }
 
 RCT_EXPORT_METHOD(openWifi){
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=WIFI"] options:[NSDictionary new] completionHandler:nil];
+    [self openWifiNative];
 }
 
 RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithBool:[self isWifiEnabled]]);
+}
+
+-(void)openWifiNative{
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"App-Prefs:root=WIFI"] options:[NSDictionary new] completionHandler:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(applicationWakeUp:)
+                                                 name:UIApplicationWillEnterForegroundNotification
+                                               object:nil];
 }
 
 -(BOOL)isWifiEnabled{
@@ -58,6 +66,11 @@ RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
     return [cset countForObject:@"awdl0"] > 1 ? YES : NO;
 }
 
+-(void)applicationWakeUp:(NSNotification*)notification{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
+    [self sendEventWithName:@"EventEnterForeground" body:nil];
+}
+
 -(instancetype)init{
     self = [super init];
     if(self){
@@ -71,7 +84,7 @@ RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"EventVolume", @"EventWifi"];
+    return @[@"EventVolume", @"EventEnterForeground"];
 }
 
 -(void)startObserving {
