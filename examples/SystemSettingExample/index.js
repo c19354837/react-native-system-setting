@@ -70,8 +70,8 @@ export default class SystemSettingExample extends Component {
         }
     }
 
-    _openWifi(){
-        SystemSetting.openWifi(async () => {
+    _switchWifi(){
+        SystemSetting.switchWifi(async () => {
             this.setState({
                 wifiEnable: await SystemSetting.isWifiEnabled()
             })
@@ -129,7 +129,7 @@ export default class SystemSettingExample extends Component {
                         </Text>
                         <View style={{flex:1, alignItems:'flex-end'}}>
                             <Switch
-                                  onValueChange={(value) => this._openWifi()}
+                                  onValueChange={(value) => this._switchWifi()}
                                   value={this.state.wifiEnable} />
                         </View>
                     </View>

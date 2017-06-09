@@ -36,7 +36,7 @@ RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
     resolve([NSNumber numberWithDouble:[MPMusicPlayerController applicationMusicPlayer].volume]);
 }
 
-RCT_EXPORT_METHOD(openWifi){
+RCT_EXPORT_METHOD(switchWifi){
     [self openWifiNative];
 }
 

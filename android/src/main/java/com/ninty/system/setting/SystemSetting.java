@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.wifi.WifiManager;
 import android.provider.Settings;
 
 import com.facebook.react.bridge.Arguments;
@@ -23,6 +24,7 @@ public class SystemSetting extends ReactContextBaseJavaModule {
 
     private ReactApplicationContext context;
     private AudioManager am;
+    private WifiManager wm;
     private BroadcastReceiver volumeBR;
     IntentFilter filter;
 
@@ -30,6 +32,7 @@ public class SystemSetting extends ReactContextBaseJavaModule {
         super(reactContext);
         context = reactContext;
         am = (AudioManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
+        wm = (WifiManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
         listerVolume(reactContext);
     }
@@ -104,5 +107,21 @@ public class SystemSetting extends ReactContextBaseJavaModule {
 
     private float getNormalizationVolume() {
         return am.getStreamVolume(AudioManager.STREAM_MUSIC) * 1.0f / am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+    }
+
+    @ReactMethod
+    public void isWifiEnabled(Promise promise){
+        if(wm != null){
+            promise.resolve(wm.isWifiEnabled());
+        }else {
+            promise.reject("-1", "get wifi manager fail");
+        }
+    }
+
+    @ReactMethod
+    public void switchWifi(){
+        if(wm != null){
+            wm.setWifiEnabled(!wm.isWifiEnabled());
+        }
     }
 }

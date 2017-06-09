@@ -74,15 +74,21 @@ export default class SystemSetting {
     }
 
     static async isWifiEnabled(){
-        return (await SystemSettingNative.isWifiEnabled()) > 0
+        const result = await SystemSettingNative.isWifiEnabled()
+        console.warn(result);
+        return (result) > 0
     }
 
-    static openWifi(whenBack){
-        SystemSettingNative.openWifi()
-        const listener = eventEmitter.addListener('EventEnterForeground', () => {
-            listener.remove()
-            whenBack()
-        })
+    static switchWifi(complete){
+        SystemSettingNative.switchWifi()
+        console.warn(1);
+        if(Utils.isAndroid){
+            complete()
+        }else{
+            const listener = eventEmitter.addListener('EventEnterForeground', () => {
+                listener.remove()
+                complete()
+            })
+        }
     }
-
 }
