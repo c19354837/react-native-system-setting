@@ -122,7 +122,7 @@ const brightnessVal = SystemSetting.restoreBrightness()
 
 Get the system volume.
 
-`setVolume(float)`
+`setVolume(val:float)`
 
 Set the system volume by specified value, from 0 to 1. 0 for mute, and 1 is max volume.
 
@@ -138,11 +138,11 @@ Remove listener when it no longer needed.
 
 Get the system brightness.
 
-`setBrightness(float)`
+`setBrightness(val:float)`
 
 Set the system brightness by specified value, from 0 to 1. 0 for brightless, and 1 is max.
 
-`setBrightnessForce(float)`
+`setBrightnessForce(val:float)`
 
 In Android, if the screen mode is auto, SystemSetting.setBrightness() will not work.
 You can call this to change the screen mode to MANUAL first.
@@ -151,7 +151,7 @@ You can call this to change the screen mode to MANUAL first.
 
 (Only for Android, iOS will return -1). Get the screen mode, 0 is manual, while 1 is automatic.
 
-`setScreeenMode(int)`
+`setScreeenMode(mode:int)`
 
 (Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.
 
@@ -162,6 +162,13 @@ It will save current brightness and screen mode.
 `restoreBrightness()`
 
 Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. You should call this before setBrightness() or setBrightnessForce(). It will return the saved brightness.
+
+## Run example
+
+```
+cd example/SystemSettingExample
+npm install
+```
 
 ## In the end
 
