@@ -34,10 +34,10 @@ public class SystemSetting extends ReactContextBaseJavaModule {
         am = (AudioManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         wm = (WifiManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
-        listerVolume(reactContext);
+        listenVolume(reactContext);
     }
 
-    private void listerVolume(final ReactApplicationContext reactContext) {
+    private void listenVolume(final ReactApplicationContext reactContext) {
         volumeBR = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
