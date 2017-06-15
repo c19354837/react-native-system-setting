@@ -5,8 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
+import android.util.Log;
 
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
@@ -22,15 +24,17 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 public class SystemSetting extends ReactContextBaseJavaModule {
 
-    private ReactApplicationContext context;
+    private ReactApplicationContext mContext;
     private AudioManager am;
     private WifiManager wm;
     private BroadcastReceiver volumeBR;
-    IntentFilter filter;
+    private volatile BroadcastReceiver wifiBR;
+    private IntentFilter filter;
+    private String TAG = SystemSetting.class.getSimpleName();
 
     public SystemSetting(ReactApplicationContext reactContext) {
         super(reactContext);
-        context = reactContext;
+        mContext = reactContext;
         am = (AudioManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         wm = (WifiManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
 
@@ -51,7 +55,34 @@ public class SystemSetting extends ReactContextBaseJavaModule {
         };
         filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
 
-        context.registerReceiver(volumeBR, filter);
+        reactContext.registerReceiver(volumeBR, filter);
+    }
+
+    private void listenWifiState() {
+        if(wifiBR == null){
+            synchronized (this){
+                if(wifiBR == null){
+                    wifiBR = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
+                                int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
+                                if(wifiState == WifiManager.WIFI_STATE_ENABLED || wifiState == WifiManager.WIFI_STATE_DISABLED){
+                                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                            .emit("EventWifiChange", null);
+                                }
+                            }
+                        }
+                    };
+                    IntentFilter wifiFilter = new IntentFilter();
+                    wifiFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
+                    wifiFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+                    wifiFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+
+                    mContext.registerReceiver(wifiBR, wifiFilter);
+                }
+            }
+        }
     }
 
     @Override
@@ -95,9 +126,9 @@ public class SystemSetting extends ReactContextBaseJavaModule {
 
     @ReactMethod
     public void setVolume(float val) {
-        context.unregisterReceiver(volumeBR);
+        mContext.unregisterReceiver(volumeBR);
         am.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (val * am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)), AudioManager.FLAG_PLAY_SOUND);
-        context.registerReceiver(volumeBR, filter);
+        mContext.registerReceiver(volumeBR, filter);
     }
 
     @ReactMethod
@@ -121,7 +152,10 @@ public class SystemSetting extends ReactContextBaseJavaModule {
     @ReactMethod
     public void switchWifi(){
         if(wm != null){
+            listenWifiState();
             wm.setWifiEnabled(!wm.isWifiEnabled());
+        }else {
+            Log.w(TAG, "Cannot get wm, switchWifi will be ignored");
         }
     }
 }
