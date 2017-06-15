@@ -81,7 +81,6 @@ export default class SystemSetting {
 
     static switchWifi(complete){
         SystemSettingNative.switchWifi()
-        console.warn(1);
         if(Utils.isAndroid){
             complete()
         }else{
