@@ -156,6 +156,10 @@ You can call this to change the screen mode to MANUAL first.
 
 (Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.
 
+---
+
+**since 1.0.3**
+
 `saveBrightness()`
 
 It will save current brightness and screen mode.
@@ -165,7 +169,8 @@ It will save current brightness and screen mode.
 Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. You should call this before setBrightness() or setBrightnessForce(). It will return the saved brightness.
 
 ---
- since 1.0.4
+
+**since 1.0.4**
 
 `isWifiEnabled()`
 
