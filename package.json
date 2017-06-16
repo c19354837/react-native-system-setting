@@ -26,5 +26,5 @@
         "type": "git",
         "url": "https://github.com/c19354837/react-native-system-setting.git"
     },
-    "license": "ISC"
+    "license": "MIT"
 }

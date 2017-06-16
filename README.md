@@ -5,6 +5,7 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 * Volume ( with listener)
 * Brightness
+* Wifi switch
 
 ### Next
 
@@ -163,11 +164,26 @@ It will save current brightness and screen mode.
 
 Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. You should call this before setBrightness() or setBrightnessForce(). It will return the saved brightness.
 
+---
+ since 1.0.4
+
+`isWifiEnabled()`
+
+Get wifi state, true if wifi is on.
+
+`switchWifi(complete)`
+
+It will open wifi if the wifi is off, and close wifi when the wifi is on now. When it has done, the `complete` will be call.
+
 ## Run example
 
-```
+```shell
 cd example/SystemSettingExample
 npm install
+// if android
+react-native run-android
+// or ios
+react-native run-ios
 ```
 
 ## In the end
