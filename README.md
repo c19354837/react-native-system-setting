@@ -14,6 +14,9 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 **Example only work in the real device**
 
+### Change Log
+[Change Log](https://github.com/c19354837/react-native-system-setting/blob/master/CHANGELOG.md)
+
 ## Look like
 
 I really want to show the .gif, while it has no diffrence with .jpg for some system limit.
@@ -182,7 +185,7 @@ It will open wifi if the wifi is off, and close wifi when the wifi is on now. Wh
 
 ## Run example
 
-```shell
+```
 cd example/SystemSettingExample
 npm install
 // if android
@@ -194,3 +197,6 @@ react-native run-ios
 ## In the end
 
 Feel free to open issue or pull request
+
+## License
+[**MIT**](https://github.com/c19354837/react-native-system-setting/blob/master/LICENSE.md)
