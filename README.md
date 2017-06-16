@@ -187,7 +187,7 @@ cd example/SystemSettingExample
 npm install
 // if android
 react-native run-android
-// or ios
+// else
 react-native run-ios
 ```
 
