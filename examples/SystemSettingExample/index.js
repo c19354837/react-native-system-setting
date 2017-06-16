@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator} from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -12,7 +12,8 @@ export default class SystemSettingExample extends Component {
         this.state = {
             volume: 0,
             brightness: 0,
-            wifiEnable: false
+            wifiEnable: false,
+            wifiStateLoading: false,
         }
     }
 
@@ -71,14 +72,19 @@ export default class SystemSettingExample extends Component {
     }
 
     _switchWifi(){
+        this.setState({
+            wifiStateLoading: true
+        })
         SystemSetting.switchWifi(async () => {
             this.setState({
-                wifiEnable: await SystemSetting.isWifiEnabled()
+                wifiEnable: await SystemSetting.isWifiEnabled(),
+                wifiStateLoading: false
             })
         })
     }
 
     render() {
+        const {volume, brightness, wifiEnable, wifiStateLoading} = this.state
         return (
             <View style={styles.container}>
                 <View>
@@ -86,7 +92,7 @@ export default class SystemSettingExample extends Component {
                 <View style={styles.card}>
                     <View style={styles.row}>
                         <Text style={styles.title}>Volume</Text>
-                        <Text style={styles.value}>{this.state.volume}</Text>
+                        <Text style={styles.value}>{volume}</Text>
                     </View>
                     <Slider
                         ref={(sliderVol)=>this.sliderVol = sliderVol}
@@ -96,7 +102,7 @@ export default class SystemSettingExample extends Component {
                 <View style={styles.card}>
                     <View style={styles.row}>
                         <Text style={styles.title}>Brightness</Text>
-                        <Text style={styles.value}>{this.state.brightness}</Text>
+                        <Text style={styles.value}>{brightness}</Text>
                     </View>
                     <Slider
                         ref={(sliderBri)=>this.sliderBri = sliderBri}
@@ -125,12 +131,16 @@ export default class SystemSettingExample extends Component {
                         </Text>
                     </View>
                     <View style={styles.row}>
-                        <Text>Current wifi is {this.state.wifiEnable ? 'On' : 'Off'}
+                        <Text>Current wifi is { wifiStateLoading ? 'switching': (wifiEnable ? 'On' : 'Off')}
                         </Text>
+                        {
+                            wifiStateLoading&&<ActivityIndicator animating={wifiStateLoading}/>
+                        }
                         <View style={{flex:1, alignItems:'flex-end'}}>
                             <Switch
-                                  onValueChange={(value) => this._switchWifi()}
-                                  value={this.state.wifiEnable} />
+                                ref={(wifiSwitch)=>this.wifiSwitch = wifiSwitch}
+                                onValueChange={(value) => this._switchWifi()}
+                                value={wifiEnable} />
                         </View>
                     </View>
                 </View>
