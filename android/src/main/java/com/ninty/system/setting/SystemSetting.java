@@ -46,7 +46,7 @@ public class SystemSetting extends ReactContextBaseJavaModule {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
-                    WritableMap para = new Arguments().createMap();
+                    WritableMap para = Arguments.createMap();
                     para.putDouble("value", getNormalizationVolume());
                     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("EventVolume", para);
