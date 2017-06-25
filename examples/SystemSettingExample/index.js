@@ -104,26 +104,18 @@ export default class SystemSettingExample extends Component {
             <View style={styles.container}>
                 <View>
                 </View>
-                <View style={styles.card}>
-                    <View style={styles.row}>
-                        <Text style={styles.title}>Volume</Text>
-                        <Text style={styles.value}>{volume}</Text>
-                    </View>
-                    <Slider
-                        ref={(sliderVol)=>this.sliderVol = sliderVol}
-                        style={styles.slider}
-                        onValueChange={this._changeVol.bind(this)} />
-                </View>
-                <View style={styles.card}>
-                    <View style={styles.row}>
-                        <Text style={styles.title}>Brightness</Text>
-                        <Text style={styles.value}>{brightness}</Text>
-                    </View>
-                    <Slider
-                        ref={(sliderBri)=>this.sliderBri = sliderBri}
-                        style={styles.slider}
-                        onValueChange={this._changeBrightness.bind(this)} />
-                </View>
+                <ValueView
+                    title='Volume'
+                    value={volume}
+                    changeVal={(val)=>this._changeVol(val)}
+                    refFunc={(sliderVol)=>this.sliderVol = sliderVol}
+                />
+                <ValueView
+                    title='Brightness'
+                    value={brightness}
+                    changeVal={(val)=>this._changeBrightness(val)}
+                    refFunc={(sliderBri)=>this.sliderBri = sliderBri}
+                />
                 <View style={styles.card}>
                     <View style={styles.row}>
                         <Text style={styles.title}>Brightness save & restore
@@ -153,6 +145,22 @@ export default class SystemSettingExample extends Component {
             </View>
         );
     }
+}
+
+const ValueView = (props)=>{
+    const {title, value, changeVal, refFunc} = props
+    return(
+        <View style={styles.card}>
+            <View style={styles.row}>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={styles.value}>{value}</Text>
+            </View>
+            <Slider
+                ref={refFunc}
+                style={styles.slider}
+                onValueChange={changeVal} />
+        </View>
+    )
 }
 
 const StatusView = (props)=>{
