@@ -14,6 +14,8 @@ export default class SystemSettingExample extends Component {
             brightness: 0,
             wifiEnable: false,
             wifiStateLoading: false,
+            locationEnable: false,
+            locationStateLoading: false,
         }
     }
 
@@ -21,7 +23,8 @@ export default class SystemSettingExample extends Component {
         this.setState({
             volume: await SystemSetting.getVolume(),
             brightness: await SystemSetting.getBrightness(),
-            wifiEnable: await SystemSetting.isWifiEnabled()
+            wifiEnable: await SystemSetting.isWifiEnabled(),
+            locationEnable: await SystemSetting.isLocationEnabled(),
         })
         // just init slider value directly
         this._changeSliderNativeVol(this.sliderVol, this.state.volume)
@@ -83,8 +86,20 @@ export default class SystemSettingExample extends Component {
         })
     }
 
+    _switchLocation(){
+        this.setState({
+            locationStateLoading: true
+        })
+        SystemSetting.switchLocation(async () => {
+            this.setState({
+                locationEnable: await SystemSetting.isLocationEnabled(),
+                locationStateLoading: false
+            })
+        })
+    }
+
     render() {
-        const {volume, brightness, wifiEnable, wifiStateLoading} = this.state
+        const {volume, brightness, wifiEnable, wifiStateLoading, locationEnable, locationStateLoading} = this.state
         return (
             <View style={styles.container}>
                 <View>
@@ -125,28 +140,43 @@ export default class SystemSettingExample extends Component {
                         </TouchableOpacity>
                     </View>
                 </View>
-                <View style={styles.card}>
-                    <View style={styles.row}>
-                        <Text style={styles.title}>Wifi
-                        </Text>
-                    </View>
-                    <View style={styles.row}>
-                        <Text>Current wifi is { wifiStateLoading ? 'switching': (wifiEnable ? 'On' : 'Off')}
-                        </Text>
-                        {
-                            wifiStateLoading&&<ActivityIndicator animating={wifiStateLoading}/>
-                        }
-                        <View style={{flex:1, alignItems:'flex-end'}}>
-                            <Switch
-                                ref={(wifiSwitch)=>this.wifiSwitch = wifiSwitch}
-                                onValueChange={(value) => this._switchWifi()}
-                                value={wifiEnable} />
-                        </View>
-                    </View>
-                </View>
+                <StatusView
+                    title='Wifi'
+                    value={wifiEnable}
+                    loading={wifiStateLoading}
+                    switchFunc={(value) => this._switchWifi()}/>
+                <StatusView
+                    title='Location'
+                    value={locationEnable}
+                    loading={locationStateLoading}
+                    switchFunc={(value) => this._switchLocation()}/>
             </View>
         );
     }
+}
+
+const StatusView = (props)=>{
+    const {title, switchFunc, value, loading} = props
+    return(
+        <View style={styles.card}>
+            <View style={styles.row}>
+                <Text style={styles.title}>{title}
+                </Text>
+            </View>
+            <View style={styles.row}>
+                <Text>Current status is { loading ? 'switching': (value ? 'On' : 'Off')}
+                </Text>
+                {
+                    loading&&<ActivityIndicator animating={loading}/>
+                }
+                <View style={{flex:1, alignItems:'flex-end'}}>
+                    <Switch
+                        onValueChange={switchFunc}
+                        value={value} />
+                </View>
+            </View>
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
