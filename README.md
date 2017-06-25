@@ -88,7 +88,9 @@ import SystemSetting from 'react-native-system-setting'
 
 ```javascript
 //get the current volume
-const currentVol = SystemSetting.getVolume();
+SystemSetting.getVolume().then((volume)=>{
+    console.log('Current volume is ' + volume);
+});
 
 // change the volume
 SystemSetting.setVolume(0.5);
@@ -99,7 +101,7 @@ const volumeListener = SystemSetting.addVolumeListener((data) => {
     console.log(volume);
 });
 
-//remove listener when you need no more
+//remove listener when you need it no more
 SystemSetting.removeVolumeListener(volumeListener)       
 ```
 
@@ -107,7 +109,9 @@ SystemSetting.removeVolumeListener(volumeListener)
 
 ```javascript
 //get the current brightness
-const currentBrightness = SystemSetting.getBrightness();
+SystemSetting.getBrightness().then((brightness)=>{
+    console.log('Current brightness is ' + brightness);
+});
 
 //change the brightness
 SystemSetting.setBrightnessForce(0.5);
@@ -115,7 +119,22 @@ SystemSetting.setBrightnessForce(0.5);
 // save the value of  brightness and screen mode.
 SystemSetting.saveBrightness();
 // restore the brightness and screen mode. you can get the old brightness value.
-const brightnessVal = SystemSetting.restoreBrightness()
+SystemSetting.restoreBrightness().then((oldVal)=>{
+    //if you need
+})
+```
+
+**Wifi**
+
+```javascript
+SystemSetting.isWifiEnabled().then((enable)=>{
+    const state = enable ? 'On' : 'Off';
+    console.log('Current wifi is ' + state);
+})
+
+SystemSetting.switchWifi(()=>{
+    console.log('switch wifi successfully');
+})
 ```
 
 ## API
