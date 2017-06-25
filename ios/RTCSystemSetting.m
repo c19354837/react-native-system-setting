@@ -8,6 +8,7 @@
 
 #import "RTCSystemSetting.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
+#import <CoreLocation/CoreLocation.h>
 #import <ifaddrs.h>
 #import <net/if.h>
 
@@ -16,6 +17,28 @@
 
 @implementation RCTSystemSetting{
     bool hasListeners;
+
+    NSDictionary *setting;
+}
+
+-(instancetype)init{
+    self = [super init];
+    if(self){
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(volumeChanged:)
+                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
+                                                   object:nil];
+    }
+
+    [self initSetting];
+
+    return self;
+}
+
+-(void)initSetting{
+    BOOL newSys = [UIDevice currentDevice].systemVersion.doubleValue >= 10.0;
+    setting = @{@"wifi": (newSys?@"App-Prefs:root=WIFI" : @"prefs:root=WIFI"),
+                @"location": (newSys?@"App-Prefs:root=Privacy&path=LOCATION" : @"prefs:root=Privacy&path=LOCATION")};
 }
 
 RCT_EXPORT_MODULE();
@@ -37,15 +60,23 @@ RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromise
 }
 
 RCT_EXPORT_METHOD(switchWifi){
-    [self openWifiNative];
+    [self openSetting:@"wifi"];
 }
 
 RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithBool:[self isWifiEnabled]]);
 }
 
--(void)openWifiNative{
-    NSString *url = [UIDevice currentDevice].systemVersion.doubleValue >= 10.0 ? @"App-Prefs:root=WIFI" : @"prefs:root=WIFI";
+RCT_EXPORT_METHOD(switchLocation){
+    [self openSetting:@"location"];
+}
+
+RCT_EXPORT_METHOD(isLocationEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    resolve([NSNumber numberWithBool:[CLLocationManager locationServicesEnabled]]);
+}
+
+-(void)openSetting:(NSString*)service{
+    NSString *url = [setting objectForKey:service];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:[NSDictionary new] completionHandler:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWakeUp:)
@@ -70,17 +101,6 @@ RCT_EXPORT_METHOD(isWifiEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 -(void)applicationWakeUp:(NSNotification*)notification{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationWillEnterForegroundNotification object:nil];
     [self sendEventWithName:@"EventEnterForeground" body:nil];
-}
-
--(instancetype)init{
-    self = [super init];
-    if(self){
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(volumeChanged:)
-                                                     name:@"AVSystemController_SystemVolumeDidChangeNotification"
-                                                   object:nil];
-    }
-    return self;
 }
 
 - (NSArray<NSString *> *)supportedEvents

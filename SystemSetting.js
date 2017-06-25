@@ -85,4 +85,16 @@ export default class SystemSetting {
             complete()
         })
     }
+
+    static async isLocationEnabled(){
+        return await SystemSettingNative.isLocationEnabled()
+    }
+
+    static switchLocation(complete){
+        SystemSettingNative.switchLocation()
+        const listener = eventEmitter.addListener(Utils.isAndroid ? 'EventLocationChange' : 'EventEnterForeground', () => {
+            listener.remove()
+            complete()
+        })
+    }
 }
