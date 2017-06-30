@@ -144,12 +144,12 @@ SystemSetting.switchWifi(()=>{
 ## Run example
 
 ```
-cd example/SystemSettingExample
-npm install
+$ cd example/SystemSettingExample
+$ npm install
 // if android
-react-native run-android
+$ react-native run-android
 // else
-react-native run-ios
+$ react-native run-ios
 ```
 
 ## In the end
