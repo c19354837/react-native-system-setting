@@ -1,15 +1,18 @@
 package com.ninty.system.setting;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.util.Log;
 
+import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
 import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
@@ -22,21 +25,26 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
  * Created by ninty on 2017/5/29.
  */
 
-public class SystemSetting extends ReactContextBaseJavaModule {
+public class SystemSetting extends ReactContextBaseJavaModule implements ActivityEventListener{
+
+    private String TAG = SystemSetting.class.getSimpleName();
+
+    private final int REQUEST_CODE_LOCATION = 1;
 
     private ReactApplicationContext mContext;
     private AudioManager am;
     private WifiManager wm;
+    private LocationManager lm;
     private BroadcastReceiver volumeBR;
     private volatile BroadcastReceiver wifiBR;
     private IntentFilter filter;
-    private String TAG = SystemSetting.class.getSimpleName();
 
     public SystemSetting(ReactApplicationContext reactContext) {
         super(reactContext);
         mContext = reactContext;
         am = (AudioManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.AUDIO_SERVICE);
         wm = (WifiManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        lm = (LocationManager) getReactApplicationContext().getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
         listenVolume(reactContext);
     }
@@ -155,7 +163,44 @@ public class SystemSetting extends ReactContextBaseJavaModule {
             listenWifiState();
             wm.setWifiEnabled(!wm.isWifiEnabled());
         }else {
-            Log.w(TAG, "Cannot get wm, switchWifi will be ignored");
+            Log.w(TAG, "Cannot get wifi manager, switchWifi will be ignored");
         }
+    }
+
+    @ReactMethod
+    public void isLocationEnabled(Promise promise){
+        if(lm != null){
+            promise.resolve(lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
+        }else {
+            promise.reject("-1", "get location manager fail");
+        }
+    }
+
+    @ReactMethod
+    public void switchLocation(){
+        if(lm != null){
+            mContext.addActivityEventListener(this);
+            Intent intent = new Intent(
+                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+            if(mContext.hasCurrentActivity()){
+                mContext.getCurrentActivity().startActivityForResult(intent, REQUEST_CODE_LOCATION);
+            }
+        }else {
+            Log.w(TAG, "Cannot get location manager, switchLocation will be ignored");
+        }
+    }
+
+    @Override
+    public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
+        if(requestCode == REQUEST_CODE_LOCATION){
+            mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    .emit("EventLocationChange", null);
+        }
+        mContext.removeActivityEventListener(this);
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+
     }
 }
