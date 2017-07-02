@@ -9,8 +9,12 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ### Next
 
-* Add more settings
-* Support mobx
+* Location
+* Bluetooth
+* Requesting permissions at Run Time
+* System info
+
+### Note
 
 **Example only work in the real device**
 
