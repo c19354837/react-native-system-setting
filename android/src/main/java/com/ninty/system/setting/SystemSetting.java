@@ -25,11 +25,9 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
  * Created by ninty on 2017/5/29.
  */
 
-public class SystemSetting extends ReactContextBaseJavaModule implements ActivityEventListener{
+public class SystemSetting extends ReactContextBaseJavaModule implements ActivityEventListener {
 
     private String TAG = SystemSetting.class.getSimpleName();
-
-    private final int REQUEST_CODE_LOCATION = 1;
 
     private ReactApplicationContext mContext;
     private AudioManager am;
@@ -67,15 +65,15 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     private void listenWifiState() {
-        if(wifiBR == null){
-            synchronized (this){
-                if(wifiBR == null){
+        if (wifiBR == null) {
+            synchronized (this) {
+                if (wifiBR == null) {
                     wifiBR = new BroadcastReceiver() {
                         @Override
                         public void onReceive(Context context, Intent intent) {
                             if (intent.getAction().equals(WifiManager.WIFI_STATE_CHANGED_ACTION)) {
                                 int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
-                                if(wifiState == WifiManager.WIFI_STATE_ENABLED || wifiState == WifiManager.WIFI_STATE_DISABLED){
+                                if (wifiState == WifiManager.WIFI_STATE_ENABLED || wifiState == WifiManager.WIFI_STATE_DISABLED) {
                                     mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                             .emit("EventWifiChange", null);
                                 }
@@ -149,54 +147,59 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
-    public void isWifiEnabled(Promise promise){
-        if(wm != null){
+    public void isWifiEnabled(Promise promise) {
+        if (wm != null) {
             promise.resolve(wm.isWifiEnabled());
-        }else {
+        } else {
             promise.reject("-1", "get wifi manager fail");
         }
     }
 
     @ReactMethod
-    public void switchWifi(){
-        if(wm != null){
+    public void switchWifiSilence() {
+        if (wm != null) {
             listenWifiState();
             wm.setWifiEnabled(!wm.isWifiEnabled());
-        }else {
+        } else {
             Log.w(TAG, "Cannot get wifi manager, switchWifi will be ignored");
         }
     }
 
     @ReactMethod
-    public void isLocationEnabled(Promise promise){
-        if(lm != null){
+    public void switchWifi() {
+        switchSetting(SysSettings.WIFI);
+    }
+
+    @ReactMethod
+    public void isLocationEnabled(Promise promise) {
+        if (lm != null) {
             promise.resolve(lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
-        }else {
+        } else {
             promise.reject("-1", "get location manager fail");
         }
     }
 
     @ReactMethod
-    public void switchLocation(){
-        if(lm != null){
-            mContext.addActivityEventListener(this);
-            Intent intent = new Intent(
-                    Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-            if(mContext.hasCurrentActivity()){
-                mContext.getCurrentActivity().startActivityForResult(intent, REQUEST_CODE_LOCATION);
-            }
-        }else {
-            Log.w(TAG, "Cannot get location manager, switchLocation will be ignored");
+    public void switchLocation() {
+        switchSetting(SysSettings.LOCATION);
+    }
+
+    private void switchSetting(SysSettings setting) {
+        mContext.addActivityEventListener(this);
+        Intent intent = new Intent(setting.action);
+        if (mContext.getCurrentActivity() != null) {
+            mContext.getCurrentActivity().startActivityForResult(intent, setting.requestCode);
         }
     }
 
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE_LOCATION){
+        SysSettings setting = SysSettings.get(requestCode);
+        if(setting != SysSettings.UNKNOW){
             mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit("EventLocationChange", null);
+                    .emit(setting.event, null);
+            mContext.removeActivityEventListener(this);
         }
-        mContext.removeActivityEventListener(this);
     }
 
     @Override
