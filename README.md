@@ -11,7 +11,7 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 * Location
 * Bluetooth
-* Requesting permissions at Run Time
+* Requesting permissions at Run Time (for Android 6+)
 * System info
 
 ### Note
