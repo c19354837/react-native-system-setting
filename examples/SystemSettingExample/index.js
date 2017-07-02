@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView} from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -101,8 +101,8 @@ export default class SystemSettingExample extends Component {
     render() {
         const {volume, brightness, wifiEnable, wifiStateLoading, locationEnable, locationStateLoading} = this.state
         return (
-            <View style={styles.container}>
-                <View>
+            <ScrollView style={styles.container}>
+                <View style={styles.head}>
                 </View>
                 <ValueView
                     title='Volume'
@@ -142,7 +142,7 @@ export default class SystemSettingExample extends Component {
                     value={locationEnable}
                     loading={locationStateLoading}
                     switchFunc={(value) => this._switchLocation()}/>
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -190,8 +190,16 @@ const StatusView = (props)=>{
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 64,
         backgroundColor: '#E5E7E8'
+    },
+    head:{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 64,
+    },
+    headline:{
+        fontSize: 22,
+        color: '#666'
     },
     card:{
         padding:8,
