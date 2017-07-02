@@ -185,10 +185,12 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     private void switchSetting(SysSettings setting) {
-        mContext.addActivityEventListener(this);
-        Intent intent = new Intent(setting.action);
         if (mContext.getCurrentActivity() != null) {
+            mContext.addActivityEventListener(this);
+            Intent intent = new Intent(setting.action);
             mContext.getCurrentActivity().startActivityForResult(intent, setting.requestCode);
+        }else{
+            Log.w(TAG, "getCurrentActivity() return null, switch will be ignore");
         }
     }
 
