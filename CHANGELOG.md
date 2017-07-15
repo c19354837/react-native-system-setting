@@ -1,3 +1,11 @@
+# V1.0.5
+**2017-07-15**
+
+support switching location state
+
+API change : `switchWifi()` and `switchWifiSilence()`, see [detail](https://github.com/c19354837/react-native-system-setting/wiki/API)
+
+
 # V1.0.4
 **2017-06-16**
 

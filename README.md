@@ -6,10 +6,10 @@ It provides some system setting APIs for you. Support iOS and Android both.
 * Volume ( with listener)
 * Brightness
 * Wifi switch
+* Location
 
 ### Next
 
-* Location
 * Bluetooth
 * Requesting permissions at Run Time (for Android 6+)
 * System info

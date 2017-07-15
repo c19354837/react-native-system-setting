@@ -78,6 +78,18 @@ export default class SystemSetting {
         return (result) > 0
     }
 
+    static switchWifiSilence(complete){
+        if(Utils.isAndroid){
+            SystemSettingNative.switchWifiSilence()
+            const listener = eventEmitter.addListener(Utils.isAndroid ? 'EventWifiChange' : 'EventEnterForeground', () => {
+                listener.remove()
+                complete()
+            })
+        }else{
+            SystemSetting.switchWifi(complete)
+        }
+    }
+
     static switchWifi(complete){
         SystemSettingNative.switchWifi()
         const listener = eventEmitter.addListener(Utils.isAndroid ? 'EventWifiChange' : 'EventEnterForeground', () => {
