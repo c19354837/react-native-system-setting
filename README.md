@@ -141,6 +141,19 @@ SystemSetting.switchWifi(()=>{
 })
 ```
 
+**Location**
+
+```javascript
+SystemSetting.isLocationEnabled().then((enable)=>{
+    const state = enable ? 'On' : 'Off';
+    console.log('Current location is ' + state);
+})
+
+SystemSetting.switchLocation(()=>{
+    console.log('switch location successfully');
+})
+```
+
 ## API
 
 [API](https://github.com/c19354837/react-native-system-setting/wiki/API)
