@@ -1,6 +1,7 @@
 package com.ninty.system.setting;
 
 import android.app.Activity;
+import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -182,6 +183,17 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void switchLocation() {
         switchSetting(SysSettings.LOCATION);
+    }
+
+    @ReactMethod
+    public void isBluetoothEnabled(Promise promise) {
+        BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        promise.resolve(bluetoothAdapter != null && bluetoothAdapter.isEnabled());
+    }
+
+    @ReactMethod
+    public void switchBluetooth() {
+        switchSetting(SysSettings.BLUETOOTH);
     }
 
     private void switchSetting(SysSettings setting) {
