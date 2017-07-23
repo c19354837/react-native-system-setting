@@ -7,10 +7,10 @@ It provides some system setting APIs for you. Support iOS and Android both.
 * Brightness
 * Wifi switch
 * Location
+* Bluetooth
 
 ### Next
 
-* Bluetooth
 * Requesting permissions at Run Time (for Android 6+)
 * System info
 
@@ -23,7 +23,7 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ## Look like
 
-I really want to show the .gif, while it has no diffrence with .jpg for some system limit.
+I really want to show the .gif, while it has no difference with .jpg for some system limit.
 
 I strongly recommend you to run the example in real device to see how it works.
 
