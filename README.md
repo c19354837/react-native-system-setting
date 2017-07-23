@@ -154,6 +154,19 @@ SystemSetting.switchLocation(()=>{
 })
 ```
 
+**Bluetooth**
+
+```javascript
+SystemSetting.isBluetoothEnabled().then((enable)=>{
+    const state = enable ? 'On' : 'Off';
+    console.log('Current bluetooth is ' + state);
+})
+
+SystemSetting.switchBluetooth(()=>{
+    console.log('switch bluetooth successfully');
+})
+```
+
 ## API
 
 [API](https://github.com/c19354837/react-native-system-setting/wiki/API)
