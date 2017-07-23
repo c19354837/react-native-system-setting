@@ -81,10 +81,7 @@ export default class SystemSetting {
     static switchWifiSilence(complete){
         if(Utils.isAndroid){
             SystemSettingNative.switchWifiSilence()
-            const listener = eventEmitter.addListener(Utils.isAndroid ? 'EventWifiChange' : 'EventEnterForeground', () => {
-                listener.remove()
-                complete()
-            })
+            SystemSetting.listenEvent(complete, 'EventWifiChange')
         }else{
             SystemSetting.switchWifi(complete)
         }
@@ -92,10 +89,7 @@ export default class SystemSetting {
 
     static switchWifi(complete){
         SystemSettingNative.switchWifi()
-        const listener = eventEmitter.addListener(Utils.isAndroid ? 'EventWifiChange' : 'EventEnterForeground', () => {
-            listener.remove()
-            complete()
-        })
+        SystemSetting.listenEvent(complete, 'EventWifiChange')
     }
 
     static async isLocationEnabled(){
@@ -104,7 +98,11 @@ export default class SystemSetting {
 
     static switchLocation(complete){
         SystemSettingNative.switchLocation()
-        const listener = eventEmitter.addListener(Utils.isAndroid ? 'EventLocationChange' : 'EventEnterForeground', () => {
+        SystemSetting.listenEvent(complete, 'EventLocationChange')
+    }
+
+    static listenEvent(complete, androidEvent){
+        const listener = eventEmitter.addListener(Utils.isAndroid ? androidEvent : 'EventEnterForeground', () => {
             listener.remove()
             complete()
         })
