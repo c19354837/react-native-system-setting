@@ -16,6 +16,8 @@ export default class SystemSettingExample extends Component {
             wifiStateLoading: false,
             locationEnable: false,
             locationStateLoading: false,
+            bluetoothEnable: false,
+            bluetoothStateLoading: false,
         }
     }
 
@@ -25,6 +27,7 @@ export default class SystemSettingExample extends Component {
             brightness: await SystemSetting.getBrightness(),
             wifiEnable: await SystemSetting.isWifiEnabled(),
             locationEnable: await SystemSetting.isLocationEnabled(),
+            bluetoothEnable: await SystemSetting.isBluetoothEnabled(),
         })
         // just init slider value directly
         this._changeSliderNativeVol(this.sliderVol, this.state.volume)
@@ -98,8 +101,20 @@ export default class SystemSettingExample extends Component {
         })
     }
 
+    _switchBluetooth(){
+        this.setState({
+            bluetoothStateLoading: true
+        })
+        SystemSetting.switchBluetooth(async () => {
+            this.setState({
+                bluetoothEnable: await SystemSetting.isBluetoothEnabled(),
+                bluetoothStateLoading: false
+            })
+        })
+    }
+
     render() {
-        const {volume, brightness, wifiEnable, wifiStateLoading, locationEnable, locationStateLoading} = this.state
+        const {volume, brightness, wifiEnable, wifiStateLoading, locationEnable, locationStateLoading, bluetoothEnable, bluetoothStateLoading} = this.state
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.head}>
@@ -142,6 +157,11 @@ export default class SystemSettingExample extends Component {
                     value={locationEnable}
                     loading={locationStateLoading}
                     switchFunc={(value) => this._switchLocation()}/>
+                <StatusView
+                    title='Bluetooth'
+                    value={bluetoothEnable}
+                    loading={bluetoothStateLoading}
+                    switchFunc={(value) => this._switchBluetooth()}/>
             </ScrollView>
         );
     }
