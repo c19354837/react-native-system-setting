@@ -101,6 +101,15 @@ export default class SystemSetting {
         SystemSetting.listenEvent(complete, 'EventLocationChange')
     }
 
+    static async isBluetoothEnabled(){
+        return await SystemSettingNative.isBluetoothEnabled()
+    }
+
+    static switchBluetooth(complete){
+        SystemSettingNative.switchBluetooth()
+        SystemSetting.listenEvent(complete, 'EventBluetoothChange')
+    }
+
     static listenEvent(complete, androidEvent){
         const listener = eventEmitter.addListener(Utils.isAndroid ? androidEvent : 'EventEnterForeground', () => {
             listener.remove()
