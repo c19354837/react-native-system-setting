@@ -17,7 +17,7 @@
 
 @implementation RCTSystemSetting{
     bool hasListeners;
-
+    CBCentralManager *cb;
     NSDictionary *setting;
 }
 
@@ -28,6 +28,8 @@
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
                                                    object:nil];
+
+        cb = [[CBCentralManager alloc] initWithDelegate:nil queue:nil options:@{CBCentralManagerOptionShowPowerAlertKey: @NO}];
     }
 
     [self initSetting];
@@ -38,7 +40,8 @@
 -(void)initSetting{
     BOOL newSys = [UIDevice currentDevice].systemVersion.doubleValue >= 10.0;
     setting = @{@"wifi": (newSys?@"App-Prefs:root=WIFI" : @"prefs:root=WIFI"),
-                @"location": (newSys?@"App-Prefs:root=Privacy&path=LOCATION" : @"prefs:root=Privacy&path=LOCATION")};
+                @"location": (newSys?@"App-Prefs:root=Privacy&path=LOCATION" : @"prefs:root=Privacy&path=LOCATION"),
+                @"bluetooth": (newSys?@"App-Prefs:root=Bluetooth" : @"prefs:root=Bluetooth")};
 }
 
 RCT_EXPORT_MODULE();
@@ -73,6 +76,15 @@ RCT_EXPORT_METHOD(switchLocation){
 
 RCT_EXPORT_METHOD(isLocationEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithBool:[CLLocationManager locationServicesEnabled]]);
+}
+
+RCT_EXPORT_METHOD(switchBluetooth){
+    [self openSetting:@"bluetooth"];
+}
+
+RCT_EXPORT_METHOD(isBluetoothEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    bool isEnabled = cb.state == CBManagerStatePoweredOn;
+    resolve([NSNumber numberWithBool:isEnabled]);
 }
 
 -(void)openSetting:(NSString*)service{
