@@ -1,5 +1,4 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-
     package="com.ninty.system.setting">
 
     <!-- change brightness -->
@@ -8,5 +7,8 @@
     <!-- change wifi state-->
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+    <!-- bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
 
 </manifest>
