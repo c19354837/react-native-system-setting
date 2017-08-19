@@ -24,7 +24,7 @@ public class SystemSettingPackage implements ReactPackage {
         return modules;
     }
 
-    @Override
+    // It has been removed in >= 0.47
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();
     }

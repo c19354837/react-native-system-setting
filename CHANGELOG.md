@@ -1,3 +1,8 @@
+# V1.0.7
+**2017-08-19**
+
+support RN 0.47, see [detail](https://github.com/c19354837/react-native-system-setting/issues/1)
+
 # V1.0.6
 **2017-07-23**
 
