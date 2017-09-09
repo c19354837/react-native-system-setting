@@ -11,7 +11,6 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ### Next
 
-* Requesting permissions at Run Time (for Android 6+)
 * System info
 
 ### Note
@@ -181,6 +180,16 @@ $ react-native run-android
 // else
 $ react-native run-ios
 ```
+
+## Android permission
+
+To simplify using, I have declared all permission in [AndroidManifest.xml](https://github.com/c19354837/react-native-system-setting/blob/master/android/src/main/AndroidManifest.xml).
+
+And you can delete the permission safely if it's useless for you app.
+
+You can find the file in `yourProject/node_modules/react-native-system-setting/android/src/main/AndroidManifest.xml`. (Be sure that you have run `npm install`)
+
+> These permissions are transparent in iOS, so it's ok for iOS app.
 
 ## In the end
 
