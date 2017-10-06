@@ -15,7 +15,7 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 ### Note
 
-**Example only work in the real device**
+**[Example](https://github.com/c19354837/react-native-system-setting/tree/master/examples/SystemSettingExample) only work in the real device**
 
 ### Change Log
 [Change Log](https://github.com/c19354837/react-native-system-setting/blob/master/CHANGELOG.md)
