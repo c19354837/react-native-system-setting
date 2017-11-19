@@ -32,7 +32,7 @@ I strongly recommend you to run the example in real device to see how it works.
 ## Install
 Run `npm i -S react-native-system-setting`
 
-**Note**: if your project was created by [Create React Native App](https://github.com/react-community/create-react-native-app), you should [Eject](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md) before link it.
+**Note: if your project was created by [Create React Native App](https://github.com/react-community/create-react-native-app), you should [Eject](https://github.com/react-community/create-react-native-app/blob/master/EJECTING.md) before link it.**
 
 #### iOS
 Run `react-native link` to link this library.
