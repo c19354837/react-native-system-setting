@@ -54,11 +54,11 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
     resolve([NSNumber numberWithDouble:[UIScreen mainScreen].brightness]);
 }
 
-RCT_EXPORT_METHOD(setVolume:(float)val){
+RCT_EXPORT_METHOD(setVolume:(float)val type:(NSString *)type){
     [[MPMusicPlayerController applicationMusicPlayer] setVolume:val];
 }
 
-RCT_EXPORT_METHOD(getVolume:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+RCT_EXPORT_METHOD(getVolume:(NSString *)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithDouble:[MPMusicPlayerController applicationMusicPlayer].volume]);
 }
 

@@ -434,6 +434,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		30BE7FA31FCC517B00195F8E /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+				BB8458867AC64B5FBD6A16EB /* libRCTSystemSetting.a */,
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		5E91572E1DD0AC6500FF2AA8 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -487,6 +495,7 @@
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* SystemSettingExampleTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
+				30BE7FA31FCC517B00195F8E /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -593,7 +602,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 2K34W3L43N;
+						DevelopmentTeam = 33E426965G;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -1053,7 +1062,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = 2K34W3L43N;
+				DEVELOPMENT_TEAM = 33E426965G;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-system-setting/ios",
@@ -1075,7 +1084,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 2K34W3L43N;
+				DEVELOPMENT_TEAM = 33E426965G;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(SRCROOT)/../node_modules/react-native-system-setting/ios",

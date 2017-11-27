@@ -30,6 +30,13 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     private String TAG = SystemSetting.class.getSimpleName();
 
+    private static final String VOL_VOICE_CALL = "call";
+    private static final String VOL_SYSTEM = "system";
+    private static final String VOL_RING = "ring";
+    private static final String VOL_MUSIC = "music";
+    private static final String VOL_ALARM = "alarm";
+    private static final String VOL_NOTIFICATION = "notification";
+
     private ReactApplicationContext mContext;
     private AudioManager am;
     private WifiManager wm;
@@ -54,7 +61,13 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             public void onReceive(Context context, Intent intent) {
                 if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
                     WritableMap para = Arguments.createMap();
-                    para.putDouble("value", getNormalizationVolume());
+                    para.putDouble("value", getNormalizationVolume(VOL_MUSIC));
+                    para.putDouble(VOL_VOICE_CALL, getNormalizationVolume(VOL_VOICE_CALL));
+                    para.putDouble(VOL_SYSTEM, getNormalizationVolume(VOL_SYSTEM));
+                    para.putDouble(VOL_RING, getNormalizationVolume(VOL_RING));
+                    para.putDouble(VOL_MUSIC, getNormalizationVolume(VOL_MUSIC));
+                    para.putDouble(VOL_ALARM, getNormalizationVolume(VOL_ALARM));
+                    para.putDouble(VOL_NOTIFICATION, getNormalizationVolume(VOL_NOTIFICATION));
                     reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("EventVolume", para);
                 }
@@ -132,19 +145,32 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
-    public void setVolume(float val) {
+    public void setVolume(float val, String type) {
         mContext.unregisterReceiver(volumeBR);
-        am.setStreamVolume(AudioManager.STREAM_MUSIC, (int) (val * am.getStreamMaxVolume(AudioManager.STREAM_MUSIC)), AudioManager.FLAG_PLAY_SOUND);
+        int volType = getVolType(type);
+        am.setStreamVolume(volType, (int) (val * am.getStreamMaxVolume(volType)), AudioManager.FLAG_PLAY_SOUND);
         mContext.registerReceiver(volumeBR, filter);
     }
 
     @ReactMethod
-    public void getVolume(Promise promise) {
-        promise.resolve(getNormalizationVolume());
+    public void getVolume(String type, Promise promise) {
+        promise.resolve(getNormalizationVolume(type));
     }
 
-    private float getNormalizationVolume() {
-        return am.getStreamVolume(AudioManager.STREAM_MUSIC) * 1.0f / am.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+    private float getNormalizationVolume(String type) {
+        int volType = getVolType(type);
+        return am.getStreamVolume(volType) * 1.0f / am.getStreamMaxVolume(volType);
+    }
+
+    private int getVolType(String type){
+        switch (type){
+            case VOL_VOICE_CALL: return AudioManager.STREAM_VOICE_CALL;
+            case VOL_SYSTEM: return AudioManager.STREAM_SYSTEM;
+            case VOL_RING: return AudioManager.STREAM_RING;
+            case VOL_ALARM: return AudioManager.STREAM_ALARM;
+            case VOL_NOTIFICATION: return AudioManager.STREAM_NOTIFICATION;
+            default: return AudioManager.STREAM_MUSIC;
+        }
     }
 
     @ReactMethod

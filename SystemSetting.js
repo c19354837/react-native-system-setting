@@ -8,11 +8,11 @@ const SCREEN_BRIGHTNESS_MODE_UNKNOW = -1
 const SCREEN_BRIGHTNESS_MODE_MANUAL = 0
 const SCREEN_BRIGHTNESS_MODE_AUTOMATIC = 1
 
-const eventEmitter = new NativeEventEmitter(SystemSettingNative);
+const eventEmitter = new NativeEventEmitter(SystemSettingNative)
 
 export default class SystemSetting {
-    static saveBrightnessVal = -1;
-    static saveScreenModeVal = SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
+    static saveBrightnessVal = -1
+    static saveScreenModeVal = SCREEN_BRIGHTNESS_MODE_AUTOMATIC
 
     static async getBrightness() {
         return await SystemSettingNative.getBrightness()
@@ -49,7 +49,7 @@ export default class SystemSetting {
 
     static restoreBrightness(){
         if(SystemSetting.saveBrightnessVal == -1){
-            console.warn('you should call saveBrightness() at least once');
+            console.warn('you should call saveBrightness() at least once')
         }else{
             SystemSetting.setBrightness(SystemSetting.saveBrightnessVal)
             SystemSetting.setScreenMode(SystemSetting.saveScreenModeVal)
@@ -57,12 +57,12 @@ export default class SystemSetting {
         return SystemSetting.saveBrightnessVal
     }
 
-    static async getVolume() {
-        return await SystemSettingNative.getVolume()
+    static async getVolume(type='music') {
+        return await SystemSettingNative.getVolume(type)
     }
 
-    static setVolume(val) {
-        SystemSettingNative.setVolume(val)
+    static setVolume(val, type='music') {
+        SystemSettingNative.setVolume(val, type)
     }
 
     static addVolumeListener(callback) {

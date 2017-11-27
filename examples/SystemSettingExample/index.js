@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform} from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
 export default class SystemSettingExample extends Component {
 
+    isAndroid = Platform.OS === 'android'
+
     volumeListener = null;
+
+    volTypes = ['music', 'system', 'call', 'ring', 'alarm', 'notification']
+    volIndex = 0
 
     constructor(props){
         super(props)
         this.state = {
             volume: 0,
+            volType: this.volTypes[this.volIndex],
             brightness: 0,
             wifiEnable: false,
             wifiStateLoading: false,
@@ -23,7 +29,7 @@ export default class SystemSettingExample extends Component {
 
     async componentDidMount(){
         this.setState({
-            volume: await SystemSetting.getVolume(),
+            volume: await SystemSetting.getVolume(this.state.volType),
             brightness: await SystemSetting.getBrightness(),
             wifiEnable: await SystemSetting.isWifiEnabled(),
             locationEnable: await SystemSetting.isLocationEnabled(),
@@ -34,7 +40,7 @@ export default class SystemSettingExample extends Component {
         this._changeSliderNativeVol(this.sliderBri, this.state.brightness)
 
         this.volumeListener = SystemSetting.addVolumeListener((data) => {
-            const volume = data.value
+            const volume = this.isAndroid ? data[this.state.volType] : data.value
             this._changeSliderNativeVol(this.sliderVol, volume)
             this.setState({
                 volume: volume
@@ -53,16 +59,27 @@ export default class SystemSettingExample extends Component {
     }
 
     _changeVol(value){
-        SystemSetting.setVolume(value)
+        SystemSetting.setVolume(value, this.state.volType)
         this.setState({
             volume: value
+        })
+    }
+
+    _changeVolType = async () => {
+        this.volIndex = ++this.volIndex % this.volTypes.length
+        const volType = this.volTypes[this.volIndex]
+        const vol = await SystemSetting.getVolume(volType)
+        this._changeSliderNativeVol(this.sliderVol, vol)
+        this.setState({
+            volType: volType,
+            volume: vol
         })
     }
 
     _changeBrightness(value){
         SystemSetting.setBrightnessForce(value)
         this.setState({
-            brightness: value
+            brightness: value,
         })
     }
 
@@ -121,6 +138,10 @@ export default class SystemSettingExample extends Component {
                 </View>
                 <ValueView
                     title='Volume'
+                    btn={this.isAndroid && {
+                        title: this.state.volType,
+                        onPress: this._changeVolType
+                    }}
                     value={volume}
                     changeVal={(val)=>this._changeVol(val)}
                     refFunc={(sliderVol)=>this.sliderVol = sliderVol}
@@ -168,11 +189,15 @@ export default class SystemSettingExample extends Component {
 }
 
 const ValueView = (props)=>{
-    const {title, value, changeVal, refFunc} = props
+    const {title, value, changeVal, refFunc, btn} = props
     return(
         <View style={styles.card}>
             <View style={styles.row}>
                 <Text style={styles.title}>{title}</Text>
+                {btn && <TouchableOpacity onPress={btn.onPress}>
+                            <Text style={styles.btn}>{btn.title}
+                            </Text>
+                        </TouchableOpacity>}
                 <Text style={styles.value}>{value}</Text>
             </View>
             <Slider
