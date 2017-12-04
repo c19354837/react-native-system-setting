@@ -1,3 +1,8 @@
+# V1.0.8
+**2017-11-27**
+
+Now you can change volume by type (Android only), see [detail](https://github.com/c19354837/react-native-system-setting/issues/5)
+
 # V1.0.7
 **2017-08-19**
 
