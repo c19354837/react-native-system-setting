@@ -9,7 +9,9 @@ import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 
@@ -128,9 +130,35 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
-    public void setBrightness(float val) {
+    public void setBrightness(float val, Promise promise) {
         final int brightness = (int) (val * 255);
-        Settings.System.putInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+        boolean reject = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(mContext)) {
+            reject = true;
+        } else {
+            Settings.System.putInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
+            try {
+                int newVal =  Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+                if(newVal != brightness){
+                    reject = true;
+                }
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                //ignore
+            }
+        }
+        if (reject) {
+            promise.reject("-1", "write_settings premission is blocked by system");
+        } else {
+            promise.resolve(true);
+        }
+    }
+
+    @ReactMethod
+    public void openWriteSetting() {
+        Intent intent = new Intent(SysSettings.WRITESETTINGS.action, Uri.parse("package:" + mContext.getPackageName()));
+        mContext.getCurrentActivity().startActivityForResult(intent, SysSettings.WRITESETTINGS.requestCode);
+        switchSetting(SysSettings.WRITESETTINGS);
     }
 
     @ReactMethod
@@ -162,14 +190,20 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         return am.getStreamVolume(volType) * 1.0f / am.getStreamMaxVolume(volType);
     }
 
-    private int getVolType(String type){
-        switch (type){
-            case VOL_VOICE_CALL: return AudioManager.STREAM_VOICE_CALL;
-            case VOL_SYSTEM: return AudioManager.STREAM_SYSTEM;
-            case VOL_RING: return AudioManager.STREAM_RING;
-            case VOL_ALARM: return AudioManager.STREAM_ALARM;
-            case VOL_NOTIFICATION: return AudioManager.STREAM_NOTIFICATION;
-            default: return AudioManager.STREAM_MUSIC;
+    private int getVolType(String type) {
+        switch (type) {
+            case VOL_VOICE_CALL:
+                return AudioManager.STREAM_VOICE_CALL;
+            case VOL_SYSTEM:
+                return AudioManager.STREAM_SYSTEM;
+            case VOL_RING:
+                return AudioManager.STREAM_RING;
+            case VOL_ALARM:
+                return AudioManager.STREAM_ALARM;
+            case VOL_NOTIFICATION:
+                return AudioManager.STREAM_NOTIFICATION;
+            default:
+                return AudioManager.STREAM_MUSIC;
         }
     }
 
@@ -227,7 +261,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             mContext.addActivityEventListener(this);
             Intent intent = new Intent(setting.action);
             mContext.getCurrentActivity().startActivityForResult(intent, setting.requestCode);
-        }else{
+        } else {
             Log.w(TAG, "getCurrentActivity() return null, switch will be ignore");
         }
     }
@@ -235,7 +269,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         SysSettings setting = SysSettings.get(requestCode);
-        if(setting != SysSettings.UNKNOW){
+        if (setting != SysSettings.UNKNOW) {
             mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                     .emit(setting.event, null);
             mContext.removeActivityEventListener(this);
