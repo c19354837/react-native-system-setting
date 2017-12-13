@@ -18,16 +18,27 @@ export default class SystemSetting {
         return await SystemSettingNative.getBrightness()
     }
 
-    static setBrightness(val) {
-        SystemSettingNative.setBrightness(val)
+    static async setBrightness(val) {
+		try{
+			await SystemSettingNative.setBrightness(val)
+			return true
+		}catch(e){
+			return false
+		}
     }
 
-    static setBrightnessForce(val) {
+    static async setBrightnessForce(val) {
         if (Utils.isAndroid) {
             SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
-        }
-        SystemSetting.setBrightness(val)
-    }
+		}
+		return await SystemSetting.setBrightness(val)
+	}
+	
+	static grantBrightnessPremission(){
+		if (Utils.isAndroid) {
+            SystemSettingNative.openWriteSetting()
+		}
+	}
 
     static async getScreenMode() {
         if (Utils.isAndroid) {
