@@ -46,8 +46,9 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(setBrightness:(float)val){
+RCT_EXPORT_METHOD(setBrightness:(float)val resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     [[UIScreen mainScreen] setBrightness:val];
+    resolve([NSNumber numberWithBool:YES]);
 }
 
 RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
