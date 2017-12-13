@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform} from 'react-native';
+import {AppRegistry, StyleSheet, Alert, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform} from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -76,12 +76,19 @@ export default class SystemSettingExample extends Component {
         })
     }
 
-    _changeBrightness(value){
-        SystemSetting.setBrightnessForce(value)
+    _changeBrightness = async (value) => {
+		const result = await SystemSetting.setBrightnessForce(value)
+		if(!result){
+			Alert.alert('Permission Deny', 'You have no permission changing the brightness',[
+				{'text': 'Ok', style: 'cancel'},
+				{'text': 'Open Setting', onPress:()=>SystemSetting.grantBrightnessPremission()}
+			])
+			return
+		}
         this.setState({
             brightness: value,
         })
-    }
+	}
 
     _restoreBrightness(){
         const saveBrightnessVal = SystemSetting.restoreBrightness()
