@@ -123,8 +123,8 @@ SystemSetting.getBrightness().then((brightness)=>{
 //change the brightness & check permission
 SystemSetting.setBrightnessForce(0.5).then((success)=>{
     !success && Alert.alert('Permission Deny', 'You have no permission changing settings',[
-				{'text': 'Ok', style: 'cancel'},
-				{'text': 'Open Setting', onPress:()=>SystemSetting.grantWriteSettingPremission()}
+	   {'text': 'Ok', style: 'cancel'},
+	   {'text': 'Open Setting', onPress:()=>SystemSetting.grantWriteSettingPremission()}
 	])
 });
 
