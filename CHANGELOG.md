@@ -1,3 +1,8 @@
+# V1.1.0
+**2017-12-14**
+
+Check permission when write setting, see [detail](https://github.com/c19354837/react-native-system-setting/issues/5)
+
 # V1.0.8
 **2017-11-27**
 
