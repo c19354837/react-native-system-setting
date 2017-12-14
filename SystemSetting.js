@@ -29,12 +29,15 @@ export default class SystemSetting {
 
     static async setBrightnessForce(val) {
         if (Utils.isAndroid) {
-            SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
+			const success = await SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
+			if(!success){
+				return false
+			}
 		}
 		return await SystemSetting.setBrightness(val)
 	}
 	
-	static grantBrightnessPremission(){
+	static grantWriteSettingPremission(){
 		if (Utils.isAndroid) {
             SystemSettingNative.openWriteSetting()
 		}
@@ -47,10 +50,15 @@ export default class SystemSetting {
         return -1 // cannot get iOS screen mode
     }
 
-    static setScreenMode(val) {
+    static async setScreenMode(val) {
         if (Utils.isAndroid) {
-            SystemSettingNative.setScreenMode(val)
-        }
+			try{
+				await SystemSettingNative.setScreenMode(val)
+			}catch(e){
+				return false
+			}
+		}
+		return true
     }
 
     static async saveBrightness(){

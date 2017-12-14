@@ -79,9 +79,9 @@ export default class SystemSettingExample extends Component {
     _changeBrightness = async (value) => {
 		const result = await SystemSetting.setBrightnessForce(value)
 		if(!result){
-			Alert.alert('Permission Deny', 'You have no permission changing the brightness',[
+			Alert.alert('Permission Deny', 'You have no permission changing settings',[
 				{'text': 'Ok', style: 'cancel'},
-				{'text': 'Open Setting', onPress:()=>SystemSetting.grantBrightnessPremission()}
+				{'text': 'Open Setting', onPress:()=>SystemSetting.grantWriteSettingPremission()}
 			])
 			return
 		}

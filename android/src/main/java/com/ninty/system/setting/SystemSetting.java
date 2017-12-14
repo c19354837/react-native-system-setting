@@ -113,9 +113,9 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
-    public void setScreenMode(int mode) {
+    public void setScreenMode(int mode, Promise promise) {
         mode = mode == Settings.System.SCREEN_BRIGHTNESS_MODE_MANUAL ? mode : Settings.System.SCREEN_BRIGHTNESS_MODE_AUTOMATIC;
-        Settings.System.putInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE, mode);
+        checkAndSet(Settings.System.SCREEN_BRIGHTNESS_MODE, mode, promise);
     }
 
     @ReactMethod
@@ -132,26 +132,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void setBrightness(float val, Promise promise) {
         final int brightness = (int) (val * 255);
-        boolean reject = false;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(mContext)) {
-            reject = true;
-        } else {
-            Settings.System.putInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS, brightness);
-            try {
-                int newVal =  Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
-                if(newVal != brightness){
-                    reject = true;
-                }
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-                //ignore
-            }
-        }
-        if (reject) {
-            promise.reject("-1", "write_settings premission is blocked by system");
-        } else {
-            promise.resolve(true);
-        }
+        checkAndSet(Settings.System.SCREEN_BRIGHTNESS, brightness, promise);
     }
 
     @ReactMethod
@@ -183,6 +164,32 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void getVolume(String type, Promise promise) {
         promise.resolve(getNormalizationVolume(type));
+    }
+
+    private void checkAndSet(String name, int value, Promise promise) {
+        boolean reject = false;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !Settings.System.canWrite(mContext)) {
+            reject = true;
+        } else {
+            try {
+                Settings.System.putInt(getReactApplicationContext().getContentResolver(), name, value);
+                int newVal = Settings.System.getInt(getReactApplicationContext().getContentResolver(), name);
+                if (newVal != value) {
+                    reject = true;
+                }
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                //ignore
+            } catch (SecurityException e) {
+                e.printStackTrace();
+                reject = true;
+            }
+        }
+        if (reject) {
+            promise.reject("-1", "write_settings premission is blocked by system");
+        } else {
+            promise.resolve(true);
+        }
     }
 
     private float getNormalizationVolume(String type) {
