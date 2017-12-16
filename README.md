@@ -110,7 +110,7 @@ const volumeListener = SystemSetting.addVolumeListener((data) => {
 SystemSetting.removeVolumeListener(volumeListener)       
 ```
 
-> For Android, you can change volume by type, default is `music`, [more detail](https://github.com/c19354837/react-native-system-setting/wiki/API#api) 
+> For Android, you can change volume by type, default is `music`, [more detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md) 
 
 **brightness**
 
@@ -177,7 +177,7 @@ SystemSetting.switchBluetooth(()=>{
 
 ## API
 
-[API](https://github.com/c19354837/react-native-system-setting/wiki/API)
+[API](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
 
 ## Run example
 
