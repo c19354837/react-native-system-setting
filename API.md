@@ -7,7 +7,7 @@ method | description
 **Volume**|
 getVolume(type:string) => Promise | Get the system volume. <br><br>`type` must be one of `'music', 'call', 'system', 'ring', 'alarm', 'notification'`, default is `music`
 setVolume(val:float, type:string) | Set the system volume by specified value, from 0 to 1. 0 for mute, and 1 is max volume.<br><br>`type` must be one of `'music', 'call', 'system', 'ring', 'alarm', 'notification'`, default is `music`
-addVolumeListener(callback) | Listen the volume changing, and it will return the listener. More info see [the example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/index.js#L28)
+addVolumeListener(callback) | Listen the volume changing, and it will return the listener. More info see [the example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/index.js#L42)
 removeVolumeListener(listener)| Remove listener when it no longer needed.
 ---|---
 **Brightness**|
