@@ -23,7 +23,7 @@ support switching bluetooth state
 
 support switching location state
 
-API change : `switchWifi()` and `switchWifiSilence()`, see [detail](https://github.com/c19354837/react-native-system-setting/wiki/API)
+API change : `switchWifi()` and `switchWifiSilence()`, see [detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
 
 # V1.0.4
 **2017-06-16**
