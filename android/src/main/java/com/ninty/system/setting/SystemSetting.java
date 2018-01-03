@@ -153,6 +153,26 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
+    public void getAppBrightness(Promise promise) {
+        final Activity curActivity = getCurrentActivity();
+        if(curActivity == null) {
+            return;
+        }
+        try {
+            float result = curActivity.getWindow().getAttributes().screenBrightness;
+            if(result < 0){
+                int val = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+                promise.resolve(val * 1.0f / 255);
+            }else{
+                promise.resolve(result);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            promise.reject("-1", "get app's brightness fail", e);
+        }
+    }
+
+    @ReactMethod
     public void openWriteSetting() {
         Intent intent = new Intent(SysSettings.WRITESETTINGS.action, Uri.parse("package:" + mContext.getPackageName()));
         mContext.getCurrentActivity().startActivityForResult(intent, SysSettings.WRITESETTINGS.requestCode);

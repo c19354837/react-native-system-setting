@@ -46,6 +46,14 @@ export default class SystemSetting {
         return true
     }
     
+    static async getAppBrightness() {
+        if (Utils.isAndroid) {
+            return SystemSettingNative.getAppBrightness()
+        }else{
+            return SystemSetting.getBrightness()
+        }
+    }
+    
     static grantWriteSettingPremission(){
         if (Utils.isAndroid) {
             SystemSettingNative.openWriteSetting()
