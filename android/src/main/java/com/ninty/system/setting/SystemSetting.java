@@ -14,6 +14,7 @@ import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -133,6 +134,22 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     public void setBrightness(float val, Promise promise) {
         final int brightness = (int) (val * 255);
         checkAndSet(Settings.System.SCREEN_BRIGHTNESS, brightness, promise);
+    }
+
+    @ReactMethod
+    public void setAppBrightness(float val) {
+        final Activity curActivity = getCurrentActivity();
+        if(curActivity == null) {
+            return;
+        }
+        final WindowManager.LayoutParams lp = curActivity.getWindow().getAttributes();
+        lp.screenBrightness = val;
+        curActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                curActivity.getWindow().setAttributes(lp);
+            }
+        });
     }
 
     @ReactMethod

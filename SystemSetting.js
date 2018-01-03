@@ -36,6 +36,15 @@ export default class SystemSetting {
 		}
 		return await SystemSetting.setBrightness(val)
 	}
+
+    static setAppBrightness(val) {
+        if (Utils.isAndroid) {
+			SystemSettingNative.setAppBrightness(val)
+		}else{
+			SystemSetting.setBrightness(val)
+		}
+		return true
+	}
 	
 	static grantWriteSettingPremission(){
 		if (Utils.isAndroid) {
