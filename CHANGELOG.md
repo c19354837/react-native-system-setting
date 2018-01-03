@@ -3,7 +3,7 @@
 
 Supported >= iOS 8.0.
 
-new API: setAppBrightness(val:float), see [detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
+new API: `setAppBrightness(val:float)` & `setAppBrightness()`, see [detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
 
 # V1.1.0
 **2017-12-14**
