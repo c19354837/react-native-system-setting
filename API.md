@@ -2,6 +2,8 @@
 
 **All are static method, and all GET mothods return a promise**
 
+**Maybe [codes](https://github.com/c19354837/react-native-system-setting/blob/master/SystemSetting.js) is best document**
+
 method | description
 ------ | -----------
 **Volume**|
@@ -14,8 +16,10 @@ removeVolumeListener(listener)| Remove listener when it no longer needed.
 getBrightness() => Promise | Get the system brightness.
 setBrightness(val:float) => Promise | Set the system brightness by specified value, from 0 to 1. 0 for brightless, and 1 is max.<br><br>Return false if permission deny ( iOS always be true
 setBrightnessForce(val:float) => Promise| In Android, if the screen mode is auto, SystemSetting.setBrightness() will not work. You can call this to change the screen mode to MANUAL first. <br><br>Return false if permission deny ( iOS always be true
-getScreeenMode() => Promise| (Only for Android, iOS will return -1). Get the screen mode, 0 is manual, while 1 is automatic.
-setScreeenMode(mode:int) => Promise|(Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.<br><br>Return false if permission deny ( iOS always be true
+setAppBrightness(val:float)| For Android, `setBrightness()` or `setBrightnessForce()` will change the system's brightness, while this just changes the app's brightness, and it has no permission trouble.<br><br> For iOS, it's same with `setBrightness()`.
+getAppBrightness() => Promise | Get the app brightness, and it will returns system brightness if you haven't call `setAppBrightness(val)` yet. (iOS allways returns system brightness)
+getScreenMode() => Promise| (Only for Android, iOS will return -1). Get the screen mode, 0 is manual, while 1 is automatic.
+setScreenMode(mode:int) => Promise|(Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.<br><br>Return false if permission deny ( iOS always be true
 grantWriteSettingPremission()| open app setting page. It's user-friendly when you need some permission. Normally, you can call it if `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` return false 
 saveBrightness()|It will save current brightness and screen mode.
 restoreBrightness() => Promise|Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. <br><br>You should call this before setBrightness() or setBrightnessForce(). <br><br>It will return the saved brightness.
