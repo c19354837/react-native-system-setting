@@ -19,38 +19,38 @@ export default class SystemSetting {
     }
 
     static async setBrightness(val) {
-		try{
-			await SystemSettingNative.setBrightness(val)
-			return true
-		}catch(e){
-			return false
-		}
+        try{
+            await SystemSettingNative.setBrightness(val)
+            return true
+        }catch(e){
+            return false
+        }
     }
 
     static async setBrightnessForce(val) {
         if (Utils.isAndroid) {
-			const success = await SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
-			if(!success){
-				return false
-			}
-		}
-		return await SystemSetting.setBrightness(val)
-	}
+            const success = await SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
+            if(!success){
+                return false
+            }
+        }
+        return await SystemSetting.setBrightness(val)
+    }
 
     static setAppBrightness(val) {
         if (Utils.isAndroid) {
-			SystemSettingNative.setAppBrightness(val)
-		}else{
-			SystemSetting.setBrightness(val)
-		}
-		return true
-	}
-	
-	static grantWriteSettingPremission(){
-		if (Utils.isAndroid) {
+            SystemSettingNative.setAppBrightness(val)
+        }else{
+            SystemSetting.setBrightness(val)
+        }
+        return true
+    }
+    
+    static grantWriteSettingPremission(){
+        if (Utils.isAndroid) {
             SystemSettingNative.openWriteSetting()
-		}
-	}
+        }
+    }
 
     static async getScreenMode() {
         if (Utils.isAndroid) {
@@ -61,13 +61,13 @@ export default class SystemSetting {
 
     static async setScreenMode(val) {
         if (Utils.isAndroid) {
-			try{
-				await SystemSettingNative.setScreenMode(val)
-			}catch(e){
-				return false
-			}
-		}
-		return true
+            try{
+                await SystemSettingNative.setScreenMode(val)
+            }catch(e){
+                return false
+            }
+        }
+        return true
     }
 
     static async saveBrightness(){
