@@ -23,7 +23,9 @@ export default class SystemSettingExample extends Component {
             locationEnable: false,
             locationStateLoading: false,
             bluetoothEnable: false,
-            bluetoothStateLoading: false,
+			bluetoothStateLoading: false,
+			airplaneEnable: false,
+			airplaneStateLoading: false,
         }
     }
 
@@ -34,6 +36,7 @@ export default class SystemSettingExample extends Component {
             wifiEnable: await SystemSetting.isWifiEnabled(),
             locationEnable: await SystemSetting.isLocationEnabled(),
             bluetoothEnable: await SystemSetting.isBluetoothEnabled(),
+            airplaneEnable: await SystemSetting.isAirplaneEnabled(),
         })
         // just init slider value directly
         this._changeSliderNativeVol(this.sliderVol, this.state.volume)
@@ -137,8 +140,25 @@ export default class SystemSettingExample extends Component {
         })
     }
 
+    _switchAirplane(){
+        this.setState({
+            airplaneStateLoading: true
+        })
+        SystemSetting.switchAirplane(async () => {
+            this.setState({
+                airplaneEnable: await SystemSetting.isAirplaneEnabled(),
+                airplaneStateLoading: false
+            })
+        })
+    }
+
     render() {
-        const {volume, brightness, wifiEnable, wifiStateLoading, locationEnable, locationStateLoading, bluetoothEnable, bluetoothStateLoading} = this.state
+		const {volume, brightness, 
+			wifiEnable, wifiStateLoading, 
+			locationEnable, locationStateLoading, 
+			bluetoothEnable, bluetoothStateLoading,
+			airplaneEnable, airplaneStateLoading,
+		} = this.state
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.head}>
@@ -190,6 +210,11 @@ export default class SystemSettingExample extends Component {
                     value={bluetoothEnable}
                     loading={bluetoothStateLoading}
                     switchFunc={(value) => this._switchBluetooth()}/>
+                <StatusView
+                    title='Airplane'
+                    value={airplaneEnable}
+                    loading={airplaneStateLoading}
+                    switchFunc={(value) => this._switchAirplane()}/>
             </ScrollView>
         );
     }
