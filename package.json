@@ -1,7 +1,7 @@
 {
     "name": "react-native-system-setting",
-    "version": "1.1.1",
-    "description": "provide some system setting APIs. Volume, brightness, wifi, location, bluetooth...",
+    "version": "1.2.0",
+    "description": "provide some system setting APIs. Volume, brightness, wifi, location, bluetooth, airplane...",
     "main": "SystemSetting.js",
     "homepage": "https://github.com/c19354837/react-native-system-setting",
     "bugs": {
@@ -18,7 +18,8 @@
         "wifi",
         "brightness",
         "location",
-        "bluetooth"
+        "bluetooth",
+        "airplane"
     ],
     "author": {
         "name": "Ninty",

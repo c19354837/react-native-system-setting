@@ -181,6 +181,19 @@ SystemSetting.switchBluetooth(()=>{
 })
 ```
 
+**Airplane**
+
+```javascript
+SystemSetting.isAirplaneEnabled().then((enable)=>{
+    const state = enable ? 'On' : 'Off';
+    console.log('Current airplane is ' + state);
+})
+
+SystemSetting.switchAirplane(()=>{
+    console.log('switch airplane successfully');
+})
+```
+
 ## API
 
 [API](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)

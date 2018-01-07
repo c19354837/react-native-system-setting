@@ -1,3 +1,8 @@
+# V1.2.0
+**2018-01-07**
+
+new API: `isAirplaneEnabled()` & `switchAirplane(complete)`, see [detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
+
 # V1.1.1
 **2018-01-03**
 
