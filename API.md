@@ -37,5 +37,8 @@ switchLocation(complete)|It will open **System Location Setting Page**, and you 
 **Bluetooth**|
 isBluetoothEnabled():Promise|Get bluetooth state, true if bluetooth is on.
 switchBluetooth(complete)|It will open **System Bluetooth Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
-
+---|---
+**Airplane**|
+isAirplaneEnabled():Promise|Get airplane state, true if airplane is on.
+switchAirplane(complete)|It will open **System Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
 
