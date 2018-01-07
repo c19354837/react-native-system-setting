@@ -9,6 +9,7 @@
 #import "RTCSystemSetting.h"
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <CoreLocation/CoreLocation.h>
+#import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <ifaddrs.h>
 #import <net/if.h>
 
@@ -41,7 +42,9 @@
     BOOL newSys = [UIDevice currentDevice].systemVersion.doubleValue >= 10.0;
     setting = @{@"wifi": (newSys?@"App-Prefs:root=WIFI" : @"prefs:root=WIFI"),
                 @"location": (newSys?@"App-Prefs:root=Privacy&path=LOCATION" : @"prefs:root=Privacy&path=LOCATION"),
-                @"bluetooth": (newSys?@"App-Prefs:root=Bluetooth" : @"prefs:root=Bluetooth")};
+                @"bluetooth": (newSys?@"App-Prefs:root=Bluetooth" : @"prefs:root=Bluetooth"),
+                @"airplane": (newSys?@"App-Prefs:root=AIRPLANE_MODE" : @"prefs:root=AIRPLANE_MODE")
+                };
 }
 
 RCT_EXPORT_MODULE();
@@ -85,6 +88,16 @@ RCT_EXPORT_METHOD(switchBluetooth){
 
 RCT_EXPORT_METHOD(isBluetoothEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     bool isEnabled = cb.state == CBManagerStatePoweredOn;
+    resolve([NSNumber numberWithBool:isEnabled]);
+}
+
+RCT_EXPORT_METHOD(switchAirplane){
+    [self openSetting:@"bluetooth"];
+}
+
+RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    NSString * radio = [[CTTelephonyNetworkInfo alloc] init].currentRadioAccessTechnology;
+    bool isEnabled = radio == nil;
     resolve([NSNumber numberWithBool:isEnabled]);
 }
 

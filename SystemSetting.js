@@ -146,6 +146,15 @@ export default class SystemSetting {
         SystemSetting.listenEvent(complete, 'EventBluetoothChange')
     }
 
+    static async isAirplaneEnabled(){
+        return await SystemSettingNative.isAirplaneEnabled()
+    }
+
+    static switchAirplane(complete){
+        SystemSettingNative.switchAirplane()
+        SystemSetting.listenEvent(complete, 'EventAirplaneChange')
+    }
+
     static listenEvent(complete, androidEvent){
         const listener = eventEmitter.addListener(Utils.isAndroid ? androidEvent : 'EventEnterForeground', () => {
             listener.remove()

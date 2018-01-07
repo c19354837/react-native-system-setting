@@ -300,6 +300,22 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         switchSetting(SysSettings.BLUETOOTH);
     }
 
+    @ReactMethod
+    public void isAirplaneEnabled(Promise promise) {
+        try {
+            int val =  Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
+            promise.resolve(val == 1);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            promise.reject("-1", "get airplane mode fail", e);
+        }
+    }
+
+    @ReactMethod
+    public void switchAirplane() {
+        switchSetting(SysSettings.AIRPLANE);
+    }
+
     private void switchSetting(SysSettings setting) {
         if (mContext.getCurrentActivity() != null) {
             mContext.addActivityEventListener(this);
