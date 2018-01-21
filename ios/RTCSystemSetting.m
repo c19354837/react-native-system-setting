@@ -12,6 +12,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #import <ifaddrs.h>
 #import <net/if.h>
+#import <AVFoundation/AVFoundation.h>
 
 @import UIKit;
 @import MediaPlayer;
@@ -63,7 +64,9 @@ RCT_EXPORT_METHOD(setVolume:(float)val type:(NSString *)type){
 }
 
 RCT_EXPORT_METHOD(getVolume:(NSString *)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-    resolve([NSNumber numberWithDouble:[MPMusicPlayerController applicationMusicPlayer].volume]);
+    AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+    CGFloat volume = audioSession.outputVolume;
+    resolve([NSNumber numberWithFloat:volume]);
 }
 
 RCT_EXPORT_METHOD(switchWifi){
