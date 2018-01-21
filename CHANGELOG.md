@@ -1,3 +1,8 @@
+# V1.2.1
+**2018-01-21**
+
+Supported Cocoapods, see [detail](https://github.com/c19354837/react-native-system-setting/issues/10)
+
 # V1.2.0
 **2018-01-07**
 
