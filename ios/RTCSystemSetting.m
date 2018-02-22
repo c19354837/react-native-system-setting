@@ -20,6 +20,8 @@
     bool hasListeners;
     CBCentralManager *cb;
     NSDictionary *setting;
+    MPVolumeView *volumeView;
+    UISlider *volumeSlider;
 }
 
 -(instancetype)init{
@@ -33,9 +35,20 @@
         cb = [[CBCentralManager alloc] initWithDelegate:nil queue:nil options:@{CBCentralManagerOptionShowPowerAlertKey: @NO}];
     }
 
+    [self initVolumeView];
     [self initSetting];
 
     return self;
+}
+
+-(void)initVolumeView{
+    volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    for (UIView* view in volumeView.subviews) {
+        if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
+            volumeSlider = (UISlider*)view;
+            break;
+        }
+    }
 }
 
 -(void)initSetting{
@@ -59,11 +72,15 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 }
 
 RCT_EXPORT_METHOD(setVolume:(float)val type:(NSString *)type){
-    [[MPMusicPlayerController applicationMusicPlayer] setVolume:val];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        volumeSlider.value = val;
+    });
 }
 
 RCT_EXPORT_METHOD(getVolume:(NSString *)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
-    resolve([NSNumber numberWithDouble:[MPMusicPlayerController applicationMusicPlayer].volume]);
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        resolve([NSNumber numberWithFloat:[volumeSlider value]]);
+    });
 }
 
 RCT_EXPORT_METHOD(switchWifi){
