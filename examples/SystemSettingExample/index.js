@@ -62,7 +62,11 @@ export default class SystemSettingExample extends Component {
     }
 
     _changeVol(value){
-        SystemSetting.setVolume(value, this.state.volType)
+        SystemSetting.setVolume(value, {
+            type: this.state.volType,
+            playSound: false,
+            showUI: false
+        })
         this.setState({
             volume: value
         })
