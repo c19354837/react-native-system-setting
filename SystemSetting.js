@@ -97,8 +97,15 @@ export default class SystemSetting {
         return await SystemSettingNative.getVolume(type)
     }
 
-    static setVolume(val, type='music') {
-        SystemSettingNative.setVolume(val, type)
+    static setVolume(val, config={type: 'music'}) {
+        if(typeof(config) === 'string'){
+            console.log('setVolume(val, type) is deprecated since 1.2.2, use setVolume(val, config) instead');
+            config = {type: config}
+        }
+        if(!config.type){
+            config = {type: 'music'}
+        }
+        SystemSettingNative.setVolume(val, config)
     }
 
     static addVolumeListener(callback) {

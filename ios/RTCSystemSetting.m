@@ -71,8 +71,10 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
     resolve([NSNumber numberWithDouble:[UIScreen mainScreen].brightness]);
 }
 
-RCT_EXPORT_METHOD(setVolume:(float)val type:(NSString *)type){
+RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)type){
     dispatch_sync(dispatch_get_main_queue(), ^{
+        id showUI = [type objectForKey:@"showUI"];
+        [self showVolumeUI:(showUI != nil && showUI)];
         volumeSlider.value = val;
     });
 }
@@ -116,6 +118,14 @@ RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RC
     NSString * radio = [[CTTelephonyNetworkInfo alloc] init].currentRadioAccessTechnology;
     bool isEnabled = radio == nil;
     resolve([NSNumber numberWithBool:isEnabled]);
+}
+
+-(void)showVolumeUI:(BOOL)flag{
+    if(flag && ![volumeView superview]){
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController].view addSubview:volumeView];
+    }else if(!flag && [volumeView superview]){
+        [volumeView removeFromSuperview];
+    }
 }
 
 -(void)openSetting:(NSString*)service{

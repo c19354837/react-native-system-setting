@@ -22,6 +22,7 @@ import com.facebook.react.bridge.Promise;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
+import com.facebook.react.bridge.ReadableMap;
 import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
@@ -139,7 +140,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void setAppBrightness(float val) {
         final Activity curActivity = getCurrentActivity();
-        if(curActivity == null) {
+        if (curActivity == null) {
             return;
         }
         final WindowManager.LayoutParams lp = curActivity.getWindow().getAttributes();
@@ -155,15 +156,15 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void getAppBrightness(Promise promise) {
         final Activity curActivity = getCurrentActivity();
-        if(curActivity == null) {
+        if (curActivity == null) {
             return;
         }
         try {
             float result = curActivity.getWindow().getAttributes().screenBrightness;
-            if(result < 0){
+            if (result < 0) {
                 int val = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
                 promise.resolve(val * 1.0f / 255);
-            }else{
+            } else {
                 promise.resolve(result);
             }
         } catch (Exception e) {
@@ -191,10 +192,20 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
-    public void setVolume(float val, String type) {
+    public void setVolume(float val, ReadableMap config) {
         mContext.unregisterReceiver(volumeBR);
+        String type = config.getString("type");
+        boolean playSound = config.getBoolean("playSound");
+        boolean showUI = config.getBoolean("showUI");
         int volType = getVolType(type);
-        am.setStreamVolume(volType, (int) (val * am.getStreamMaxVolume(volType)), AudioManager.FLAG_PLAY_SOUND);
+        int flags = 0;
+        if (playSound) {
+            flags |= AudioManager.FLAG_PLAY_SOUND;
+        }
+        if (showUI) {
+            flags |= AudioManager.FLAG_SHOW_UI;
+        }
+        am.setStreamVolume(volType, (int) (val * am.getStreamMaxVolume(volType)), flags);
         mContext.registerReceiver(volumeBR, filter);
     }
 
@@ -303,7 +314,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void isAirplaneEnabled(Promise promise) {
         try {
-            int val =  Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
+            int val = Settings.System.getInt(getReactApplicationContext().getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
             promise.resolve(val == 1);
         } catch (Settings.SettingNotFoundException e) {
             e.printStackTrace();
