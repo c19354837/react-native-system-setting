@@ -112,7 +112,7 @@ const volumeListener = SystemSetting.addVolumeListener((data) => {
 SystemSetting.removeVolumeListener(volumeListener)       
 ```
 
-> For Android, you can change volume by type, default is `music`, [more detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md) 
+> `setVolume` can do more, [more detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md) 
 
 **brightness**
 

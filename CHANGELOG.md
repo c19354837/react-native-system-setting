@@ -1,3 +1,10 @@
+# V1.2.2
+**2018-02-25**
+
+use `MPVolumeView` to get/set volume for iOS.
+
+change API `setVolume(val, type)` to `setVolume(val, config)`, see [detail](https://github.com/c19354837/react-native-system-setting/issues/15)
+
 # V1.2.1
 **2018-01-21**
 
