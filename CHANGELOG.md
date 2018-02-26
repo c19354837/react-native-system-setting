@@ -1,3 +1,8 @@
+# V1.2.3
+**2018-02-26**
+
+fix bug - `setVolume` will show the `MPVolumeView` in the upper left corner, see [detail](https://github.com/c19354837/react-native-system-setting/issues/17)
+
 # V1.2.2
 **2018-02-25**
 
