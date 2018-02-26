@@ -42,7 +42,8 @@
 }
 
 -(void)initVolumeView{
-    volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(0, 0, 0, 0)];
+    volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(-[UIScreen mainScreen].bounds.size.width, 0, 0, 0)];
+    [self showVolumeUI:NO];
     for (UIView* view in volumeView.subviews) {
         if ([view.class.description isEqualToString:@"MPVolumeSlider"]){
             volumeSlider = (UISlider*)view;
@@ -74,7 +75,7 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)type){
     dispatch_sync(dispatch_get_main_queue(), ^{
         id showUI = [type objectForKey:@"showUI"];
-        [self showVolumeUI:(showUI != nil && showUI)];
+        [self showVolumeUI:(showUI != nil && [showUI boolValue])];
         volumeSlider.value = val;
     });
 }
@@ -121,10 +122,10 @@ RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RC
 }
 
 -(void)showVolumeUI:(BOOL)flag{
-    if(flag && ![volumeView superview]){
-        [[[[UIApplication sharedApplication] keyWindow] rootViewController].view addSubview:volumeView];
-    }else if(!flag && [volumeView superview]){
+    if(flag && [volumeView superview]){
         [volumeView removeFromSuperview];
+    }else if(!flag && ![volumeView superview]){
+        [[[[UIApplication sharedApplication] keyWindow] rootViewController].view addSubview:volumeView];
     }
 }
 
