@@ -1,3 +1,8 @@
+# V1.2.4
+**2018-03-14**
+
+fix bug - `isLocationEnabled` return `false` when locate by network only, see [detail](https://github.com/c19354837/react-native-system-setting/issues/19)
+
 # V1.2.3
 **2018-02-26**
 
