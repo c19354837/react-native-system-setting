@@ -289,7 +289,8 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void isLocationEnabled(Promise promise) {
         if (lm != null) {
-            promise.resolve(lm.isProviderEnabled(LocationManager.GPS_PROVIDER));
+            promise.resolve(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                    || lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
         } else {
             promise.reject("-1", "get location manager fail");
         }
