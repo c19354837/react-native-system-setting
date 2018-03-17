@@ -39,6 +39,8 @@ Run `react-native link` to link this library.
 
 Or add `pod 'RCTSystemSetting', :path => '../node_modules/react-native-system-setting'` in `Podfile` for Cocoapods.
 
+If link does not work, you can do it [manually](https://facebook.github.io/react-native/docs/linking-libraries-ios.html).
+
 #### Android
 Run `react-native link` to link this library.
 
