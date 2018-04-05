@@ -72,9 +72,9 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
     resolve([NSNumber numberWithDouble:[UIScreen mainScreen].brightness]);
 }
 
-RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)type){
+RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)config){
     dispatch_sync(dispatch_get_main_queue(), ^{
-        id showUI = [type objectForKey:@"showUI"];
+        id showUI = [config objectForKey:@"showUI"];
         [self showVolumeUI:(showUI != nil && [showUI boolValue])];
         volumeSlider.value = val;
     });
