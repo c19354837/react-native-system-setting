@@ -102,7 +102,7 @@ export default class SystemSetting {
             console.log('setVolume(val, type) is deprecated since 1.2.2, use setVolume(val, config) instead');
             config = {type: config}
         }
-        config = Object.extend({
+        config = Object.assign({
             playSound: false,
             type: 'music',
             showUI: false,
