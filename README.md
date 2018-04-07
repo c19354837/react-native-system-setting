@@ -8,10 +8,7 @@ It provides some system setting APIs for you. Support iOS and Android both.
 * Wifi switch
 * Location
 * Bluetooth
-
-### Next
-
-* System info
+* Airplane
 
 ### Note
 
