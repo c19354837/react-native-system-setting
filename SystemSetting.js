@@ -105,7 +105,7 @@ export default class SystemSetting {
         config = Object.assign({
             playSound: false,
             type: 'music',
-            showUI: false,
+            showUI: false
         }, config)
         SystemSettingNative.setVolume(val, config)
     }
