@@ -1,4 +1,4 @@
-import {NativeModules, NativeEventEmitter} from 'react-native'
+import { NativeModules, NativeEventEmitter } from 'react-native'
 
 import Utils from './Utils'
 
@@ -19,10 +19,10 @@ export default class SystemSetting {
     }
 
     static async setBrightness(val) {
-        try{
+        try {
             await SystemSettingNative.setBrightness(val)
             return true
-        }catch(e){
+        } catch (e) {
             return false
         }
     }
@@ -30,7 +30,7 @@ export default class SystemSetting {
     static async setBrightnessForce(val) {
         if (Utils.isAndroid) {
             const success = await SystemSetting.setScreenMode(SCREEN_BRIGHTNESS_MODE_MANUAL)
-            if(!success){
+            if (!success) {
                 return false
             }
         }
@@ -40,21 +40,21 @@ export default class SystemSetting {
     static setAppBrightness(val) {
         if (Utils.isAndroid) {
             SystemSettingNative.setAppBrightness(val)
-        }else{
+        } else {
             SystemSetting.setBrightness(val)
         }
         return true
     }
-    
+
     static async getAppBrightness() {
         if (Utils.isAndroid) {
             return SystemSettingNative.getAppBrightness()
-        }else{
+        } else {
             return SystemSetting.getBrightness()
         }
     }
-    
-    static grantWriteSettingPremission(){
+
+    static grantWriteSettingPremission() {
         if (Utils.isAndroid) {
             SystemSettingNative.openWriteSetting()
         }
@@ -69,38 +69,38 @@ export default class SystemSetting {
 
     static async setScreenMode(val) {
         if (Utils.isAndroid) {
-            try{
+            try {
                 await SystemSettingNative.setScreenMode(val)
-            }catch(e){
+            } catch (e) {
                 return false
             }
         }
         return true
     }
 
-    static async saveBrightness(){
+    static async saveBrightness() {
         SystemSetting.saveBrightnessVal = await SystemSetting.getBrightness()
         SystemSetting.saveScreenModeVal = await SystemSetting.getScreenMode()
     }
 
-    static restoreBrightness(){
-        if(SystemSetting.saveBrightnessVal == -1){
+    static restoreBrightness() {
+        if (SystemSetting.saveBrightnessVal == -1) {
             console.warn('you should call saveBrightness() at least once')
-        }else{
+        } else {
             SystemSetting.setBrightness(SystemSetting.saveBrightnessVal)
             SystemSetting.setScreenMode(SystemSetting.saveScreenModeVal)
         }
         return SystemSetting.saveBrightnessVal
     }
 
-    static async getVolume(type='music') {
+    static async getVolume(type = 'music') {
         return await SystemSettingNative.getVolume(type)
     }
 
-    static setVolume(val, config={}) {
-        if(typeof(config) === 'string'){
-            console.log('setVolume(val, type) is deprecated since 1.2.2, use setVolume(val, config) instead');
-            config = {type: config}
+    static setVolume(val, config = {}) {
+        if (typeof (config) === 'string') {
+            console.log('setVolume(val, type) is deprecated since 1.2.2, use setVolume(val, config) instead')
+            config = { type: config }
         }
         config = Object.assign({
             playSound: false,
@@ -114,57 +114,66 @@ export default class SystemSetting {
         return eventEmitter.addListener('EventVolume', callback)
     }
 
-    static removeVolumeListener(listener){
+    static removeVolumeListener(listener) {
         listener && listener.remove()
     }
 
-    static async isWifiEnabled(){
+    static async isWifiEnabled() {
         const result = await SystemSettingNative.isWifiEnabled()
         return (result) > 0
     }
 
-    static switchWifiSilence(complete){
-        if(Utils.isAndroid){
+    static switchWifiSilence(complete) {
+        if (Utils.isAndroid) {
             SystemSettingNative.switchWifiSilence()
             SystemSetting.listenEvent(complete, 'EventWifiChange')
-        }else{
+        } else {
             SystemSetting.switchWifi(complete)
         }
     }
 
-    static switchWifi(complete){
+    static switchWifi(complete) {
         SystemSettingNative.switchWifi()
         SystemSetting.listenEvent(complete, 'EventWifiChange')
     }
 
-    static async isLocationEnabled(){
+    static async isLocationEnabled() {
         return await SystemSettingNative.isLocationEnabled()
     }
 
-    static switchLocation(complete){
+    static switchLocation(complete) {
         SystemSettingNative.switchLocation()
         SystemSetting.listenEvent(complete, 'EventLocationChange')
     }
 
-    static async isBluetoothEnabled(){
+    static async isBluetoothEnabled() {
         return await SystemSettingNative.isBluetoothEnabled()
     }
 
-    static switchBluetooth(complete){
+    static switchBluetooth(complete) {
         SystemSettingNative.switchBluetooth()
         SystemSetting.listenEvent(complete, 'EventBluetoothChange')
     }
 
-    static async isAirplaneEnabled(){
+    static switchBluetoothSilence(complete) {
+        if (Utils.isAndroid) {
+            SystemSettingNative.switchBluetoothSilence()
+            SystemSetting.listenEvent(complete, 'EventBluetoothChange')
+        } else {
+            SystemSettingNative.switchBluetooth(complete)
+        }
+    }
+
+    static async isAirplaneEnabled() {
         return await SystemSettingNative.isAirplaneEnabled()
     }
 
-    static switchAirplane(complete){
+    static switchAirplane(complete) {
         SystemSettingNative.switchAirplane()
         SystemSetting.listenEvent(complete, 'EventAirplaneChange')
     }
 
-    static listenEvent(complete, androidEvent){
+    static listenEvent(complete, androidEvent) {
         const listener = eventEmitter.addListener(Utils.isAndroid ? androidEvent : 'EventEnterForeground', () => {
             listener.remove()
             complete()
