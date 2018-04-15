@@ -26,9 +26,8 @@ restoreBrightness() => Promise|Restore brightness and screen mode back to saveBr
 ---|---
 **Wifi**|
 isWifiEnabled():Promise|Get wifi state, true if wifi is on.
-switchWifi(complete)|It will open wifi if the wifi is off, and close it when it's on now. When it has done, the `complete` will be call.
-switchWifiSilence(complete)|It will open wifi if the wifi is off, and close wifi when the wifi is on now. When it has done, the `complete` will be call.<br/>In android, it's done programmatically. <br><br>In iOS, I cannot do that by code for system limiting, so it just calls `switchWifi(complete)`
-switchWifi(complete)|It's a little different from `switchWifiSilence()`. It will open **System Wifi Settings Page**, and you can open the wifi by yourself.
+switchWifi(complete)|It will open **Wifi Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
+switchWifiSilence(complete)|It will open wifi if the wifi is off, and close wifi when the wifi is on now. When it has done, the `complete` will be call.<br/>In android, it's done programmatically. <br><br>In iOS, I cannot do that by code for system limiting, so it just calls `switchWifi(complete)`<br><br>You need declare `android.permission.CHANGE_WIFI_STATE` in your AndroidManifest.xml, see [detail](https://github.com/c19354837/react-native-system-setting#powerful-api)
 ---|---
 **Location**|
 isLocationEnabled():Promise|Get location state, true if location is on.
