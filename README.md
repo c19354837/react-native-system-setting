@@ -195,6 +195,8 @@ SystemSetting.switchAirplane(()=>{
 })
 ```
 
+
+
 ## API
 
 [API](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
@@ -227,6 +229,29 @@ You can find the file in `yourProject/node_modules/react-native-system-setting/a
 Change *brightness* and *screen mode* need `android.permission.WRITE_SETTINGS` which user can disable it in phone Setting. When you call `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` , it will return false if the app has no permission, and you can call `SystemSetting.grantWriteSettingPremission()` to guide user to app setting page. see [example](https://github.com/c19354837/react-native-system-setting/tree/master/examples/SystemSettingExample)
 
 > If you just want to change app's brightness, you can call `setAppBrightness(val)`, and it doesn't require any permission. see [API](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
+
+### Powerful API
+
+There are some different APIs that end with `silence`. They can do the job programmatically without direct user consent. To make it work, You need to declare the corresponding permissions in your app's AndroidManifest.xml, see [example AndroidManifest.xml](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/android/app/src/main/AndroidManifest.xml)
+
+**`yourProject/android/app/src/main/AndroidManifest.xml`**
+
+```xml
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.systemsettingexample"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <!-- switchWifiSilence() -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+    <!-- switchBluetoothSilence() -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    
+    ...
+
+</manifest>
+```
 
 ## In the end
 
