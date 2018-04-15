@@ -1,3 +1,10 @@
+# V1.3.0
+**2018-04-15**
+
+new API: `switchBluetoothSilence()`, see [detail](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
+
+**breaking change**: remove `android.permission.CHANGE_WIFI_STATE` from [AndroidManifest.xml](https://github.com/c19354837/react-native-system-setting/blob/master/android/src/main/AndroidManifest.xml). If you want to call `switchWifiSilence()`, you should declare the permission in your Androidmanifest.xml, see [detail](https://github.com/c19354837/react-native-system-setting#powerful-api)
+
 # V1.2.5
 **2018-04-07**
 
