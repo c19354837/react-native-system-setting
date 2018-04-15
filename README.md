@@ -15,7 +15,10 @@ It provides some system setting APIs for you. Support iOS and Android both.
 **[Example](https://github.com/c19354837/react-native-system-setting/tree/master/examples/SystemSettingExample) only work in the real device**
 
 ### Change Log
+
 [Change Log](https://github.com/c19354837/react-native-system-setting/blob/master/CHANGELOG.md)
+
+breaking change for `switchWifiSilence()` in V1.3.0, see [Powerful API](https://github.com/c19354837/react-native-system-setting#powerful-api)
 
 ## Look like
 
@@ -252,6 +255,8 @@ There are some different APIs that end with `silence`. They can do the job progr
 
 </manifest>
 ```
+
+> These APIs maybe useful when you develop a system management app. For , you should call `switchWifi()` & `switchBluetooth()` to get a better user experience
 
 ## In the end
 
