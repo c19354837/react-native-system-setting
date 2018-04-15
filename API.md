@@ -36,6 +36,7 @@ switchLocation(complete)|It will open **System Location Setting Page**, and you 
 **Bluetooth**|
 isBluetoothEnabled():Promise|Get bluetooth state, true if bluetooth is on.
 switchBluetooth(complete)|It will open **System Bluetooth Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
+switchBluetoothSilence(complete)|It will open bluetooth if the bluetooth is off, and close bluetooth when the bluetooth is on now. When it has done, the `complete` will be call.<br/>In android, it's done programmatically. <br><br>In iOS, I cannot do that by code for system limiting, so it just calls `switchBluetooth(complete)`<br><br>You need declare `android.permission.BLUETOOTH_ADMIN` in your AndroidManifest.xml, see [detail](https://github.com/c19354837/react-native-system-setting#powerful-api)
 ---|---
 **Airplane**|
 isAirplaneEnabled():Promise|Get airplane state, true if airplane is on.
