@@ -1,6 +1,6 @@
 {
     "name": "react-native-system-setting",
-    "version": "1.2.5",
+    "version": "1.3.0",
     "description": "provide some system setting APIs. Volume, brightness, wifi, location, bluetooth, airplane...",
     "main": "SystemSetting.js",
     "homepage": "https://github.com/c19354837/react-native-system-setting",
