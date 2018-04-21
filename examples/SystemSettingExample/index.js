@@ -30,6 +30,7 @@ export default class SystemSettingExample extends Component {
     }
 
     async componentDidMount(){
+        SystemSetting.setAppStore(false)
         this.setState({
             volume: await SystemSetting.getVolume(this.state.volType),
             brightness: await SystemSetting.getBrightness(),
