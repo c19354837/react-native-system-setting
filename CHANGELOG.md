@@ -1,3 +1,8 @@
+# V1.4.0
+**2018-04-21**
+
+new API: `setAppStore()`, it will avoid some troubles when you submit app to App Store, see [detail](https://github.com/c19354837/react-native-system-setting/issues/28)
+
 # V1.3.0
 **2018-04-15**
 

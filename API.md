@@ -24,6 +24,8 @@ grantWriteSettingPremission()| open app setting page. It's user-friendly when yo
 saveBrightness()|It will save current brightness and screen mode.
 restoreBrightness() => Promise|Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. <br><br>You should call this before setBrightness() or setBrightnessForce(). <br><br>It will return the saved brightness.
 ---|---
+setAppStore(isAppStore:bool)| `true` means that you'll submit your app to App Store. In order to throught the App Store review, it has some side effects, see [App Store](https://github.com/c19354837/react-native-system-setting#app-store).<br><br>`false` means that your app will not upload to App Store, and you can use any APIs at will.
+---|---
 **Wifi**|
 isWifiEnabled():Promise|Get wifi state, true if wifi is on.
 switchWifi(complete)|It will open **Wifi Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.

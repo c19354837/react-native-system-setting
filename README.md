@@ -215,6 +215,23 @@ $ react-native run-android
 $ react-native run-ios
 ```
 
+## App Store
+
+Some APIs are dangerous for iOS:
+
+* `switchWifi()`
+* `switchBluetooth()`
+* `switchLocation()`
+* `switchAirplane()`
+
+I implement them by using non-public APIs, which is not permitted on the App Store, see [this issure](https://github.com/c19354837/react-native-system-setting/issues/28). 
+
+If you are developing a App Store version, you have to give up these APIs. 
+
+To avoid unnecessary trouble, you can call `SystemSetting.setApp Store(true)` which will invalidate these APIs.
+
+> As an alternative, you can show a tip to tell the user how to change the system setting. 
+
 ## Android permission
 
 ### Remove permission
