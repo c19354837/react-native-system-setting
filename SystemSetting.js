@@ -13,6 +13,12 @@ const eventEmitter = new NativeEventEmitter(SystemSettingNative)
 export default class SystemSetting {
     static saveBrightnessVal = -1
     static saveScreenModeVal = SCREEN_BRIGHTNESS_MODE_AUTOMATIC
+    static isAppStore = undefined
+    static appStoreWarn = 'You must call SystemSetting.setAppStore(isAppStore:bool) explicitly. Set it true if you are developing a AppStore version, or false'
+
+    static setAppStore(isAppStore) {
+        this.isAppStore = isAppStore
+    }
 
     static async getBrightness() {
         return await SystemSettingNative.getBrightness()
@@ -133,6 +139,10 @@ export default class SystemSetting {
     }
 
     static switchWifi(complete) {
+        if (this._switchingCheck()) {
+            complete();
+            return;
+        }
         SystemSettingNative.switchWifi()
         SystemSetting.listenEvent(complete, 'EventWifiChange')
     }
@@ -142,6 +152,10 @@ export default class SystemSetting {
     }
 
     static switchLocation(complete) {
+        if (this._switchingCheck()) {
+            complete();
+            return;
+        }
         SystemSettingNative.switchLocation()
         SystemSetting.listenEvent(complete, 'EventLocationChange')
     }
@@ -151,6 +165,10 @@ export default class SystemSetting {
     }
 
     static switchBluetooth(complete) {
+        if (this._switchingCheck()) {
+            complete();
+            return;
+        }
         SystemSettingNative.switchBluetooth()
         SystemSetting.listenEvent(complete, 'EventBluetoothChange')
     }
@@ -169,8 +187,23 @@ export default class SystemSetting {
     }
 
     static switchAirplane(complete) {
+        if (this._switchingCheck()) {
+            complete();
+            return;
+        }
         SystemSettingNative.switchAirplane()
         SystemSetting.listenEvent(complete, 'EventAirplaneChange')
+    }
+
+    static _switchingCheck() {
+        if (Utils.isIOS) {
+            if (this.isAppStore === undefined) {
+                console.warn(this.appStoreWarn)
+            } else if (this.isAppStore === true) {
+                return true;
+            }
+        }
+        return false;
     }
 
     static listenEvent(complete, androidEvent) {
