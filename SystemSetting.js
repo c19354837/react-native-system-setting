@@ -206,6 +206,32 @@ export default class SystemSetting {
         return false;
     }
 
+    static async _activeListener(name) {
+        try {
+            await SystemSettingNative.activeListener(name)
+        } catch (e) {
+            console.warn(e.message)
+            return false;
+        }
+        return true;
+    }
+
+    static async addBluetoothListener(callback) {
+        const result = await SystemSetting._activeListener('bluetooth')
+        if (result) {
+            return eventEmitter.addListener('EventBluetoothChange', callback)
+        }
+        return null;
+    }
+
+    static async addWifiListener(callback) {
+        const result = await SystemSetting._activeListener('wifi')
+        if (result) {
+            return eventEmitter.addListener('EventWifiChange', callback)
+        }
+        return null;
+    }
+
     static listenEvent(complete, androidEvent) {
         const listener = eventEmitter.addListener(Utils.isAndroid ? androidEvent : 'EventEnterForeground', () => {
             listener.remove()

@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.LocationManager;
 import android.media.AudioManager;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -96,15 +95,13 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                                 int wifiState = intent.getIntExtra(WifiManager.EXTRA_WIFI_STATE, 0);
                                 if (wifiState == WifiManager.WIFI_STATE_ENABLED || wifiState == WifiManager.WIFI_STATE_DISABLED) {
                                     mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                            .emit("EventWifiChange", null);
+                                            .emit("EventWifiChange", wifiState == WifiManager.WIFI_STATE_ENABLED);
                                 }
                             }
                         }
                     };
                     IntentFilter wifiFilter = new IntentFilter();
-                    wifiFilter.addAction(WifiManager.NETWORK_STATE_CHANGED_ACTION);
                     wifiFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-                    wifiFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
 
                     mContext.registerReceiver(wifiBR, wifiFilter);
                 }
@@ -123,7 +120,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                                 int state = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
                                 if (state == BluetoothAdapter.STATE_ON || state == BluetoothAdapter.STATE_OFF) {
                                     mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                                            .emit("EventBluetoothChange", null);
+                                            .emit("EventBluetoothChange", state == BluetoothAdapter.STATE_ON);
                                 }
                             }
                         }
@@ -353,6 +350,21 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
+    public void activeListener(String type, Promise promise) {
+        switch (type) {
+            case "wifi":
+                listenWifiState();
+                promise.resolve(null);
+                return;
+            case "bluetooth":
+                listenBluetoothState();
+                promise.resolve(null);
+                return;
+        }
+        promise.reject("-1", "unsupported listener type: " + type);
+    }
+
+    @ReactMethod
     public void isAirplaneEnabled(Promise promise) {
         try {
             int val = Settings.System.getInt(mContext.getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
@@ -400,6 +412,12 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     @Override
     public void onHostPause() {
+
+    }
+
+    @Override
+    public void onHostDestroy() {
+        mContext.unregisterReceiver(volumeBR);
         if (wifiBR != null) {
             mContext.unregisterReceiver(wifiBR);
             wifiBR = null;
@@ -408,11 +426,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             mContext.unregisterReceiver(bluetoothBR);
             bluetoothBR = null;
         }
-    }
 
-    @Override
-    public void onHostDestroy() {
-        mContext.unregisterReceiver(volumeBR);
         mContext.removeLifecycleEventListener(this);
     }
 }
