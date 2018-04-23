@@ -10,6 +10,7 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <CoreLocation/CoreLocation.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
+#import <CoreBluetooth/CoreBluetooth.h>
 #import <ifaddrs.h>
 #import <net/if.h>
 
@@ -121,6 +122,15 @@ RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RC
     resolve([NSNumber numberWithBool:isEnabled]);
 }
 
+RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    if([type isEqualToString:@"bluetooth"]){
+        [cb setDelegate:self];
+        resolve(@YES);
+    }else{
+         reject(@"-1", [NSString stringWithFormat:@"unsupported listener type: %@", type], nil);
+    }
+}
+
 -(void)showVolumeUI:(BOOL)flag{
     if(flag && [volumeView superview]){
         [volumeView removeFromSuperview];
@@ -165,7 +175,7 @@ RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RC
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"EventVolume", @"EventEnterForeground"];
+    return @[@"EventVolume", @"EventEnterForeground", @"EventBluetoothChange"];
 }
 
 -(void)startObserving {
@@ -180,6 +190,23 @@ RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RC
     if(hasListeners){
         float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
         [self sendEventWithName:@"EventVolume" body:@{@"value": [NSNumber numberWithFloat:volume]}];
+    }
+}
+
+-(void)centralManagerDidUpdateState:(CBCentralManager *)central{
+    switch (central.state) {
+        case CBManagerStatePoweredOff:
+            if(hasListeners){
+                [self sendEventWithName:@"EventBluetoothChange" body:@NO];
+            }
+            break;
+        case CBManagerStatePoweredOn:
+            if(hasListeners){
+                [self sendEventWithName:@"EventBluetoothChange" body:@YES];
+            }
+            break;
+        default:
+            break;
     }
 }
 

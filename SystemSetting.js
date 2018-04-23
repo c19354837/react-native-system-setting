@@ -225,11 +225,17 @@ export default class SystemSetting {
     }
 
     static async addWifiListener(callback) {
-        const result = await SystemSetting._activeListener('wifi')
-        if (result) {
-            return eventEmitter.addListener('EventWifiChange', callback)
+        if(Utils.isAndroid){
+            const result = await SystemSetting._activeListener('wifi')
+            if (result) {
+                return eventEmitter.addListener('EventWifiChange', callback)
+            }
         }
         return null;
+    }
+
+    static removeListener(listener){
+        listener && listener.remove()
     }
 
     static listenEvent(complete, androidEvent) {
