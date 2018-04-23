@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {AppRegistry, StyleSheet, Alert, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform} from 'react-native';
+import React, { Component } from 'react';
+import { AppRegistry, StyleSheet, Alert, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native';
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -8,11 +8,13 @@ export default class SystemSettingExample extends Component {
     isAndroid = Platform.OS === 'android'
 
     volumeListener = null;
+    wifiListener = null;
+    bluetoothListener = null;
 
     volTypes = ['music', 'system', 'call', 'ring', 'alarm', 'notification']
     volIndex = 0
 
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             volume: 0,
@@ -23,13 +25,13 @@ export default class SystemSettingExample extends Component {
             locationEnable: false,
             locationStateLoading: false,
             bluetoothEnable: false,
-			bluetoothStateLoading: false,
-			airplaneEnable: false,
-			airplaneStateLoading: false,
+            bluetoothStateLoading: false,
+            airplaneEnable: false,
+            airplaneStateLoading: false,
         }
     }
 
-    async componentDidMount(){
+    async componentDidMount() {
         SystemSetting.setAppStore(false)
         this.setState({
             volume: await SystemSetting.getVolume(this.state.volType),
@@ -50,19 +52,33 @@ export default class SystemSettingExample extends Component {
                 volume: volume
             })
         })
+
+        this.wifiListener = await SystemSetting.addWifiListener((enable) => {
+            this.setState({
+                wifiEnable: enable,
+            })
+        })
+
+        this.bluetoothListener = await SystemSetting.addBluetoothListener((enable) => {
+            this.setState({
+                bluetoothEnable: enable,
+            })
+        })
     }
 
-    _changeSliderNativeVol(slider, value){
+    _changeSliderNativeVol(slider, value) {
         slider.setNativeProps({
             value: value
         })
     }
 
-    componentWillUnmount(){
-        SystemSetting.removeVolumeListener(volumeListener)
+    componentWillUnmount() {
+        SystemSetting.removeListener(this.volumeListener)
+        SystemSetting.removeListener(this.wifiListener)
+        SystemSetting.removeListener(this.bluetoothListener)
     }
 
-    _changeVol(value){
+    _changeVol(value) {
         SystemSetting.setVolume(value, {
             type: this.state.volType,
             playSound: false,
@@ -85,22 +101,22 @@ export default class SystemSettingExample extends Component {
     }
 
     _changeBrightness = async (value) => {
-		const result = await SystemSetting.setBrightnessForce(value)
-		if(!result){
-			Alert.alert('Permission Deny', 'You have no permission changing settings',[
-				{'text': 'Ok', style: 'cancel'},
-				{'text': 'Open Setting', onPress:()=>SystemSetting.grantWriteSettingPremission()}
-			])
-			return
-		}
+        const result = await SystemSetting.setBrightnessForce(value)
+        if (!result) {
+            Alert.alert('Permission Deny', 'You have no permission changing settings', [
+                { 'text': 'Ok', style: 'cancel' },
+                { 'text': 'Open Setting', onPress: () => SystemSetting.grantWriteSettingPremission() }
+            ])
+            return
+        }
         this.setState({
             brightness: value,
         })
-	}
+    }
 
-    _restoreBrightness(){
+    _restoreBrightness() {
         const saveBrightnessVal = SystemSetting.restoreBrightness()
-        if(saveBrightnessVal > -1){
+        if (saveBrightnessVal > -1) {
             // success
             this.setState({
                 brightness: saveBrightnessVal
@@ -109,7 +125,7 @@ export default class SystemSettingExample extends Component {
         }
     }
 
-    _switchWifi(){
+    _switchWifi() {
         this.setState({
             wifiStateLoading: true
         })
@@ -121,7 +137,7 @@ export default class SystemSettingExample extends Component {
         })
     }
 
-    _switchLocation(){
+    _switchLocation() {
         this.setState({
             locationStateLoading: true
         })
@@ -133,7 +149,7 @@ export default class SystemSettingExample extends Component {
         })
     }
 
-    _switchBluetooth(){
+    _switchBluetooth() {
         this.setState({
             bluetoothStateLoading: true
         })
@@ -145,7 +161,7 @@ export default class SystemSettingExample extends Component {
         })
     }
 
-    _switchAirplane(){
+    _switchAirplane() {
         this.setState({
             airplaneStateLoading: true
         })
@@ -158,12 +174,12 @@ export default class SystemSettingExample extends Component {
     }
 
     render() {
-		const {volume, brightness, 
-			wifiEnable, wifiStateLoading, 
-			locationEnable, locationStateLoading, 
-			bluetoothEnable, bluetoothStateLoading,
-			airplaneEnable, airplaneStateLoading,
-		} = this.state
+        const { volume, brightness,
+            wifiEnable, wifiStateLoading,
+            locationEnable, locationStateLoading,
+            bluetoothEnable, bluetoothStateLoading,
+            airplaneEnable, airplaneStateLoading,
+        } = this.state
         return (
             <ScrollView style={styles.container}>
                 <View style={styles.head}>
@@ -175,14 +191,14 @@ export default class SystemSettingExample extends Component {
                         onPress: this._changeVolType
                     }}
                     value={volume}
-                    changeVal={(val)=>this._changeVol(val)}
-                    refFunc={(sliderVol)=>this.sliderVol = sliderVol}
+                    changeVal={(val) => this._changeVol(val)}
+                    refFunc={(sliderVol) => this.sliderVol = sliderVol}
                 />
                 <ValueView
                     title='Brightness'
                     value={brightness}
-                    changeVal={(val)=>this._changeBrightness(val)}
-                    refFunc={(sliderBri)=>this.sliderBri = sliderBri}
+                    changeVal={(val) => this._changeBrightness(val)}
+                    refFunc={(sliderBri) => this.sliderBri = sliderBri}
                 />
                 <View style={styles.card}>
                     <View style={styles.row}>
@@ -190,7 +206,7 @@ export default class SystemSettingExample extends Component {
                         </Text>
                     </View>
                     <View style={styles.row}>
-                        <TouchableOpacity style={{marginRight:32}} onPress={SystemSetting.saveBrightness}>
+                        <TouchableOpacity style={{ marginRight: 32 }} onPress={SystemSetting.saveBrightness}>
                             <Text style={styles.btn}>Save
                             </Text>
                         </TouchableOpacity>
@@ -204,37 +220,37 @@ export default class SystemSettingExample extends Component {
                     title='Wifi'
                     value={wifiEnable}
                     loading={wifiStateLoading}
-                    switchFunc={(value) => this._switchWifi()}/>
+                    switchFunc={(value) => this._switchWifi()} />
                 <StatusView
                     title='Location'
                     value={locationEnable}
                     loading={locationStateLoading}
-                    switchFunc={(value) => this._switchLocation()}/>
+                    switchFunc={(value) => this._switchLocation()} />
                 <StatusView
                     title='Bluetooth'
                     value={bluetoothEnable}
                     loading={bluetoothStateLoading}
-                    switchFunc={(value) => this._switchBluetooth()}/>
+                    switchFunc={(value) => this._switchBluetooth()} />
                 <StatusView
                     title='Airplane'
                     value={airplaneEnable}
                     loading={airplaneStateLoading}
-                    switchFunc={(value) => this._switchAirplane()}/>
+                    switchFunc={(value) => this._switchAirplane()} />
             </ScrollView>
         );
     }
 }
 
-const ValueView = (props)=>{
-    const {title, value, changeVal, refFunc, btn} = props
-    return(
+const ValueView = (props) => {
+    const { title, value, changeVal, refFunc, btn } = props
+    return (
         <View style={styles.card}>
             <View style={styles.row}>
                 <Text style={styles.title}>{title}</Text>
                 {btn && <TouchableOpacity onPress={btn.onPress}>
-                            <Text style={styles.btn}>{btn.title}
-                            </Text>
-                        </TouchableOpacity>}
+                    <Text style={styles.btn}>{btn.title}
+                    </Text>
+                </TouchableOpacity>}
                 <Text style={styles.value}>{value}</Text>
             </View>
             <Slider
@@ -245,21 +261,21 @@ const ValueView = (props)=>{
     )
 }
 
-const StatusView = (props)=>{
-    const {title, switchFunc, value, loading} = props
-    return(
+const StatusView = (props) => {
+    const { title, switchFunc, value, loading } = props
+    return (
         <View style={styles.card}>
             <View style={styles.row}>
                 <Text style={styles.title}>{title}
                 </Text>
             </View>
             <View style={styles.row}>
-                <Text>Current status is { loading ? 'switching': (value ? 'On' : 'Off')}
+                <Text>Current status is {loading ? 'switching' : (value ? 'On' : 'Off')}
                 </Text>
                 {
-                    loading&&<ActivityIndicator animating={loading}/>
+                    loading && <ActivityIndicator animating={loading} />
                 }
-                <View style={{flex:1, alignItems:'flex-end'}}>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
                     <Switch
                         onValueChange={switchFunc}
                         value={value} />
@@ -274,43 +290,43 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#E5E7E8'
     },
-    head:{
+    head: {
         justifyContent: 'center',
         alignItems: 'center',
         height: 64,
     },
-    headline:{
+    headline: {
         fontSize: 22,
         color: '#666'
     },
-    card:{
-        padding:8,
+    card: {
+        padding: 8,
         backgroundColor: '#fff',
-        marginTop:4,
-        marginBottom:4,
+        marginTop: 4,
+        marginBottom: 4,
     },
-    row:{
-        flexDirection:'row',
-        alignItems:'center',
-        paddingTop:8,
-        paddingBottom:8,
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingTop: 8,
+        paddingBottom: 8,
     },
-    title:{
+    title: {
         fontSize: 16,
         color: '#6F6F6F'
     },
-    value:{
+    value: {
         fontSize: 14,
-        flex:1,
-        textAlign:'right',
+        flex: 1,
+        textAlign: 'right',
         color: '#904ED9'
     },
-    split:{
+    split: {
         marginVertical: 16,
         height: 1,
         backgroundColor: '#ccc',
     },
-    btn:{
+    btn: {
         fontSize: 16,
         padding: 8,
         paddingVertical: 8,
