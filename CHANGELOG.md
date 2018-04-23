@@ -1,3 +1,10 @@
+# V1.4.1
+**2018-04-23**
+
+new API: `addWifiListener()`, only works in Android
+
+new API: `addBluetoothListener()`, Android & iOS
+
 # V1.4.0
 **2018-04-21**
 
