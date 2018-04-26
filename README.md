@@ -228,7 +228,7 @@ I implement them by using non-public APIs, which is not permitted on the App Sto
 
 If you are developing a App Store version, you have to give up these APIs. 
 
-To avoid unnecessary trouble, you can call `SystemSetting.setApp Store(true)` which will invalidate these APIs.
+To avoid unnecessary trouble, you can call `SystemSetting.setAppStore(true)` which will invalidate these APIs.
 
 > As an alternative, you can show a tip to tell the user how to change the system setting. 
 
