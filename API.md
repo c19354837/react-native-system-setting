@@ -33,6 +33,7 @@ addWifiListener(callback):Promise| Listen the wifi state changing, and it will r
 **Location**|
 isLocationEnabled():Promise|Get location state, true if location is on.
 switchLocation(complete)|It will open **System Location Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
+addLocationListener(callback):Promise| Listen the location state changing, and it will return the listener. (Android only)
 ---|---
 **Bluetooth**|
 isBluetoothEnabled():Promise|Get bluetooth state, true if bluetooth is on.
@@ -43,6 +44,7 @@ addBluetoothListener(callback):Promise| Listen the bluetooth state changing, and
 **Airplane**|
 isAirplaneEnabled():Promise|Get airplane state, true if airplane is on.
 switchAirplane(complete)|It will open **System Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
+addAirplaneListener(callback):Promise| Listen the airplane state changing, and it will return the listener. (Android only)
 ---|---
 **Other**|
 setAppStore(isAppStore:bool)| `true` means that you'll submit your app to App Store. In order to throught the App Store review, it has some side effects, see [App Store](https://github.com/c19354837/react-native-system-setting#app-store).<br><br>`false` means that your app will not upload to App Store, and you can use any APIs at will.

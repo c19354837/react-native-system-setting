@@ -1,3 +1,10 @@
+# V1.4.2
+**2018-05-07**
+
+new API: `addLocationListener()`, only works in Android
+
+new API: `addAirplaneListener()`, only works in Android
+
 # V1.4.1
 **2018-04-23**
 
