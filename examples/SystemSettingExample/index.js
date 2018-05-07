@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { AppRegistry, StyleSheet, Alert, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native';
+import React, { Component } from 'react'
+import { AppRegistry, StyleSheet, Alert, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native'
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -7,9 +7,11 @@ export default class SystemSettingExample extends Component {
 
     isAndroid = Platform.OS === 'android'
 
-    volumeListener = null;
-    wifiListener = null;
-    bluetoothListener = null;
+    volumeListener = null
+    wifiListener = null
+    bluetoothListener = null
+    locationListener = null
+    airplaneListener = null
 
     volTypes = ['music', 'system', 'call', 'ring', 'alarm', 'notification']
     volIndex = 0
@@ -54,15 +56,19 @@ export default class SystemSettingExample extends Component {
         })
 
         this.wifiListener = await SystemSetting.addWifiListener((enable) => {
-            this.setState({
-                wifiEnable: enable,
-            })
+            this.setState({ wifiEnable: enable })
         })
 
         this.bluetoothListener = await SystemSetting.addBluetoothListener((enable) => {
-            this.setState({
-                bluetoothEnable: enable,
-            })
+            this.setState({ bluetoothEnable: enable })
+        })
+
+        this.locationListener = await SystemSetting.addLocationListener((enable) => {
+            this.setState({ locationEnable: enable })
+        })
+
+        this.airplaneListener = await SystemSetting.addAirplaneListener((enable) => {
+            this.setState({ airplaneEnable: enable })
         })
     }
 
@@ -76,6 +82,8 @@ export default class SystemSettingExample extends Component {
         SystemSetting.removeListener(this.volumeListener)
         SystemSetting.removeListener(this.wifiListener)
         SystemSetting.removeListener(this.bluetoothListener)
+        SystemSetting.removeListener(this.locationListener)
+        SystemSetting.removeListener(this.airplaneListener)
     }
 
     _changeVol(value) {
@@ -237,7 +245,7 @@ export default class SystemSettingExample extends Component {
                     loading={airplaneStateLoading}
                     switchFunc={(value) => this._switchAirplane()} />
             </ScrollView>
-        );
+        )
     }
 }
 
@@ -332,6 +340,6 @@ const styles = StyleSheet.create({
         paddingVertical: 8,
         color: '#405EFF'
     }
-});
+})
 
-AppRegistry.registerComponent('SystemSettingExample', () => SystemSettingExample);
+AppRegistry.registerComponent('SystemSettingExample', () => SystemSettingExample)
