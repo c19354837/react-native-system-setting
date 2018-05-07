@@ -48,6 +48,8 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     private BroadcastReceiver volumeBR;
     private volatile BroadcastReceiver wifiBR;
     private volatile BroadcastReceiver bluetoothBR;
+    private volatile BroadcastReceiver locationBR;
+    private volatile BroadcastReceiver airplaneBR;
     private IntentFilter filter;
 
     public SystemSetting(ReactApplicationContext reactContext) {
@@ -129,6 +131,53 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                     bluetoothFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
 
                     mContext.registerReceiver(bluetoothBR, bluetoothFilter);
+                }
+            }
+        }
+    }
+
+    private void listenLocationState() {
+        if (locationBR == null) {
+            synchronized (this) {
+                if (locationBR == null) {
+                    locationBR = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            if (intent.getAction().equals(LocationManager.PROVIDERS_CHANGED_ACTION)) {
+                                mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                        .emit("EventLocationChange", isLocationEnable());
+                            }
+                        }
+                    };
+                    IntentFilter locationFilter = new IntentFilter();
+                    locationFilter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION);
+
+                    mContext.registerReceiver(locationBR, locationFilter);
+                }
+            }
+        }
+    }
+
+    private void listenAirplaneState() {
+        if (airplaneBR == null) {
+            synchronized (this) {
+                if (airplaneBR == null) {
+                    airplaneBR = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            try {
+                                int val = Settings.System.getInt(mContext.getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
+                                mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                        .emit("EventAirplaneChange", val == 1);
+                            } catch (Settings.SettingNotFoundException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    };
+                    IntentFilter locationFilter = new IntentFilter();
+                    locationFilter.addAction(Intent.ACTION_AIRPLANE_MODE_CHANGED);
+
+                    mContext.registerReceiver(airplaneBR, locationFilter);
                 }
             }
         }
@@ -313,11 +362,15 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void isLocationEnabled(Promise promise) {
         if (lm != null) {
-            promise.resolve(lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
-                    || lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER));
+            promise.resolve(isLocationEnable());
         } else {
             promise.reject("-1", "get location manager fail");
         }
+    }
+
+    private boolean isLocationEnable() {
+        return lm.isProviderEnabled(LocationManager.GPS_PROVIDER)
+                || lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
     }
 
     @ReactMethod
@@ -358,6 +411,14 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                 return;
             case "bluetooth":
                 listenBluetoothState();
+                promise.resolve(null);
+                return;
+            case "location":
+                listenLocationState();
+                promise.resolve(null);
+                return;
+            case "airplane":
+                listenAirplaneState();
                 promise.resolve(null);
                 return;
         }
@@ -425,6 +486,14 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         if (bluetoothBR != null) {
             mContext.unregisterReceiver(bluetoothBR);
             bluetoothBR = null;
+        }
+        if (locationBR != null) {
+            mContext.unregisterReceiver(locationBR);
+            locationBR = null;
+        }
+        if (airplaneBR != null) {
+            mContext.unregisterReceiver(airplaneBR);
+            airplaneBR = null;
         }
 
         mContext.removeLifecycleEventListener(this);

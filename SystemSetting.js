@@ -206,6 +206,32 @@ export default class SystemSetting {
         return false;
     }
 
+    static async addBluetoothListener(callback) {
+        return await SystemSetting._addListener(false, 'bluetooth', 'EventBluetoothChange', callback)
+    }
+
+    static async addWifiListener(callback) {
+        return await SystemSetting._addListener(true, 'wifi', 'EventWifiChange', callback)
+    }
+
+    static async addLocationListener(callback) {
+        return await SystemSetting._addListener(true, 'location', 'EventLocationChange', callback)
+    }
+
+    static async addAirplaneListener(callback) {
+        return await SystemSetting._addListener(true, 'airplane', 'EventAirplaneChange', callback)
+    }
+
+    static async _addListener(androidOnly, type, eventName, callback) {
+        if (!androidOnly || Utils.isAndroid) {
+            const result = await SystemSetting._activeListener(type)
+            if (result) {
+                return eventEmitter.addListener(eventName, callback)
+            }
+        }
+        return null
+    }
+
     static async _activeListener(name) {
         try {
             await SystemSettingNative.activeListener(name)
@@ -216,25 +242,7 @@ export default class SystemSetting {
         return true;
     }
 
-    static async addBluetoothListener(callback) {
-        const result = await SystemSetting._activeListener('bluetooth')
-        if (result) {
-            return eventEmitter.addListener('EventBluetoothChange', callback)
-        }
-        return null;
-    }
-
-    static async addWifiListener(callback) {
-        if(Utils.isAndroid){
-            const result = await SystemSetting._activeListener('wifi')
-            if (result) {
-                return eventEmitter.addListener('EventWifiChange', callback)
-            }
-        }
-        return null;
-    }
-
-    static removeListener(listener){
+    static removeListener(listener) {
         listener && listener.remove()
     }
 
