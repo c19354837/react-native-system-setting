@@ -1,3 +1,8 @@
+# V1.4.3
+**2018-05-21**
+
+for iOS - override `+(BOOL)requiresMainQueueSetup` to remove warning
+
 # V1.4.2
 **2018-05-07**
 
