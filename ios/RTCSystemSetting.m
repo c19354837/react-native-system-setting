@@ -62,6 +62,10 @@
                 };
 }
 
++(BOOL)requiresMainQueueSetup{
+    return YES;
+}
+
 RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(setBrightness:(float)val resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
