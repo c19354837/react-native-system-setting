@@ -8,21 +8,19 @@ import android.provider.Settings;
 
 public enum SysSettings {
 
-    UNKNOW("", 0, ""),
-    WIFI(Settings.ACTION_WIFI_SETTINGS, 1, "EventWifiChange"),
-    LOCATION(Settings.ACTION_LOCATION_SOURCE_SETTINGS, 2, "EventLocationChange"),
-    BLUETOOTH(Settings.ACTION_BLUETOOTH_SETTINGS, 3, "EventBluetoothChange"),
-    WRITESETTINGS(Settings.ACTION_MANAGE_WRITE_SETTINGS, 4, "EventWriteSetting"),
-    AIRPLANE(Settings.ACTION_AIRPLANE_MODE_SETTINGS, 5, "EventAirplaneChange");
+    UNKNOW("", 0),
+    WIFI(Settings.ACTION_WIFI_SETTINGS, 1),
+    LOCATION(Settings.ACTION_LOCATION_SOURCE_SETTINGS, 2),
+    BLUETOOTH(Settings.ACTION_BLUETOOTH_SETTINGS, 3),
+    WRITESETTINGS(Settings.ACTION_MANAGE_WRITE_SETTINGS, 4),
+    AIRPLANE(Settings.ACTION_AIRPLANE_MODE_SETTINGS, 5);
 
     public String action;
     public int requestCode;
-    public String event;
 
-    SysSettings(String action, int requestCode, String event) {
+    SysSettings(String action, int requestCode) {
         this.action = action;
         this.requestCode = requestCode;
-        this.event = event;
     }
 
     public static SysSettings get(int requestCode){

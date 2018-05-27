@@ -472,7 +472,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         SysSettings setting = SysSettings.get(requestCode);
         if (setting != SysSettings.UNKNOW) {
             mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                    .emit(setting.event, null);
+                    .emit("EventEnterForeground", null);
             mContext.removeActivityEventListener(this);
         }
     }

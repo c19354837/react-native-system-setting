@@ -131,8 +131,8 @@ export default class SystemSetting {
 
     static switchWifiSilence(complete) {
         if (Utils.isAndroid) {
+            SystemSetting.listenEvent(complete)
             SystemSettingNative.switchWifiSilence()
-            SystemSetting.listenEvent(complete, 'EventWifiChange')
         } else {
             SystemSetting.switchWifi(complete)
         }
@@ -143,8 +143,8 @@ export default class SystemSetting {
             complete();
             return;
         }
+        SystemSetting.listenEvent(complete)
         SystemSettingNative.switchWifi()
-        SystemSetting.listenEvent(complete, 'EventWifiChange')
     }
 
     static async isLocationEnabled() {
@@ -160,8 +160,8 @@ export default class SystemSetting {
             complete();
             return;
         }
+        SystemSetting.listenEvent(complete)
         SystemSettingNative.switchLocation()
-        SystemSetting.listenEvent(complete, 'EventLocationChange')
     }
 
     static async isBluetoothEnabled() {
@@ -173,14 +173,14 @@ export default class SystemSetting {
             complete();
             return;
         }
+        SystemSetting.listenEvent(complete)
         SystemSettingNative.switchBluetooth()
-        SystemSetting.listenEvent(complete, 'EventBluetoothChange')
     }
 
     static switchBluetoothSilence(complete) {
         if (Utils.isAndroid) {
+            SystemSetting.listenEvent(complete)
             SystemSettingNative.switchBluetoothSilence()
-            SystemSetting.listenEvent(complete, 'EventBluetoothChange')
         } else {
             SystemSettingNative.switchBluetooth(complete)
         }
@@ -195,8 +195,8 @@ export default class SystemSetting {
             complete();
             return;
         }
+        SystemSetting.listenEvent(complete)
         SystemSettingNative.switchAirplane()
-        SystemSetting.listenEvent(complete, 'EventAirplaneChange')
     }
 
     static _switchingCheck() {
@@ -250,8 +250,8 @@ export default class SystemSetting {
         listener && listener.remove()
     }
 
-    static listenEvent(complete, androidEvent) {
-        const listener = eventEmitter.addListener(Utils.isAndroid ? androidEvent : 'EventEnterForeground', () => {
+    static listenEvent(complete) {
+        const listener = eventEmitter.addListener('EventEnterForeground', () => {
             listener.remove()
             complete()
         })
