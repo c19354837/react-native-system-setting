@@ -152,7 +152,11 @@ export default class SystemSetting {
     }
 
     static async getLocationMode() {
-        return await SystemSettingNative.getLocationMode()
+        if(Utils.isAndroid){
+            return await SystemSettingNative.getLocationMode()
+        }else{
+            return await SystemSetting.isLocationEnabled() ? 1 : 0
+        }
     }
 
     static switchLocation(complete) {
