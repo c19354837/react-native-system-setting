@@ -1,3 +1,10 @@
+# V1.4.4
+**2018-05-27**
+
+new API: `getLocationMode()`, see [detail](https://github.com/c19354837/react-native-system-setting/issues/35)
+
+fix bug: all listener may get `null` sometime 
+
 # V1.4.3
 **2018-05-21**
 
