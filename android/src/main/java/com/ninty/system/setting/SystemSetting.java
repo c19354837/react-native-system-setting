@@ -64,26 +64,26 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     private void listenVolume(final ReactApplicationContext reactContext) {
-        volumeBR = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
-                    WritableMap para = Arguments.createMap();
-                    para.putDouble("value", getNormalizationVolume(VOL_MUSIC));
-                    para.putDouble(VOL_VOICE_CALL, getNormalizationVolume(VOL_VOICE_CALL));
-                    para.putDouble(VOL_SYSTEM, getNormalizationVolume(VOL_SYSTEM));
-                    para.putDouble(VOL_RING, getNormalizationVolume(VOL_RING));
-                    para.putDouble(VOL_MUSIC, getNormalizationVolume(VOL_MUSIC));
-                    para.putDouble(VOL_ALARM, getNormalizationVolume(VOL_ALARM));
-                    para.putDouble(VOL_NOTIFICATION, getNormalizationVolume(VOL_NOTIFICATION));
-                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("EventVolume", para);
-                }
-            }
-        };
-        filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
+        // volumeBR = new BroadcastReceiver() {
+        //     @Override
+        //     public void onReceive(Context context, Intent intent) {
+        //         if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
+        //             WritableMap para = Arguments.createMap();
+        //             para.putDouble("value", getNormalizationVolume(VOL_MUSIC));
+        //             para.putDouble(VOL_VOICE_CALL, getNormalizationVolume(VOL_VOICE_CALL));
+        //             para.putDouble(VOL_SYSTEM, getNormalizationVolume(VOL_SYSTEM));
+        //             para.putDouble(VOL_RING, getNormalizationVolume(VOL_RING));
+        //             para.putDouble(VOL_MUSIC, getNormalizationVolume(VOL_MUSIC));
+        //             para.putDouble(VOL_ALARM, getNormalizationVolume(VOL_ALARM));
+        //             para.putDouble(VOL_NOTIFICATION, getNormalizationVolume(VOL_NOTIFICATION));
+        //             reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+        //                     .emit("EventVolume", para);
+        //         }
+        //     }
+        // };
+        // filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
 
-        reactContext.registerReceiver(volumeBR, filter);
+        // reactContext.registerReceiver(volumeBR, filter);
     }
 
     private void listenWifiState() {
