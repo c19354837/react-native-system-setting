@@ -76,8 +76,13 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                     para.putDouble(VOL_MUSIC, getNormalizationVolume(VOL_MUSIC));
                     para.putDouble(VOL_ALARM, getNormalizationVolume(VOL_ALARM));
                     para.putDouble(VOL_NOTIFICATION, getNormalizationVolume(VOL_NOTIFICATION));
-                    reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                    try {
+                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                             .emit("EventVolume", para);
+                    } catch (RuntimeException e) {
+                        // Possible to interact with volume before JS bundle execution is finished. 
+                        // This is here to avoid app crashing.
+                    }
                 }
             }
         };
