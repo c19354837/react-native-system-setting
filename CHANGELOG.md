@@ -1,3 +1,8 @@
+# V1.4.5
+**2018-06-07**
+
+fix bug: Exception handling for Volume Event, see [detail](https://github.com/c19354837/react-native-system-setting/issues/39) 
+
 # V1.4.4
 **2018-05-27**
 
