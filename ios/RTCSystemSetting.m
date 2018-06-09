@@ -117,7 +117,7 @@ RCT_EXPORT_METHOD(isBluetoothEnabled:(RCTPromiseResolveBlock)resolve rejecter:(R
 }
 
 RCT_EXPORT_METHOD(switchAirplane){
-    [self openSetting:@"bluetooth"];
+    [self openSetting:@"airplane"];
 }
 
 RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
