@@ -43,7 +43,7 @@ switchBluetoothSilence(complete)|It will open bluetooth if the bluetooth is off,
 addBluetoothListener(callback) => Promise| Listen the bluetooth state changing, and it will return the listener.
 ---|---
 **Airplane**|
-isAirplaneEnabled() => Promise|Get airplane state, true if airplane is on.
+isAirplaneEnabled() => Promise|Get airplane state, true if airplane is on. <br><br>It will always return `true` for iOS if your device has no SIM card, see [detail](https://github.com/c19354837/react-native-system-setting/issues/37)
 switchAirplane(complete)|It will open **System Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
 addAirplaneListener(callback) => Promise| Listen the airplane state changing, and it will return the listener. (Android only)
 ---|---

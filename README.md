@@ -198,7 +198,7 @@ SystemSetting.switchAirplane(()=>{
 })
 ```
 
-
+> `isAirplaneEnabled()` will always return `true` for iOS if your device has no SIM card, see [detail](https://github.com/c19354837/react-native-system-setting/issues/37)
 
 ## API
 
