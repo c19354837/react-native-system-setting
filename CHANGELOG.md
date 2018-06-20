@@ -1,3 +1,8 @@
+# V1.4.6
+**2018-06-20**
+
+fix bug: `switchAirplane()` will open Bluetooth Setting Page for iOS.
+
 # V1.4.5
 **2018-06-07**
 
