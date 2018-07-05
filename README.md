@@ -84,6 +84,18 @@ protected List<ReactPackage> getPackages() {
 }
 ```
 
+**app/AndroidManifest.xml**
+```xml
+<!-- change brightness & airplane -->
+<uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+<!-- get wifi state-->
+<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+<!-- get bluetooth state -->
+<uses-permission android:name="android.permission.BLUETOOTH"/>
+```
+
 
 ## Usage
 
