@@ -1,3 +1,8 @@
+# V1.5.0
+**2018-07-10**
+
+breaking change: remove default Android permission, see [detail](https://github.com/c19354837/react-native-system-setting/pull/44)
+
 # V1.4.6
 **2018-06-20**
 

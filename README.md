@@ -18,7 +18,7 @@ It provides some system setting APIs for you. Support iOS and Android both.
 
 [Change Log](https://github.com/c19354837/react-native-system-setting/blob/master/CHANGELOG.md)
 
-breaking change for `switchWifiSilence()` in V1.3.0, see [Powerful API](https://github.com/c19354837/react-native-system-setting#powerful-api)
+breaking change for permission since V1.5.0, see [Android Permission](https://github.com/c19354837/react-native-system-setting#android-permission)
 
 ## Look like
 
