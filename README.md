@@ -64,7 +64,7 @@ dependencies {
 }
 ```
 
-**MainApplication.java**
+**android/app/src/main/java/..packageName../MainApplication.java**
 
 On top, where imports are:
 
@@ -84,8 +84,10 @@ protected List<ReactPackage> getPackages() {
 }
 ```
 
-**app/AndroidManifest.xml**
+**android/app/src/main/AndroidManifest.xml**
+
 Add permissions you want to use
+
 ```xml
 <!-- setBrightness() & setScreenMode()  -->
 <uses-permission android:name="android.permission.WRITE_SETTINGS" />
