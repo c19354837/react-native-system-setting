@@ -175,7 +175,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                                 mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
                                         .emit("EventAirplaneChange", val == 1);
                             } catch (Settings.SettingNotFoundException e) {
-                                e.printStackTrace();
+                                Log.e(TAG, "err", e);
                             }
                         }
                     };
@@ -205,7 +205,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             int mode = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS_MODE);
             promise.resolve(mode);
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, "err", e);
             promise.reject("-1", "get screen mode fail", e);
         }
     }
@@ -247,7 +247,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                 promise.resolve(result);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e(TAG, "err", e);
             promise.reject("-1", "get app's brightness fail", e);
         }
     }
@@ -264,7 +264,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             int val = Settings.System.getInt(mContext.getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
             promise.resolve(val * 1.0f / 255);
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, "err", e);
             promise.reject("-1", "get brightness fail", e);
         }
     }
@@ -304,10 +304,10 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                     reject = true;
                 }
             } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
+                Log.e(TAG, "err", e);
                 //ignore
             } catch (SecurityException e) {
-                e.printStackTrace();
+                Log.e(TAG, "err", e);
                 reject = true;
             }
         }
@@ -452,7 +452,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             int val = Settings.System.getInt(mContext.getContentResolver(), Settings.System.AIRPLANE_MODE_ON);
             promise.resolve(val == 1);
         } catch (Settings.SettingNotFoundException e) {
-            e.printStackTrace();
+            Log.e(TAG, "err", e);
             promise.reject("-1", "get airplane mode fail", e);
         }
     }
