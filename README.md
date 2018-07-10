@@ -87,16 +87,15 @@ protected List<ReactPackage> getPackages() {
 **app/AndroidManifest.xml**
 Add permissions you want to use
 ```xml
-<!-- change brightness & airplane -->
+<!-- setBrightness() & setScreenMode()  -->
 <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
-<!-- get wifi state-->
+<!-- isWifiEnabled() -->
 <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
-<!-- get bluetooth state -->
+<!-- isBluetoothEnabled() -->
 <uses-permission android:name="android.permission.BLUETOOTH"/>
 ```
-
 
 ## Usage
 
