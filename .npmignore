@@ -1,3 +1,4 @@
 /examples
 /screenshot
 /android/build
+*.iml
