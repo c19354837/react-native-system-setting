@@ -1,3 +1,8 @@
+# V1.5.1
+**2018-08-02**
+
+show System Volume UI by default for iOS, see [detail](https://github.com/c19354837/react-native-system-setting/pull/43)
+
 # V1.5.0
 **2018-07-10**
 
