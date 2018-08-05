@@ -273,6 +273,10 @@ Default permissions are removed since V1.5.0, see [this PR](https://github.com/c
 
 > There are some different APIs that end with `silence`. They can do the job programmatically without direct user consent. These APIs maybe useful when you develop a system management app. Or, you should call `switchWifi()` & `switchBluetooth()` to get a better user experience
 
+### Do Not Disturb
+
+`setVolume()` may cause a crash: **Not allowed to change Do Not Disturb state**. See [detail](https://github.com/c19354837/react-native-system-setting/issues/48).
+
 ### Runtime permission for Android 6+
 
 Change *brightness* and *screen mode* need `android.permission.WRITE_SETTINGS` which user can disable it in phone Setting. When you call `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` , it will return false if the app has no permission, and you can call `SystemSetting.grantWriteSettingPremission()` to guide user to app setting page. see [example](https://github.com/c19354837/react-native-system-setting/tree/master/examples/SystemSettingExample)
