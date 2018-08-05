@@ -1,6 +1,7 @@
 package com.ninty.system.setting;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
