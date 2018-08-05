@@ -283,7 +283,21 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         if (showUI) {
             flags |= AudioManager.FLAG_SHOW_UI;
         }
-        am.setStreamVolume(volType, (int) (val * am.getStreamMaxVolume(volType)), flags);
+        try {
+            am.setStreamVolume(volType, (int) (val * am.getStreamMaxVolume(volType)), flags);
+        } catch (SecurityException e) {
+            if (val == 0) {
+                Log.w(TAG, "setVolume(0) failed. See https://github.com/c19354837/react-native-system-setting/issues/48");
+                NotificationManager notificationManager =
+                        (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                        && !notificationManager.isNotificationPolicyAccessGranted()) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                    mContext.startActivity(intent);
+                }
+            }
+            Log.e(TAG, "err", e);
+        }
         mContext.registerReceiver(volumeBR, filter);
     }
 
