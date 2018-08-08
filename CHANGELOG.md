@@ -1,7 +1,9 @@
 # V1.5.2
 **2018-08-05**
 
-`setVolume(0)` may crash in >= Android M, see [detail](https://github.com/c19354837/react-native-system-setting/pull/48)
+`setVolume()` may crash in >= Android M, see [detail](https://github.com/c19354837/react-native-system-setting/pull/48)
+
+RN 0.56.+ compatible, [Use project-wide properties and new dependency](https://github.com/c19354837/react-native-system-setting/pull/46)
 
 # V1.5.1
 **2018-08-02**
