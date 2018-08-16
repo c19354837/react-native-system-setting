@@ -272,7 +272,11 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     @ReactMethod
     public void setVolume(float val, ReadableMap config) {
-        mContext.unregisterReceiver(volumeBR);
+        try {
+            mContext.unregisterReceiver(volumeBR);
+        } catch (IllegalArgumentException e) {
+            Log.d(TAG, "Receiver already unregistered", e);
+        }
         String type = config.getString("type");
         boolean playSound = config.getBoolean("playSound");
         boolean showUI = config.getBoolean("showUI");
