@@ -51,7 +51,6 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     private volatile BroadcastReceiver bluetoothBR;
     private volatile BroadcastReceiver locationBR;
     private volatile BroadcastReceiver airplaneBR;
-    private IntentFilter filter;
 
     public SystemSetting(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -66,7 +65,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     private void registerVolumeReceiver() {
         if (!volumeBR.isRegistered()) {
-            filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
+            IntentFilter filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
             mContext.registerReceiver(volumeBR, filter);
             volumeBR.setRegistered(true);
         }
