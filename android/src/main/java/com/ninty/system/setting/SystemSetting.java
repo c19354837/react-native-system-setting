@@ -46,7 +46,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     private AudioManager am;
     private WifiManager wm;
     private LocationManager lm;
-    private BroadcastReceiver volumeBR;
+    private VolumeBroadcastReceiver volumeBR;
     private volatile BroadcastReceiver wifiBR;
     private volatile BroadcastReceiver bluetoothBR;
     private volatile BroadcastReceiver locationBR;
@@ -61,35 +61,22 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         wm = (WifiManager) mContext.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         lm = (LocationManager) mContext.getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
 
-        listenVolume(reactContext);
+        volumeBR = new VolumeBroadcastReceiver();
     }
 
-    private void listenVolume(final ReactApplicationContext reactContext) {
-        volumeBR = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
-                    WritableMap para = Arguments.createMap();
-                    para.putDouble("value", getNormalizationVolume(VOL_MUSIC));
-                    para.putDouble(VOL_VOICE_CALL, getNormalizationVolume(VOL_VOICE_CALL));
-                    para.putDouble(VOL_SYSTEM, getNormalizationVolume(VOL_SYSTEM));
-                    para.putDouble(VOL_RING, getNormalizationVolume(VOL_RING));
-                    para.putDouble(VOL_MUSIC, getNormalizationVolume(VOL_MUSIC));
-                    para.putDouble(VOL_ALARM, getNormalizationVolume(VOL_ALARM));
-                    para.putDouble(VOL_NOTIFICATION, getNormalizationVolume(VOL_NOTIFICATION));
-                    try {
-                        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
-                            .emit("EventVolume", para);
-                    } catch (RuntimeException e) {
-                        // Possible to interact with volume before JS bundle execution is finished. 
-                        // This is here to avoid app crashing.
-                    }
-                }
-            }
-        };
-        filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
+    private void registerVolumeReceiver() {
+        if (!volumeBR.isRegistered()) {
+            filter = new IntentFilter("android.media.VOLUME_CHANGED_ACTION");
+            mContext.registerReceiver(volumeBR, filter);
+            volumeBR.setRegistered(true);
+        }
+    }
 
-        reactContext.registerReceiver(volumeBR, filter);
+    private void unregisterVolumeReceiver() {
+        if (volumeBR.isRegistered()) {
+            mContext.unregisterReceiver(volumeBR);
+            volumeBR.setRegistered(false);
+        }
     }
 
     private void listenWifiState() {
@@ -272,7 +259,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     @ReactMethod
     public void setVolume(float val, ReadableMap config) {
-        mContext.unregisterReceiver(volumeBR);
+        unregisterVolumeReceiver();
         String type = config.getString("type");
         boolean playSound = config.getBoolean("playSound");
         boolean showUI = config.getBoolean("showUI");
@@ -299,7 +286,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             }
             Log.e(TAG, "err", e);
         }
-        mContext.registerReceiver(volumeBR, filter);
+        registerVolumeReceiver();
     }
 
     @ReactMethod
@@ -504,17 +491,16 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     @Override
     public void onHostResume() {
-
+        registerVolumeReceiver();
     }
 
     @Override
     public void onHostPause() {
-
+        unregisterVolumeReceiver();
     }
 
     @Override
     public void onHostDestroy() {
-        mContext.unregisterReceiver(volumeBR);
         if (wifiBR != null) {
             mContext.unregisterReceiver(wifiBR);
             wifiBR = null;
@@ -531,7 +517,39 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             mContext.unregisterReceiver(airplaneBR);
             airplaneBR = null;
         }
+    }
 
-        mContext.removeLifecycleEventListener(this);
+    private class VolumeBroadcastReceiver extends BroadcastReceiver {
+
+        private boolean isRegistered = false;
+
+        public void setRegistered(boolean registered) {
+            isRegistered = registered;
+        }
+
+        public boolean isRegistered() {
+            return isRegistered;
+        }
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals("android.media.VOLUME_CHANGED_ACTION")) {
+                WritableMap para = Arguments.createMap();
+                para.putDouble("value", getNormalizationVolume(VOL_MUSIC));
+                para.putDouble(VOL_VOICE_CALL, getNormalizationVolume(VOL_VOICE_CALL));
+                para.putDouble(VOL_SYSTEM, getNormalizationVolume(VOL_SYSTEM));
+                para.putDouble(VOL_RING, getNormalizationVolume(VOL_RING));
+                para.putDouble(VOL_MUSIC, getNormalizationVolume(VOL_MUSIC));
+                para.putDouble(VOL_ALARM, getNormalizationVolume(VOL_ALARM));
+                para.putDouble(VOL_NOTIFICATION, getNormalizationVolume(VOL_NOTIFICATION));
+                try {
+                    mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                            .emit("EventVolume", para);
+                } catch (RuntimeException e) {
+                    // Possible to interact with volume before JS bundle execution is finished.
+                    // This is here to avoid app crashing.
+                }
+            }
+        }
     }
 }
