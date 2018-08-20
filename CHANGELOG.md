@@ -1,3 +1,8 @@
+# V1.5.3
+**2018-08-20**
+
+fix bug: `setVolume()` may cause a crash, see [detail](https://github.com/c19354837/react-native-system-setting/pull/54)
+
 # V1.5.2
 **2018-08-05**
 
