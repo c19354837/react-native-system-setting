@@ -10,16 +10,27 @@
 #import <SystemConfiguration/CaptiveNetwork.h>
 #import <CoreLocation/CoreLocation.h>
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
-#import <CoreBluetooth/CoreBluetooth.h>
 #import <ifaddrs.h>
 #import <net/if.h>
+
+#ifdef BLUETOOTH
+#import <CoreBluetooth/CoreBluetooth.h>
+#endif
 
 @import UIKit;
 @import MediaPlayer;
 
-@implementation RCTSystemSetting{
+@interface RCTSystemSetting()
+#ifdef BLUETOOTH
+<CBCentralManagerDelegate>
+#endif
+@end
+
+@implementation RCTSystemSetting {
     bool hasListeners;
+#ifdef BLUETOOTH
     CBCentralManager *cb;
+#endif
     NSDictionary *setting;
     MPVolumeView *volumeView;
     UISlider *volumeSlider;
@@ -32,8 +43,9 @@
                                                  selector:@selector(volumeChanged:)
                                                      name:@"AVSystemController_SystemVolumeDidChangeNotification"
                                                    object:nil];
-
+#ifdef BLUETOOTH
         cb = [[CBCentralManager alloc] initWithDelegate:nil queue:nil options:@{CBCentralManagerOptionShowPowerAlertKey: @NO}];
+#endif
     }
 
     [self initVolumeView];
@@ -112,8 +124,13 @@ RCT_EXPORT_METHOD(switchBluetooth){
 }
 
 RCT_EXPORT_METHOD(isBluetoothEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+#ifdef BLUETOOTH
     bool isEnabled = cb.state == CBManagerStatePoweredOn;
     resolve([NSNumber numberWithBool:isEnabled]);
+#else
+    NSLog(@"You need add BLUETOOTH in preprocess");
+    resolve([NSNumber numberWithBool:NO]);
+#endif
 }
 
 RCT_EXPORT_METHOD(switchAirplane){
@@ -128,7 +145,9 @@ RCT_EXPORT_METHOD(isAirplaneEnabled:(RCTPromiseResolveBlock)resolve rejecter:(RC
 
 RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     if([type isEqualToString:@"bluetooth"]){
+#ifdef BLUETOOTH
         [cb setDelegate:self];
+#endif
         resolve(@YES);
     }else{
          reject(@"-1", [NSString stringWithFormat:@"unsupported listener type: %@", type], nil);
@@ -197,6 +216,7 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
     }
 }
 
+#ifdef BLUETOOTH
 -(void)centralManagerDidUpdateState:(CBCentralManager *)central{
     switch (central.state) {
         case CBManagerStatePoweredOff:
@@ -213,5 +233,6 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
             break;
     }
 }
+#endif
 
 @end

@@ -9,8 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
-#import <CoreBluetooth/CoreBluetooth.h>
 
-@interface RCTSystemSetting : RCTEventEmitter <RCTBridgeModule, CBCentralManagerDelegate>
+@interface RCTSystemSetting : RCTEventEmitter <RCTBridgeModule>
 
 @end
