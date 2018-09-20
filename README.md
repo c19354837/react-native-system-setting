@@ -189,6 +189,8 @@ SystemSetting.switchBluetooth(()=>{
 ```
 
 > `isBluetoothEnabled()` need [permission](https://github.com/c19354837/react-native-system-setting#android-permission) for Android
+>
+> If you need these bluetooth functions, and your app will submit to App Store, you should read [this](https://github.com/c19354837/react-native-system-setting/blob/master/AppStore.md)
 
 **Airplane**
 
@@ -241,16 +243,7 @@ To avoid unnecessary trouble, you can call `SystemSetting.setAppStore(true)` whi
 
 ### Bluetooth
 
-Here are some bluetooth-function:
-
-* `isBluetoothEnabled()`
-* `addBluetoothListener()`
-
-Your app may be rejected by App Store because of bluetooth, even if you never call these functions, see [this issues](https://github.com/c19354837/react-native-system-setting/issues/55).
-
-If you need these function, you should add `NSBluetoothPeripheralUsageDescription` in your `Info.plist` as Apple's rule, see [I need bluetooth]()
-
-Or, you can remove these code by preprocessor, see [I don't need bluetooth]()
+Your app will be rejected by App Store because of bluetooth, even if you never call these functions, [here are some solutions](https://github.com/c19354837/react-native-system-setting/blob/master/AppStore.md)
 
 ## Android permission
  
