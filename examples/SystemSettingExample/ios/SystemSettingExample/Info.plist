@@ -52,5 +52,7 @@
 			</dict>
 		</dict>
 	</dict>
+  <key>NSBluetoothPeripheralUsageDescription</key>
+  <string>Explain the reasons for accessing...</string>
 </dict>
 </plist>
