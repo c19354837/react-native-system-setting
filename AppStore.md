@@ -9,9 +9,9 @@ Here are some bluetooth-function:
 
 Your app may be rejected by App Store because of bluetooth, even if you never call these functions, see [this issues](https://github.com/c19354837/react-native-system-setting/issues/55).
 
-If you need these function, you should add `NSBluetoothPeripheralUsageDescription` in your `Info.plist` as Apple's rule, see [I need bluetooth](#I-need-bluetooth)
+If you need these function, you should add `NSBluetoothPeripheralUsageDescription` in your `Info.plist` as Apple's rule, see [I need bluetooth](#i-need-bluetooth)
 
-Or, you can remove these code by **Preprocessor Macros**, see [I don't need bluetooth](#I-don't-need-bluetooth)
+Or, you can remove these code by **Preprocessor Macros**, see [I don't need bluetooth](#i-dont-need-bluetooth)
 
 > Be sure that you have run `react-native link`, then open your iOS project by Xcode
 
