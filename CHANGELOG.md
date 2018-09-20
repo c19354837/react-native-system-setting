@@ -1,3 +1,8 @@
+# V1.6.0
+**2018-09-19**
+
+bluetooth issues for App Store, see [detail](https://github.com/c19354837/react-native-system-setting/issues/55)
+
 # V1.5.3
 **2018-08-20**
 
