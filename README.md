@@ -222,6 +222,8 @@ $ react-native run-ios
 
 ## App Store
 
+### API
+
 Some APIs are dangerous for iOS:
 
 * `switchWifi()`
@@ -236,6 +238,19 @@ If you are developing a App Store version, you have to give up these APIs.
 To avoid unnecessary trouble, you can call `SystemSetting.setAppStore(true)` which will invalidate these APIs.
 
 > As an alternative, you can show a tip to tell the user how to change the system setting. 
+
+### Bluetooth
+
+Here are some bluetooth-function:
+
+* `isBluetoothEnabled()`
+* `addBluetoothListener()`
+
+Your app may be rejected by App Store because of bluetooth, even if you never call these functions, see [this issues](https://github.com/c19354837/react-native-system-setting/issues/55).
+
+If you need these function, you should add `NSBluetoothPeripheralUsageDescription` in your `Info.plist` as Apple's rule, see [I need bluetooth]()
+
+Or, you can remove these code by preprocessor, see [I don't need bluetooth]()
 
 ## Android permission
  
