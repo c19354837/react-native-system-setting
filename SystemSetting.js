@@ -13,11 +13,12 @@ const eventEmitter = new NativeEventEmitter(SystemSettingNative)
 export default class SystemSetting {
     static saveBrightnessVal = -1
     static saveScreenModeVal = SCREEN_BRIGHTNESS_MODE_AUTOMATIC
-    static isAppStore = undefined
-    static appStoreWarn = 'You must call SystemSetting.setAppStore(isAppStore:bool) explicitly. Set it true if you are developing a AppStore version, or false'
 
-    static setAppStore(isAppStore) {
-        this.isAppStore = isAppStore
+    /**
+     * @deprecated
+     */
+    static setAppStore() {
+        console.warn("You don't need call setAppStore() anymore since V1.7.0")
     }
 
     static async getBrightness() {
@@ -139,10 +140,6 @@ export default class SystemSetting {
     }
 
     static switchWifi(complete) {
-        if (this._switchingCheck()) {
-            complete();
-            return;
-        }
         SystemSetting.listenEvent(complete)
         SystemSettingNative.switchWifi()
     }
@@ -152,18 +149,14 @@ export default class SystemSetting {
     }
 
     static async getLocationMode() {
-        if(Utils.isAndroid){
+        if (Utils.isAndroid) {
             return await SystemSettingNative.getLocationMode()
-        }else{
+        } else {
             return await SystemSetting.isLocationEnabled() ? 1 : 0
         }
     }
 
     static switchLocation(complete) {
-        if (this._switchingCheck()) {
-            complete();
-            return;
-        }
         SystemSetting.listenEvent(complete)
         SystemSettingNative.switchLocation()
     }
@@ -173,10 +166,6 @@ export default class SystemSetting {
     }
 
     static switchBluetooth(complete) {
-        if (this._switchingCheck()) {
-            complete();
-            return;
-        }
         SystemSetting.listenEvent(complete)
         SystemSettingNative.switchBluetooth()
     }
@@ -195,23 +184,8 @@ export default class SystemSetting {
     }
 
     static switchAirplane(complete) {
-        if (this._switchingCheck()) {
-            complete();
-            return;
-        }
         SystemSetting.listenEvent(complete)
         SystemSettingNative.switchAirplane()
-    }
-
-    static _switchingCheck() {
-        if (Utils.isIOS) {
-            if (this.isAppStore === undefined) {
-                console.warn(this.appStoreWarn)
-            } else if (this.isAppStore === true) {
-                return true;
-            }
-        }
-        return false;
     }
 
     static async addBluetoothListener(callback) {
