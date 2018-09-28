@@ -21,7 +21,7 @@ Open `Info.plist` as source code.
 
 ![open Info.plist as source code](./screenshot/appstore-bluetooth.png)
  
-Then add `NSBluetoothPeripheralUsageDescription` in `Info.plist`, see [Info.plist - example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/ios/SystemSettingExample/Info.plist#L55)
+Then add `NSBluetoothPeripheralUsageDescription` in `Info.plist`, see [Info.plist - example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/ios/SystemSettingExample/Info.plist#L55-L56)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
