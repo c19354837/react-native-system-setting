@@ -49,7 +49,9 @@
     }
 
     [self initVolumeView];
+#ifdef PRIVATE_API
     [self initSetting];
+#endif
 
     return self;
 }
@@ -65,14 +67,16 @@
     }
 }
 
+#ifdef PRIVATE_API
 -(void)initSetting{
     BOOL newSys = [UIDevice currentDevice].systemVersion.doubleValue >= 10.0;
-    setting = @{@"wifi": (newSys?@"QXBwLVByZWZzOnJvb3Q9V0lGSQ==" : @"cHJlZnM6cm9vdD1XSUZJ"),
-                @"location": (newSys?@"QXBwLVByZWZzOnJvb3Q9UHJpdmFjeSZwYXRoPUxPQ0FUSU9O" : @"cHJlZnM6cm9vdD1Qcml2YWN5JnBhdGg9TE9DQVRJT04="),
-                @"bluetooth": (newSys?@"QXBwLVByZWZzOnJvb3Q9Qmx1ZXRvb3Ro" : @"cHJlZnM6cm9vdD1CbHVldG9vdGg="),
-                @"airplane": (newSys?@"QXBwLVByZWZzOnJvb3Q9QUlSUExBTkVfTU9ERQ==" : @"cHJlZnM6cm9vdD1BSVJQTEFORV9NT0RF")
+    setting = @{@"wifi": (newSys?@"App-Prefs:root=WIFI" : @"prefs:root=WIFI"),
+                @"location": (newSys?@"App-Prefs:root=Privacy&path=LOCATION" : @"prefs:root=Privacy&path=LOCATION"),
+                @"bluetooth": (newSys?@"App-Prefs:root=Bluetooth" : @"prefs:root=Bluetooth"),
+                @"airplane": (newSys?@"App-Prefs:root=AIRPLANE_MODE" : @"prefs:root=AIRPLANE_MODE")
                 };
 }
+#endif
 
 +(BOOL)requiresMainQueueSetup{
     return YES;
@@ -128,7 +132,7 @@ RCT_EXPORT_METHOD(isBluetoothEnabled:(RCTPromiseResolveBlock)resolve rejecter:(R
     bool isEnabled = cb.state == CBManagerStatePoweredOn;
     resolve([NSNumber numberWithBool:isEnabled]);
 #else
-    NSLog(@"You need add BLUETOOTH in preprocess");
+    NSLog(@"You need add BLUETOOTH in preprocess macros, see https://github.com/c19354837/react-native-system-setting/blob/master/AppStore.md");
     resolve([NSNumber numberWithBool:NO]);
 #endif
 }
@@ -163,18 +167,16 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
 }
 
 -(void)openSetting:(NSString*)service{
-    NSString *url = [self dencodeStr:[setting objectForKey:service]];
+#ifdef PRIVATE_API
+    NSString *url = [setting objectForKey:service];
     [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:[NSDictionary new] completionHandler:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(applicationWakeUp:)
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
-}
-
-- (NSString *)dencodeStr:(NSString *)string{
-    NSData *data = [[NSData alloc]initWithBase64EncodedString:string options:NSDataBase64DecodingIgnoreUnknownCharacters];
-    NSString *result = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
-    return result;
+#else
+    NSLog(@"Fail to open [%@]. These APIs which start with 'switch*()' will cause a rejection from App Store, and you can use these APIs only when you have a enterprise account, see https://github.com/c19354837/react-native-system-setting/issues/58", service);
+#endif
 }
 
 -(BOOL)isWifiEnabled{
