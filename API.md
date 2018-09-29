@@ -5,6 +5,8 @@
 **Maybe [codes](https://github.com/c19354837/react-native-system-setting/blob/master/SystemSetting.js) is best document**
 
 > Some APIs are marked with an asterisk at the beginning, and it means you need declare permission for Androidn since V1.5.0, see [Android Permission](https://github.com/c19354837/react-native-system-setting#android-permission)
+> 
+> Some APIs which start with `swtich` or containt `bluetooth` are disabled for iOS since V1.7.0, you can [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios) in a few steps. 
 
 method | description
 ------ | -----------
