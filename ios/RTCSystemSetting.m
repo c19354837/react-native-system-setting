@@ -169,11 +169,13 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
 -(void)openSetting:(NSString*)service{
 #ifdef PRIVATE_API
     NSString *url = [setting objectForKey:service];
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:[NSDictionary new] completionHandler:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(applicationWakeUp:)
-                                                 name:UIApplicationWillEnterForegroundNotification
-                                               object:nil];
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:[NSDictionary new] completionHandler:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(applicationWakeUp:)
+                                                     name:UIApplicationWillEnterForegroundNotification
+                                                   object:nil];
+    });
 #else
     NSLog(@"Fail to open [%@]. These APIs which start with 'switch*()' will cause a rejection from App Store, and you can use these APIs only when you distribute app outside App Store, see see https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md", service);
 #endif
