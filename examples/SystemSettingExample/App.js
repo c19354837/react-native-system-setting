@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { AppRegistry, StyleSheet, Alert, Text, View, Slider, TouchableOpacity, PixelRatio, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native'
+import { StyleSheet, Alert, Text, View, Slider, TouchableOpacity, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native'
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -34,7 +34,6 @@ export default class SystemSettingExample extends Component {
     }
 
     async componentDidMount() {
-        SystemSetting.setAppStore(false)
         this.setState({
             volume: await SystemSetting.getVolume(this.state.volType),
             brightness: await SystemSetting.getBrightness(),
