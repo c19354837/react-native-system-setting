@@ -1,27 +1,59 @@
-# App Store
+# iOS
+
+Some functions are diabled by default:
+
+* `switchWifi()`
+* `switchBluetooth()`
+* `switchLocation()`
+* `switchAirplane()`
+* `isBluetoothEnabled()`
+* `addBluetoothListener()`
+
+When you call these functions, you'll just get some warning log.
+
+You can enable it by add a preprocessor macros.
+
+## Private API
+
+There are some functions which start with `switch`:
+
+* `switchWifi()`
+* `switchBluetooth()`
+* `switchLocation()`
+* `switchAirplane()`
+
+I implement them by using non-public APIs, which is not permitted on the App Store, see [this issure](https://github.com/c19354837/react-native-system-setting/issues/28). 
+
+**These functions are disabled by default. You must not call them If your app need submit to App Store. As an alternative, you can show a tip to tell the user how to change the system setting.**
+
+Only when you'll distribute the app outside App Store, you can enable them by add a preprocessor macros `PRIVATE_API`.
+
+**WARNING: If you enable it and submit app to App Store, you'll definitely get a rejection from apple. In the worst case, your account will be ban!**
+
+![add preprocessor macros `PRIVATE_API `](./screenshot/ios_private_api.png)
+
+> You should add `PRIVATE_API` in both `Debug` and `Release` 
 
 ## Bluetooth
 
-Here are some bluetooth-function:
+There are some bluetooth-function:
 
 * `isBluetoothEnabled()`
 * `addBluetoothListener()`
 
-Your app may be rejected by App Store because of bluetooth, even if you never call these functions, see [this issues](https://github.com/c19354837/react-native-system-setting/issues/55).
+You can enable them in a few steps: 
 
-If you need these function, you should add `NSBluetoothPeripheralUsageDescription` in your `Info.plist` as Apple's rule, see [I need bluetooth](#i-need-bluetooth)
+First, add preprocessor macros `BLUETOOTH`
 
-Or, you can remove these code by **Preprocessor Macros**, see [I don't need bluetooth](#i-dont-need-bluetooth)
+![add preprocessor macros `BLUETOOTH`](./screenshot/ios_bluetooth.png)
 
-> Be sure that you have run `react-native link`, then open your iOS project by Xcode
+> You should add `BLUETOOTH` in both `Debug` and `Release`
 
-### I need bluetooth
+Then open `Info.plist` as source code.
 
-Open `Info.plist` as source code.
-
-![open Info.plist as source code](./screenshot/appstore-bluetooth.png)
+![open Info.plist as source code](./screenshot/ios_bluetooth_plist.png)
  
-Then add `NSBluetoothPeripheralUsageDescription` in `Info.plist`, see [Info.plist - example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/ios/SystemSettingExample/Info.plist#L55-L56)
+Finally, add `NSBluetoothPeripheralUsageDescription` in `Info.plist`, see [Info.plist - example](https://github.com/c19354837/react-native-system-setting/blob/master/examples/SystemSettingExample/ios/SystemSettingExample/Info.plist#L55-L56)
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -40,10 +72,3 @@ Then add `NSBluetoothPeripheralUsageDescription` in `Info.plist`, see [Info.plis
 
 > You can change the `string` as you need
 
-### I don't need bluetooth
-
-Delete preprocessor macros `BLUETOOTH`
-
-![Delete preprocessor macros `BLUETOOTH`](./screenshot/appstore-not-bluetooth.png)
-
-> You should delete `BLUETOOTH` in both `Debug` and `Release`
