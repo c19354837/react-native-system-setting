@@ -1,5 +1,5 @@
 # V1.7.0
-**2018-09-19**
+**2018-09-30**
 
 add preprocressor `PRIVATE_API` which can enable `switch*()` function, see [detail](https://github.com/c19354837/react-native-system-setting/issues/58)
 
