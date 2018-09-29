@@ -161,6 +161,8 @@ SystemSetting.switchWifi(()=>{
 ```
 
 > `isWifiEnabled()` need [permission](https://github.com/c19354837/react-native-system-setting#android-permission) for Android
+> 
+> `switchWifi()` is disabled by default for iOS since V1.7.0, [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios)
 
 **Location**
 
@@ -174,6 +176,7 @@ SystemSetting.switchLocation(()=>{
     console.log('switch location successfully');
 })
 ```
+> `switchLocation()` is disabled by default for iOS since V1.7.0, [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios)
 
 **Bluetooth**
 
@@ -190,7 +193,7 @@ SystemSetting.switchBluetooth(()=>{
 
 > `isBluetoothEnabled()` need [permission](https://github.com/c19354837/react-native-system-setting#android-permission) for Android
 >
-> If you need these bluetooth functions, and your app will submit to App Store, you should read [this](https://github.com/c19354837/react-native-system-setting/blob/master/AppStore.md)
+> All bluetooth-function are disabled by default for iOS since V1.7.0, [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios)
 
 **Airplane**
 
@@ -206,6 +209,8 @@ SystemSetting.switchAirplane(()=>{
 ```
 
 > `isAirplaneEnabled()` will always return `true` for iOS if your device has no SIM card, see [detail](https://github.com/c19354837/react-native-system-setting/issues/37)
+> 
+> `switchAirplane()` is disabled by default for iOS since V1.7.0, [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios)
 
 ## API
 
@@ -222,28 +227,9 @@ $ react-native run-android
 $ react-native run-ios
 ```
 
-## App Store
+## iOS
 
-### API
-
-Some APIs are dangerous for iOS:
-
-* `switchWifi()`
-* `switchBluetooth()`
-* `switchLocation()`
-* `switchAirplane()`
-
-I implement them by using non-public APIs, which is not permitted on the App Store, see [this issure](https://github.com/c19354837/react-native-system-setting/issues/28). 
-
-If you are developing a App Store version, you have to give up these APIs. 
-
-To avoid unnecessary trouble, you can call `SystemSetting.setAppStore(true)` which will invalidate these APIs.
-
-> As an alternative, you can show a tip to tell the user how to change the system setting. 
-
-### Bluetooth
-
-Your app will be rejected by App Store because of bluetooth, even if you never call these functions, [here are some solutions](https://github.com/c19354837/react-native-system-setting/blob/master/AppStore.md)
+To be more friendly to app store, I disable some APIs for iOS since V1.7.0, You can [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios) in a few steps.
 
 ## Android permission
  
