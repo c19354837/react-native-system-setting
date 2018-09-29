@@ -132,7 +132,7 @@ RCT_EXPORT_METHOD(isBluetoothEnabled:(RCTPromiseResolveBlock)resolve rejecter:(R
     bool isEnabled = cb.state == CBManagerStatePoweredOn;
     resolve([NSNumber numberWithBool:isEnabled]);
 #else
-    NSLog(@"You need add BLUETOOTH in preprocess macros, see https://github.com/c19354837/react-native-system-setting/blob/master/AppStore.md");
+    NSLog(@"You need add BLUETOOTH in preprocess macros, see https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md");
     resolve([NSNumber numberWithBool:NO]);
 #endif
 }
@@ -175,7 +175,7 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
                                                  name:UIApplicationWillEnterForegroundNotification
                                                object:nil];
 #else
-    NSLog(@"Fail to open [%@]. These APIs which start with 'switch*()' will cause a rejection from App Store, and you can use these APIs only when you have a enterprise account, see https://github.com/c19354837/react-native-system-setting/issues/58", service);
+    NSLog(@"Fail to open [%@]. These APIs which start with 'switch*()' will cause a rejection from App Store, and you can use these APIs only when you distribute app outside App Store, see see https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md", service);
 #endif
 }
 
