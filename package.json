@@ -3,6 +3,7 @@
     "version": "1.7.4",
     "description": "provide some system setting APIs. Volume, brightness, wifi, location, bluetooth, airplane...",
     "main": "SystemSetting.js",
+    "types": "SystemSetting.d.ts",
     "homepage": "https://github.com/c19354837/react-native-system-setting",
     "bugs": {
         "url": "https://github.com/c19354837/react-native-system-setting/issues"
