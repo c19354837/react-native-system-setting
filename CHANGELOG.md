@@ -1,3 +1,8 @@
+# V1.7.1
+**2018-12-30**
+
+new API: `openAppSystemSettings` will open app setting page
+
 # V1.7.0
 **2018-09-30**
 

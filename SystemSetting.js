@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter, Platform } from 'react-native'
+import { NativeModules, NativeEventEmitter, Platform, Linking } from 'react-native'
 
 import Utils from './Utils'
 
@@ -194,6 +194,23 @@ export default class SystemSetting {
                 return await SystemSettingNative.softKeysVisible()
             default:
                 throw new Error('only available on android')
+        }
+    }
+
+    static async openAppSystemSettings() {
+        switch(Platform.OS) {
+            case 'ios': {
+                const settingsLink = 'app-settings:';
+                const supported = await Linking.canOpenURL(settingsLink)
+                if (supported) await Linking.openURL(settingsLink);
+                break;
+            }
+            case 'android': 
+                await SystemSettingNative.openAppSystemSettings()
+                break;
+            default:
+                throw new Error('unknown platform')
+                break;    
         }
     }
 

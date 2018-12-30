@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Alert, Text, View, Slider, TouchableOpacity, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native'
+import { StyleSheet, StatusBar, Alert, Text, View, Slider, TouchableOpacity, Switch, ActivityIndicator, ScrollView, Platform } from 'react-native'
 
 import SystemSetting from 'react-native-system-setting'
 
@@ -121,7 +121,7 @@ export default class SystemSettingExample extends Component {
         })
     }
 
-    _restoreBrightness() {
+    _restoreBrightness = () => {
         const saveBrightnessVal = SystemSetting.restoreBrightness()
         if (saveBrightnessVal > -1) {
             // success
@@ -130,6 +130,10 @@ export default class SystemSettingExample extends Component {
             })
             this._changeSliderNativeVol(this.sliderBri, saveBrightnessVal)
         }
+    }
+
+    _openAppSetting = async () => {
+      await SystemSetting.openAppSystemSettings()
     }
 
     _switchWifi() {
@@ -189,8 +193,7 @@ export default class SystemSettingExample extends Component {
         } = this.state
         return (
             <ScrollView style={styles.container}>
-                <View style={styles.head}>
-                </View>
+                <StatusBar />
                 <ValueView
                     title='Volume'
                     btn={this.isAndroid && {
@@ -207,22 +210,6 @@ export default class SystemSettingExample extends Component {
                     changeVal={(val) => this._changeBrightness(val)}
                     refFunc={(sliderBri) => this.sliderBri = sliderBri}
                 />
-                <View style={styles.card}>
-                    <View style={styles.row}>
-                        <Text style={styles.title}>Brightness save & restore
-                        </Text>
-                    </View>
-                    <View style={styles.row}>
-                        <TouchableOpacity style={{ marginRight: 32 }} onPress={SystemSetting.saveBrightness}>
-                            <Text style={styles.btn}>Save
-                            </Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity onPress={this._restoreBrightness.bind(this)}>
-                            <Text style={styles.btn}>Restore
-                            </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
                 <StatusView
                     title='Wifi'
                     value={wifiEnable}
@@ -243,6 +230,14 @@ export default class SystemSettingExample extends Component {
                     value={airplaneEnable}
                     loading={airplaneStateLoading}
                     switchFunc={(value) => this._switchAirplane()} />
+                <View style={styles.card}>
+                    <View style={styles.row}>
+                        <Text style={[styles.title, {flex: 1}]}>Func</Text>
+                        <TouchableOpacity onPress={this._openAppSetting}>
+                            <Text style={styles.btn}>Open App Setting</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </ScrollView>
         )
     }
@@ -255,8 +250,7 @@ const ValueView = (props) => {
             <View style={styles.row}>
                 <Text style={styles.title}>{title}</Text>
                 {btn && <TouchableOpacity onPress={btn.onPress}>
-                    <Text style={styles.btn}>{btn.title}
-                    </Text>
+                    <Text style={styles.btn}>{btn.title}</Text>
                 </TouchableOpacity>}
                 <Text style={styles.value}>{value}</Text>
             </View>
@@ -273,20 +267,12 @@ const StatusView = (props) => {
     return (
         <View style={styles.card}>
             <View style={styles.row}>
-                <Text style={styles.title}>{title}
-                </Text>
-            </View>
-            <View style={styles.row}>
-                <Text>Current status is {loading ? 'switching' : (value ? 'On' : 'Off')}
-                </Text>
-                {
-                    loading && <ActivityIndicator animating={loading} />
-                }
-                <View style={{ flex: 1, alignItems: 'flex-end' }}>
-                    <Switch
-                        onValueChange={switchFunc}
-                        value={value} />
-                </View>
+                <Text style={styles.title}>{title}</Text>
+                <Text style={{flex: 1, opacity: 0.4, paddingHorizontal: 8}}>current status is {loading ? 'switching' : (value ? 'On' : 'Off')} </Text>
+                { loading && <ActivityIndicator animating={loading} /> }
+                <Switch
+                    onValueChange={switchFunc}
+                    value={value} />
             </View>
         </View>
     )
@@ -302,21 +288,15 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: 64,
     },
-    headline: {
-        fontSize: 22,
-        color: '#666'
-    },
     card: {
         padding: 8,
         backgroundColor: '#fff',
-        marginTop: 4,
-        marginBottom: 4,
+        marginVertical: 4
     },
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: 8,
-        paddingBottom: 8,
+        paddingVertical: 8
     },
     title: {
         fontSize: 16,

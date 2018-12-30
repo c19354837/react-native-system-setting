@@ -40,3 +40,8 @@ buck-out/
 \.buckd/
 android/app/libs
 android/keystores/debug.keystore
+package-lock.json
+android/.project
+examples/SystemSettingExample/android/.settings/org.eclipse.buildship.core.prefs
+examples/SystemSettingExample/android/app/.classpath
+examples/SystemSettingExample/android/app/.settings/org.eclipse.buildship.core.prefs

@@ -495,6 +495,16 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         promise.resolve((realWidth > displayWidth) || (realHeight > displayHeight));
     }
     
+    public void openAppSystemSettings() {
+        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.setData(Uri.parse("package:" + mContext.getPackageName()));
+        if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+            mContext.startActivity(intent);
+        }
+    }
+
     @Override
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
         SysSettings setting = SysSettings.get(requestCode);
