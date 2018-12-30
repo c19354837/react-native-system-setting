@@ -54,3 +54,4 @@ addAirplaneListener(callback) => Promise| Listen the airplane state changing, an
 **Other**|
 setAppStore(isAppStore:bool)| `true` means that you'll submit your app to App Store. In order to throught the App Store review, it has some side effects, see [App Store](https://github.com/c19354837/react-native-system-setting#app-store).<br><br>`false` means that your app will not upload to App Store, and you can use any APIs at will.
 removeListener(listener)| you can use this to remove the listener which return by `add*Listener(callback)`
+openAppSystemSettings()| open app's setting page
