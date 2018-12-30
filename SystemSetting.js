@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter } from 'react-native'
+import { NativeModules, NativeEventEmitter, Linking, Platform } from 'react-native'
 
 import Utils from './Utils'
 
@@ -186,6 +186,23 @@ export default class SystemSetting {
     static switchAirplane(complete) {
         SystemSetting.listenEvent(complete)
         SystemSettingNative.switchAirplane()
+    }
+
+    static async openAppSystemSettings() {
+        switch(Platform.OS) {
+            case 'ios': {
+                const settingsLink = 'app-settings:';
+                const supported = await Linking.canOpenURL(settingsLink)
+                if (supported) await Linking.openURL(settingsLink);
+                break;
+            }
+            case 'android': 
+                await SystemSettingNative.openAppSystemSettings()
+                break;
+            default:
+                throw new Error('unknown platform')
+                break;    
+        }
     }
 
     static async addBluetoothListener(callback) {
