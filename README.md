@@ -212,6 +212,13 @@ SystemSetting.switchAirplane(()=>{
 > 
 > `switchAirplane()` is disabled by default for iOS since V1.7.0, [enable it](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#ios)
 
+**Other**
+
+```javascript
+// open app setting page
+SystemSetting.openAppSystemSettings()
+```
+
 ## API
 
 [API](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
