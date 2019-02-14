@@ -50,6 +50,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     private volatile BroadcastReceiver wifiBR;
     private volatile BroadcastReceiver bluetoothBR;
     private volatile BroadcastReceiver locationBR;
+    private volatile BroadcastReceiver locationModeBR;
     private volatile BroadcastReceiver airplaneBR;
 
     public SystemSetting(ReactApplicationContext reactContext) {
@@ -145,6 +146,28 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                     locationFilter.addAction(LocationManager.PROVIDERS_CHANGED_ACTION);
 
                     mContext.registerReceiver(locationBR, locationFilter);
+                }
+            }
+        }
+    }
+
+    private void listenLocationModeState() {
+        if (locationModeBR == null) {
+            synchronized (this) {
+                if (locationModeBR == null) {
+                    locationModeBR = new BroadcastReceiver() {
+                        @Override
+                        public void onReceive(Context context, Intent intent) {
+                            if (intent.getAction().equals(LocationManager.MODE_CHANGED_ACTION)) {
+                                mContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                                        .emit("EventLocationModeChange", getLocationMode());
+                            }
+                        }
+                    };
+                    IntentFilter locationFilter = new IntentFilter();
+                    locationFilter.addAction(LocationManager.MODE_CHANGED_ACTION);
+
+                    mContext.registerReceiver(locationModeBR, locationFilter);
                 }
             }
         }
@@ -377,17 +400,21 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @ReactMethod
     public void getLocationMode(Promise promise) {
         if (lm != null) {
-            int result = 0;
-            if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-                result |= 1;
-            }
-            if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-                result |= 1 << 1;
-            }
-            promise.resolve(result);
+            promise.resolve(getLocationMode());
         } else {
             promise.reject("-1", "get location manager fail");
         }
+    }
+
+    private int getLocationMode() {
+        int result = 0;
+        if (lm.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            result |= 1;
+        }
+        if (lm.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+            result |= 1 << 1;
+        }
+        return result;
     }
 
     private boolean isLocationEnable() {
@@ -437,6 +464,10 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                 return;
             case "location":
                 listenLocationState();
+                promise.resolve(null);
+                return;
+            case "locationMode":
+                listenLocationModeState();
                 promise.resolve(null);
                 return;
             case "airplane":
@@ -521,6 +552,10 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
         }
         if (locationBR != null) {
             mContext.unregisterReceiver(locationBR);
+            locationBR = null;
+        }
+        if (locationModeBR != null) {
+            mContext.unregisterReceiver(locationModeBR);
             locationBR = null;
         }
         if (airplaneBR != null) {

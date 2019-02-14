@@ -217,6 +217,10 @@ export default class SystemSetting {
         return await SystemSetting._addListener(true, 'location', 'EventLocationChange', callback)
     }
 
+    static async addLocationModeListener(callback) {
+        return await SystemSetting._addListener(true, 'locationMode', 'EventLocationModeChange', callback)
+    }
+
     static async addAirplaneListener(callback) {
         return await SystemSetting._addListener(true, 'airplane', 'EventAirplaneChange', callback)
     }
