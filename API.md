@@ -39,6 +39,7 @@ isLocationEnabled() => Promise|Get location state, true if location is on.
 switchLocation(complete)|It will open **System Location Setting Page**, and you can change it by yourself. When come back to the app, the `complete` will be call.
 addLocationListener(callback) => Promise| Listen the location state changing, and it will return the listener. (Android only)
 getLocationMode() => Promise| Get current location mode code: `0` - 'off', `1` - 'gps', `2` - 'network', `3` - 'gps & network'. (Android only)
+addLocationModeListener(callback) => Promise| Listen the location mode changing, and it will return the listener. (Android only)
 ---|---
 **Bluetooth**|
 \* isBluetoothEnabled() => Promise|Get bluetooth state, true if bluetooth is on.

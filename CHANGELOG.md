@@ -1,3 +1,8 @@
+# V1.7.2
+**2019-02-14**
+
+new API: `addLocationModeListener()`, only works in Android
+
 # V1.7.1
 **2018-12-30**
 
