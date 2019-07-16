@@ -64,7 +64,7 @@ dependencies {
 }
 ```
 
-**android/app/src/main/java/..packageName../MainApplication.java**
+**android/app/src/main/java/com/..packageName../MainApplication.java**
 
 On top, where imports are:
 
@@ -77,10 +77,9 @@ Add the `SystemSettingPackage` class to your list of exported packages.
 ```java
 @Override
 protected List<ReactPackage> getPackages() {
-    return Arrays.asList(
-            new MainReactPackage(),
-            new SystemSettingPackage()
-    );
+	...
+    packages.add(new SystemSettingPackage());
+	return packages;
 }
 ```
 
