@@ -1,3 +1,8 @@
+# V1.7.3
+**2019-10-03**
+
+fix bug: `setBrightness()` will cause a crash in iOS 13, see [detail](https://github.com/c19354837/react-native-system-setting/pull/89)
+
 # V1.7.2
 **2019-02-14**
 
