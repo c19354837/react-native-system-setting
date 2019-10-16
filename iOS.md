@@ -22,7 +22,7 @@ There are some functions which start with `switch`:
 * `switchLocation()`
 * `switchAirplane()`
 
-I implement them by using non-public APIs, which is not permitted on the App Store, see [this issure](https://github.com/c19354837/react-native-system-setting/issues/28). 
+I implement them by using non-public APIs, which is not permitted on the App Store, see [this issue](https://github.com/c19354837/react-native-system-setting/issues/28). 
 
 **These functions are disabled by default. You must not call them If your app need submit to App Store. As an alternative, you can show a tip to tell the user how to change the system setting.**
 
