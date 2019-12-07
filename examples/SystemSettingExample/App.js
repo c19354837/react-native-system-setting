@@ -112,7 +112,7 @@ export default class SystemSettingExample extends Component {
         if (!result) {
             Alert.alert('Permission Deny', 'You have no permission changing settings', [
                 { 'text': 'Ok', style: 'cancel' },
-                { 'text': 'Open Setting', onPress: () => SystemSetting.grantWriteSettingPremission() }
+                { 'text': 'Open Setting', onPress: () => SystemSetting.grantWriteSettingPermission() }
             ])
             return
         }

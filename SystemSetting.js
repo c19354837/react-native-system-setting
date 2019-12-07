@@ -61,7 +61,7 @@ export default class SystemSetting {
         }
     }
 
-    static grantWriteSettingPremission() {
+    static grantWriteSettingPermission() {
         if (Utils.isAndroid) {
             SystemSettingNative.openWriteSetting()
         }
