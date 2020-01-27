@@ -96,10 +96,18 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 }
 
 RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)config){
+    [self stopObserving];
+
     dispatch_sync(dispatch_get_main_queue(), ^{
         id showUI = [config objectForKey:@"showUI"];
         [self showVolumeUI:(showUI != nil && [showUI boolValue])];
         volumeSlider.value = val;
+
+        __weak RCTSystemSetting *weakSelf = self;
+        [[NSNotificationCenter defaultCenter] addObserverForName:@"AVSystemController_SystemVolumeDidChangeNotification" object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+            __strong RCTSystemSetting *strongSelf = weakSelf;
+            [strongSelf startObserving];
+        }];
     });
 }
 
