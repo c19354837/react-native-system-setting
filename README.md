@@ -127,7 +127,7 @@ SystemSetting.getBrightness().then((brightness)=>{
 SystemSetting.setBrightnessForce(0.5).then((success)=>{
     !success && Alert.alert('Permission Deny', 'You have no permission changing settings',[
 	   {'text': 'Ok', style: 'cancel'},
-	   {'text': 'Open Setting', onPress:()=>SystemSetting.grantWriteSettingPremission()}
+	   {'text': 'Open Setting', onPress:()=>SystemSetting.grantWriteSettingPermission()}
 	])
 });
 
@@ -280,7 +280,7 @@ Default permissions are removed since V1.5.0, see [this PR](https://github.com/c
 
 ### Runtime permission for Android 6+
 
-Change *brightness* and *screen mode* need `android.permission.WRITE_SETTINGS` which user can disable it in phone Setting. When you call `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` , it will return false if the app has no permission, and you can call `SystemSetting.grantWriteSettingPremission()` to guide user to app setting page. see [example](https://github.com/c19354837/react-native-system-setting/tree/master/examples/SystemSettingExample)
+Change *brightness* and *screen mode* need `android.permission.WRITE_SETTINGS` which user can disable it in phone Setting. When you call `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` , it will return false if the app has no permission, and you can call `SystemSetting.grantWriteSettingPermission()` to guide user to app setting page. see [example](https://github.com/c19354837/react-native-system-setting/tree/master/examples/SystemSettingExample)
 
 > If you just want to change app's brightness, you can call `setAppBrightness(val)`, and it doesn't require any permission. see [API](https://github.com/c19354837/react-native-system-setting/blob/master/API.md)
 

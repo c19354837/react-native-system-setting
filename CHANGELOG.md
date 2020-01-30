@@ -102,7 +102,7 @@ new API: `switchBluetoothSilence()`, see [detail](https://github.com/c19354837/r
 
 fix bug - `setVolume(val, config)` will cause a crash when `type` is null, see [detail](https://github.com/c19354837/react-native-system-setting/issues/22)
 
-fix bug - `grantWriteSettingPremission()` navigates to the wrong page, see [detail](https://github.com/c19354837/react-native-system-setting/issues/24)
+fix bug - `grantWriteSettingPermission()` navigates to the wrong page, see [detail](https://github.com/c19354837/react-native-system-setting/issues/24)
 
 # V1.2.4
 **2018-03-14**

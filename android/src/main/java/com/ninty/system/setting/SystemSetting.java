@@ -336,7 +336,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
             }
         }
         if (reject) {
-            promise.reject("-1", "write_settings premission is blocked by system");
+            promise.reject("-1", "write_settings permission is blocked by system");
         } else {
             promise.resolve(true);
         }

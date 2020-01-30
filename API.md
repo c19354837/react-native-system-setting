@@ -24,7 +24,7 @@ setBrightness(val:float) => Promise | Set the system brightness by specified val
 getAppBrightness() => Promise | Get the app brightness, and it will returns system brightness if you haven't call `setAppBrightness(val)` yet. (iOS allways returns system brightness)
 getScreenMode() => Promise| (Only for Android, iOS will return -1). Get the screen mode, 0 is manual, while 1 is automatic.
 \* setScreenMode(mode:int) => Promise|(Only for Android, iOS cannot change it). Change the screen mode, 0 is manual, while 1 is automatic.<br><br>Return false if permission deny ( iOS always be true
-grantWriteSettingPremission()| open app setting page. It's user-friendly when you need some permission. Normally, you can call it if `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` return false 
+grantWriteSettingPermission()| open app setting page. It's user-friendly when you need some permission. Normally, you can call it if `setScreenMode()`, `setBrightness()` or `setBrightnessForce()` return false 
 \* saveBrightness()|It will save current brightness and screen mode.
 restoreBrightness() => Promise|Restore brightness and screen mode back to saveBrightness(). While iOS only restore the brightness, Android will restore both. <br><br>You should call this before setBrightness() or setBrightnessForce(). <br><br>It will return the saved brightness.
 ---|---
