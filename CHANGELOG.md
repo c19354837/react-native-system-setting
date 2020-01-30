@@ -1,3 +1,8 @@
+# V1.7.4
+**2020-01-30**
+
+typo: `grantWriteSettingPremission()` -> `grantWriteSettingPermission`, see [detail](https://github.com/c19354837/react-native-system-setting/issues/97)
+
 # V1.7.3
 **2019-10-03**
 
