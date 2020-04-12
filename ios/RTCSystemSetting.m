@@ -28,6 +28,7 @@
 
 @implementation RCTSystemSetting {
     bool hasListeners;
+    long skipSetVolumeCount;
 #ifdef BLUETOOTH
     CBCentralManager *cb;
 #endif
@@ -57,6 +58,7 @@
 }
 
 -(void)initVolumeView{
+    skipSetVolumeCount = 0;
     volumeView = [[MPVolumeView alloc] initWithFrame:CGRectMake(-[UIScreen mainScreen].bounds.size.width, 0, 0, 0)];
     [self showVolumeUI:YES];
     for (UIView* view in volumeView.subviews) {
@@ -96,6 +98,7 @@ RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPro
 }
 
 RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)config){
+    skipSetVolumeCount++;
     dispatch_sync(dispatch_get_main_queue(), ^{
         id showUI = [config objectForKey:@"showUI"];
         [self showVolumeUI:(showUI != nil && [showUI boolValue])];
@@ -216,9 +219,12 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
 }
 
 -(void)volumeChanged:(NSNotification *)notification{
-    if(hasListeners){
+    if(skipSetVolumeCount == 0 && hasListeners){
         float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
         [self sendEventWithName:@"EventVolume" body:@{@"value": [NSNumber numberWithFloat:volume]}];
+    }
+    if(skipSetVolumeCount > 0){
+        skipSetVolumeCount--;
     }
 }
 
