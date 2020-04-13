@@ -53,6 +53,6 @@ switchAirplane(complete)|It will open **System Setting Page**, and you can chang
 addAirplaneListener(callback) => Promise| Listen the airplane state changing, and it will return the listener. (Android only)
 ---|---
 **Other**|
-setAppStore(isAppStore:bool)| `true` means that you'll submit your app to App Store. In order to throught the App Store review, it has some side effects, see [App Store](https://github.com/c19354837/react-native-system-setting#app-store).<br><br>`false` means that your app will not upload to App Store, and you can use any APIs at will.
+setAppStore(isAppStore:bool)| `true` means that you'll submit your app to App Store. In order to throught the App Store review, it has some side effects, see [Private API](https://github.com/c19354837/react-native-system-setting/blob/master/iOS.md#private-api).<br><br>`false` means that your app will not upload to App Store, and you can use any APIs at will.
 removeListener(listener)| you can use this to remove the listener which return by `add*Listener(callback)`
 openAppSystemSettings()| open app's setting page
