@@ -43,11 +43,38 @@ There are some bluetooth-function:
 
 You can enable them in a few steps: 
 
-First, add preprocessor macros `BLUETOOTH`
+First, add preprocessor macros `BLUETOOTH`, either
+1) Manually, or
+2) Using `post_install` hook in Podfile (for React-Native >=0.60 with autolinking)
+
+### Manually adding a preprocessor macro:
 
 ![add preprocessor macros `BLUETOOTH`](./screenshot/ios_bluetooth.png)
 
 > You should add `BLUETOOTH` in both `Debug` and `Release`
+
+### Automatically adding a preprocessor macro via Podfile
+Add `post_install` hook in `Podfile`:
+```ruby
+  post_install do |installer|
+    flipper_post_install(installer)
+
+    ## ADD THE FOLLOWING:
+
+    # Enables bluetooth functionality of react-native-system-setting
+    installer.pods_project.targets.each do |target|
+      if target.name == "RCTSystemSetting"
+        target.build_configurations.each do |config|
+          config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] ||= ['$(inherited)']
+          if !config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'].include? 'BLUETOOTH'
+            puts 'Adding BLUETOOTH in GCC_PREPROCESSOR_DEFINITIONS of Pod RCTSystemSetting...'
+            config.build_settings['GCC_PREPROCESSOR_DEFINITIONS'] << 'BLUETOOTH'
+          end
+        end
+      end
+    end
+  end
+```
 
 Then open `Info.plist` as source code.
 
