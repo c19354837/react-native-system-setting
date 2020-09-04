@@ -1,3 +1,8 @@
+# V1.7.5
+**2020-09-02**
+
+adds TypeScript definitions, see [detail](https://github.com/c19354837/react-native-system-setting/pull/116)
+
 # V1.7.4
 **2020-01-30**
 
