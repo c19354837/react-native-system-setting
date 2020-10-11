@@ -15,6 +15,8 @@ import android.os.Build;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.WindowManager;
+import android.util.DisplayMetrics;
+import android.view.Display;
 
 import com.facebook.react.bridge.ActivityEventListener;
 import com.facebook.react.bridge.Arguments;
@@ -505,6 +507,25 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     }
 
     @ReactMethod
+    public void softKeysVisible(Promise promise) {    
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            promise.resolve(false);
+        }
+        Display display = ((WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+
+        DisplayMetrics realDisplayMetrics = new DisplayMetrics();
+        display.getRealMetrics(realDisplayMetrics);
+        int realHeight = realDisplayMetrics.heightPixels;
+        int realWidth = realDisplayMetrics.widthPixels;
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        display.getMetrics(displayMetrics);
+        int displayHeight = displayMetrics.heightPixels;
+        int displayWidth = displayMetrics.widthPixels;
+
+        promise.resolve((realWidth > displayWidth) || (realHeight > displayHeight));
+    }
+    
     public void openAppSystemSettings() {
         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

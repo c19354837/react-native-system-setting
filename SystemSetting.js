@@ -1,4 +1,4 @@
-import { NativeModules, NativeEventEmitter, Linking, Platform } from 'react-native'
+import { NativeModules, NativeEventEmitter, Platform, Linking } from 'react-native'
 
 import Utils from './Utils'
 
@@ -197,6 +197,15 @@ export default class SystemSetting {
     static switchAirplane(complete) {
         SystemSetting.listenEvent(complete)
         SystemSettingNative.switchAirplane()
+    }
+
+    static async androidAreSoftKeysVisible() {
+        switch(Platform.OS) {
+            case 'android': 
+                return await SystemSettingNative.softKeysVisible()
+            default:
+                throw new Error('only available on android')
+        }
     }
 
     static async openAppSystemSettings() {
