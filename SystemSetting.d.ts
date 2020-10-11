@@ -50,7 +50,7 @@ interface SystemSetting {
   switchWifi: () => void;
   isLocationEnabled: () => Promise<boolean>;
   getLocationMode: () => Promise<number>;
-  switchLocation: () => void;
+  switchLocation: (callback: () => void) => void;
   isBluetoothEnabled: () => Promise<boolean>;
   switchBluetooth: () => void;
   switchBluetoothSilence: () => void;
