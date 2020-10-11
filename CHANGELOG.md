@@ -1,3 +1,8 @@
+# V1.7.6
+**2020-10-11**
+
+fix TypeScript definitions
+
 # V1.7.5
 **2020-09-02**
 
