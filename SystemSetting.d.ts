@@ -4,6 +4,8 @@ interface EmitterSubscription {
   remove: () => void;
 }
 
+type CompleteFunc = () => void
+
 type VolumeType =
   | "call"
   | "system"
@@ -46,16 +48,16 @@ interface SystemSetting {
   ) => EmitterSubscription;
   removeVolumeListener: (listener?: EmitterSubscription) => void;
   isWifiEnabled: () => Promise<boolean>;
-  switchWifiSilence: () => void;
-  switchWifi: () => void;
+  switchWifiSilence: (onComplete?: CompleteFunc) => void;
+  switchWifi: (onComplete?: CompleteFunc) => void;
   isLocationEnabled: () => Promise<boolean>;
   getLocationMode: () => Promise<number>;
-  switchLocation: (callback: () => void) => void;
+  switchLocation: (onComplete?: CompleteFunc) => void;
   isBluetoothEnabled: () => Promise<boolean>;
-  switchBluetooth: () => void;
-  switchBluetoothSilence: () => void;
+  switchBluetooth: (onComplete?: CompleteFunc) => void;
+  switchBluetoothSilence: (onComplete?: CompleteFunc) => void;
   isAirplaneEnabled: () => Promise<boolean>;
-  switchAirplane: () => void;
+  switchAirplane: (onComplete?: CompleteFunc) => void;
   openAppSystemSettings: () => Promise<void>;
   addBluetoothListener: (
     callback: (bluetoothEnabled: boolean) => void

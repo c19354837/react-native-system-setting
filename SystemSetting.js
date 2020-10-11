@@ -261,6 +261,8 @@ export default class SystemSetting {
     }
 
     static listenEvent(complete) {
+        if(!complete) return
+
         const listener = eventEmitter.addListener('EventEnterForeground', () => {
             listener.remove()
             complete()
