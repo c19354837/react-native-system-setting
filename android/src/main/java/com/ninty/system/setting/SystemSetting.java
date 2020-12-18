@@ -543,23 +543,33 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     @Override
     public void onHostDestroy() {
         if (wifiBR != null) {
-            mContext.unregisterReceiver(wifiBR);
+            try {
+                mContext.unregisterReceiver(wifiBR);
+            } catch (RuntimeException e) {}
             wifiBR = null;
         }
         if (bluetoothBR != null) {
-            mContext.unregisterReceiver(bluetoothBR);
+            try {
+                mContext.unregisterReceiver(bluetoothBR);
+            } catch (RuntimeException e) {}
             bluetoothBR = null;
         }
         if (locationBR != null) {
-            mContext.unregisterReceiver(locationBR);
+            try {
+                mContext.unregisterReceiver(locationBR);
+            } catch (RuntimeException e) {}
             locationBR = null;
         }
         if (locationModeBR != null) {
-            mContext.unregisterReceiver(locationModeBR);
-            locationBR = null;
+            try {
+                mContext.unregisterReceiver(locationModeBR);
+            } catch (RuntimeException e) {}
+            locationModeBR = null;
         }
         if (airplaneBR != null) {
-            mContext.unregisterReceiver(airplaneBR);
+            try {
+                mContext.unregisterReceiver(airplaneBR);
+            } catch (RuntimeException e) {}
             airplaneBR = null;
         }
     }
