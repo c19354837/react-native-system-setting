@@ -46,6 +46,8 @@ export default class SystemSettingExample extends Component {
         this._changeSliderNativeVol(this.sliderVol, this.state.volume)
         this._changeSliderNativeVol(this.sliderBri, this.state.brightness)
 
+        SystemSetting.setVolumeChangeListenerReasons(["ExplicitVolumeChange"])
+
         this.volumeListener = SystemSetting.addVolumeListener((data) => {
             const volume = this.isAndroid ? data[this.state.volType] : data.value
             this._changeSliderNativeVol(this.sliderVol, volume)

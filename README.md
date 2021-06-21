@@ -103,6 +103,11 @@ SystemSetting.getVolume().then((volume)=>{
 // change the volume
 SystemSetting.setVolume(0.5);
 
+// listen only to some volume changes, based on the change reason (AVSystemController_AudioVolumeChangeReasonNotificationParameter). 
+// If missing API call or sent an empty array it will listen to all changes. 
+// Pass reasons like "ExplicitVolumeChange", "RouteChange", et al
+SystemSetting.setVolumeChangeListenerReasons(["ExplicitVolumeChange"])
+
 // listen the volume changing if you need
 const volumeListener = SystemSetting.addVolumeListener((data) => {
     const volume = data.value;

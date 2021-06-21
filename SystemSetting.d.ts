@@ -43,6 +43,7 @@ interface SystemSetting {
   restoreBrightness: () => number;
   getVolume: (type?: VolumeType) => Promise<number>;
   setVolume: (value: number, config?: VolumeConfig | VolumeType) => void;
+  setVolumeChangeListenerReasons: (val: Array<string>) => Promise<boolean>;
   addVolumeListener: (
     callback: (volumeData: VolumeData) => void
   ) => EmitterSubscription;
