@@ -128,6 +128,10 @@ export default class SystemSetting {
         SystemSettingNative.setVolume(val, config)
     }
 
+    static setVolumeChangeListenerReasons(val) {
+        return SystemSettingNative.setVolumeChangeListenerReasons(val)
+    }
+
     static addVolumeListener(callback) {
         return eventEmitter.addListener('EventVolume', callback)
     }

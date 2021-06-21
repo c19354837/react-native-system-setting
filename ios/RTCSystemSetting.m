@@ -28,6 +28,7 @@
 
 @implementation RCTSystemSetting {
     bool hasListeners;
+    NSArray<NSString *> * _Nonnull volumeChangeListenerReasons;
     long skipSetVolumeCount;
 #ifdef BLUETOOTH
     CBCentralManager *cb;
@@ -53,6 +54,7 @@
 #ifdef PRIVATE_API
     [self initSetting];
 #endif
+    volumeChangeListenerReasons = @[];
 
     return self;
 }
@@ -95,6 +97,11 @@ RCT_EXPORT_METHOD(setBrightness:(float)val resolve:(RCTPromiseResolveBlock)resol
 
 RCT_EXPORT_METHOD(getBrightness:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
     resolve([NSNumber numberWithDouble:[UIScreen mainScreen].brightness]);
+}
+
+RCT_EXPORT_METHOD(setVolumeChangeListenerReasons:(nonnull NSArray<NSString *> *)val resolve:(RCTPromiseResolveBlock)resolve rejecter:(RCTPromiseRejectBlock)reject){
+    volumeChangeListenerReasons = val;
+    resolve([NSNumber numberWithBool:YES]);
 }
 
 RCT_EXPORT_METHOD(setVolume:(float)val config:(NSDictionary *)config){
@@ -220,8 +227,12 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
 
 -(void)volumeChanged:(NSNotification *)notification{
     if(skipSetVolumeCount == 0 && hasListeners){
-        float volume = [[[notification userInfo] objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
-        [self sendEventWithName:@"EventVolume" body:@{@"value": [NSNumber numberWithFloat:volume]}];
+        NSDictionary *userInfo = [notification userInfo];
+        NSString *reason = [userInfo objectForKey:@"AVSystemController_AudioVolumeChangeReasonNotificationParameter"];
+        if (volumeChangeListenerReasons.count == 0 || [volumeChangeListenerReasons containsObject:reason]) {
+            float volume = [[userInfo objectForKey:@"AVSystemController_AudioVolumeNotificationParameter"] floatValue];
+            [self sendEventWithName:@"EventVolume" body:@{@"value": [NSNumber numberWithFloat:volume]}];
+        }
     }
     if(skipSetVolumeCount > 0){
         skipSetVolumeCount--;
