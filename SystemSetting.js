@@ -111,18 +111,13 @@ export default class SystemSetting {
         return SystemSetting.saveBrightnessVal
     }
 
-    static async getVolume(type = 'music') {
+    static async getVolume(type) {
         return await SystemSettingNative.getVolume(type)
     }
 
     static setVolume(val, config = {}) {
-        if (typeof (config) === 'string') {
-            console.log('setVolume(val, type) is deprecated since 1.2.2, use setVolume(val, config) instead')
-            config = { type: config }
-        }
         config = Object.assign({
             playSound: false,
-            type: 'music',
             showUI: false
         }, config)
         SystemSettingNative.setVolume(val, config)

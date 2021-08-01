@@ -42,7 +42,7 @@ interface SystemSetting {
   saveBrightness: () => Promise<void>;
   restoreBrightness: () => number;
   getVolume: (type?: VolumeType) => Promise<number>;
-  setVolume: (value: number, config?: VolumeConfig | VolumeType) => void;
+  setVolume: (value: number, config?: VolumeConfig) => void;
   addVolumeListener: (
     callback: (volumeData: VolumeData) => void
   ) => EmitterSubscription;
