@@ -264,8 +264,13 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
 
     @ReactMethod
     public void openWriteSetting() {
-        Intent intent = new Intent(SysSettings.WRITESETTINGS.action, Uri.parse("package:" + mContext.getPackageName()));
-        mContext.getCurrentActivity().startActivity(intent);
+        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+        intent.setData(Uri.parse("package:" + mContext.getPackageName()));
+        if (intent.resolveActivity(mContext.getPackageManager()) != null) {
+            mContext.startActivity(intent);
+        }
     }
 
     @ReactMethod
