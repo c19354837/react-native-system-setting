@@ -246,6 +246,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     public void getAppBrightness(Promise promise) {
         final Activity curActivity = getCurrentActivity();
         if (curActivity == null) {
+            promise.reject("-1", "cannot get app brightness: current activity is null");
             return;
         }
         try {
