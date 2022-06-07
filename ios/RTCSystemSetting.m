@@ -165,6 +165,14 @@ RCT_EXPORT_METHOD(activeListener:(NSString *)type resolve:(RCTPromiseResolveBloc
     }
 }
 
+RCT_EXPORT_METHOD(addListener : (NSString *)eventName) {
+  // Keep: Required for RN built in Event Emitter Calls.
+}
+
+RCT_EXPORT_METHOD(removeListeners : (NSInteger)count) {
+  // Keep: Required for RN built in Event Emitter Calls.
+}
+
 -(void)showVolumeUI:(BOOL)flag{
     if(flag && [volumeView superview]){
         [volumeView removeFromSuperview];
