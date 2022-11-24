@@ -246,6 +246,7 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
     public void getAppBrightness(Promise promise) {
         final Activity curActivity = getCurrentActivity();
         if (curActivity == null) {
+            promise.reject("-1", "cannot get app brightness: current activity is null");
             return;
         }
         try {
@@ -596,5 +597,15 @@ public class SystemSetting extends ReactContextBaseJavaModule implements Activit
                 }
             }
         }
+    }
+    
+    @ReactMethod
+    public void addListener(String eventName) {
+      // Keep: Required for RN built in Event Emitter Calls.
+    }
+
+    @ReactMethod
+    public void removeListeners(Integer count) {
+      // Keep: Required for RN built in Event Emitter Calls.
     }
 }

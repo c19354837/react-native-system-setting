@@ -141,9 +141,12 @@ export default class SystemSetting {
         return (result) > 0
     }
 
-    static switchWifiSilence(complete) {
+    static async switchWifiSilence(complete) {
         if (Utils.isAndroid) {
-            SystemSetting.listenEvent(complete)
+            let listener = await SystemSetting.addWifiListener(() => {
+                SystemSetting.removeListener(listener);
+                complete();
+            });
             SystemSettingNative.switchWifiSilence()
         } else {
             SystemSetting.switchWifi(complete)
@@ -181,9 +184,12 @@ export default class SystemSetting {
         SystemSettingNative.switchBluetooth()
     }
 
-    static switchBluetoothSilence(complete) {
+    static async switchBluetoothSilence(complete) {
         if (Utils.isAndroid) {
-            SystemSetting.listenEvent(complete)
+            let listener = await SystemSetting.addBluetoothListener(() => {
+                SystemSetting.removeListener(listener);
+                complete();
+            })
             SystemSettingNative.switchBluetoothSilence()
         } else {
             SystemSettingNative.switchBluetooth(complete)
